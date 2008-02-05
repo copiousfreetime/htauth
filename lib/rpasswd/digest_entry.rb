@@ -62,15 +62,11 @@ module Rpasswd
         end
 
         def key
-            return "#{user}:#{realm}"
+            "#{user}:#{realm}"
         end
 
         def to_s
             "#{user}:#{realm}:#{digest}"
-        end
-
-        def dup
-            DigestEntry.from_line(self.to_s)
         end
     end
 end

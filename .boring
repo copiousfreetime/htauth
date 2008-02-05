@@ -47,4 +47,6 @@
 (^|/|\.)core$
 \.(obj|a|exe|so|lo|la)$
 ^\.darcs-temp-mail$
+
+# project directories
 (^|/)doc($|/)

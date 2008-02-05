@@ -2,58 +2,19 @@ require 'rpasswd'
 require 'stringio'
 require 'tempfile'
 
+require 'rpasswd/file'
+require 'rpasswd/digest_entry'
+
 module Rpasswd
     class DigestFileError < StandardError ; end
-    class DigestFile
+    class DigestFile < Rpasswd::File
 
-        ALTER  = "alter"
-        CREATE = "create"
-
-        attr_reader :filename
-        attr_reader :file
-
-        # Create or Alter a digest file.
-        # A file can only be created if the CREATE mode is sent in and the file does not already exist.
-        # file is altered, only if it already exists and ALTER is the mode.  
-        # Altering a non-existent file is an error, and Creating an existing file is an error.
-        def initialize(filename, mode = ALTER)
-            @filename  = filename
-            @mode      = mode
-            
-            raise FileAccessError, "Invalid mode #{mode}" unless [ ALTER, CREATE ].include?(mode)
-
-            if File.exist?(filename) and mode == CREATE then
-                raise FileAccessError, "Attempted to create a new digest file #{filename} but it already exists."
-            end
-
-            if mode == ALTER and not File.exist?(filename) then
-                raise FileAccessError, "Could not open passwd file #{filename} for reading." 
-            end
-
-            begin
-                @entries  = {}
-                @lines    = []
-                load_entries if @mode == ALTER
-            rescue => e
-                raise FileAccessError, e.message
-            end
-        end
+        ENTRY_KLASS = Rpasswd::DigestEntry
 
         # does the entry the the specified username and realm exist in the file
         def has_entry?(username, realm)
             test_entry = DigestEntry.new(username, realm)
             @entries.has_key?(test_entry.key)
-        end
-
-        # update the original file with the new contents
-        def save!
-            begin
-                File.open(@filename,"w") do |f|
-                    f.write(contents)
-                end
-            rescue => e
-                raise FileAccessError, "Error saving file #{@filename} : #{e.message}"
-            end
         end
 
         # remove an entry from the file
@@ -63,7 +24,6 @@ module Rpasswd
                 line_index = ir['line_index']
                 @entries.delete(ir['entry'].key)
                 @lines[line_index] = nil
-                @dirty = true
             end
             nil
         end
@@ -85,7 +45,6 @@ module Rpasswd
             new_index = @lines.size
             @lines << new_entry.to_s
             @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
-            @dirty = true
             return nil
         end
 
@@ -95,7 +54,6 @@ module Rpasswd
             ir = internal_record(username, realm)
             ir['entry'].password = password
             @lines[ir['line_index']] = ir['entry'].to_s
-            @dirty = true
             return nil
         end
 
@@ -107,30 +65,15 @@ module Rpasswd
             return ir['entry'].dup
         end
 
-        # return what should be the contents of the digest file
-        def contents
-            c = StringIO.new
-            @lines.each do |l| 
-                c.puts l if l
-            end
-            c.string
+        def entry_klass
+            ENTRY_KLASS
+        end
+
+        def file_type
+            "digest"
         end
 
         private
-
-        # load up entries, keep items in the same order and do not trim out any 
-        # items in the file, like commented out lines or empty space
-        def load_entries
-            @lines   = IO.readlines(@filename)
-            
-            @lines.each_with_index do |line,idx|
-                if DigestEntry.is_entry?(line) then
-                    entry = DigestEntry.from_line(line)
-                    v     = { 'entry' => entry, 'line_index' => idx }
-                    @entries[entry.key] = v
-                end
-            end
-        end
 
         def internal_record(username, realm)
             e = DigestEntry.new(username, realm)
