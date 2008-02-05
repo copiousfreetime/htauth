@@ -1,9 +1,42 @@
+
 module Rpasswd
+    class InvalidAlgorithmError < StandardError ; end
     # base class all the Passwd algorithms derive from
     class Algorithm
         SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
 
-        def name ; end
+        class << self
+            def algorithm_from_name(a_name, params = {})
+                raise InvalidAlgorithmError, "`#{a_name}' is an invalid encryption algorithm, use one of #{sub_klasses.keys.join(', ')}" unless sub_klasses[a_name.downcase]
+                sub_klasses[a_name.downcase].new(params)
+            end
+
+            def algorithms_from_field(password_field)
+                matches = []
+       
+
+                if password_field.index(sub_klasses['sha1'].new.prefix) then
+                    matches << sub_klasses['sha1'].new
+                elsif password_field.index(sub_klasses['md5'].new.prefix) then
+                    matches << sub_klasses['md5'].new
+                else
+                    matches << sub_klasses['plaintext'].new
+                    matches << sub_klasses['crypt'].new
+                end
+
+                return matches
+            end
+
+            def inherited(sub_klass)
+                k = sub_klass.name.split("::").last.downcase
+                sub_klasses[k] = sub_klass
+            end
+
+            def sub_klasses
+                @sub_klasses ||= {}
+            end
+        end
+
         def prefix ; end
         def encode(password) ; end
         
@@ -25,3 +58,7 @@ module Rpasswd
         end
     end
 end
+require 'rpasswd/md5'
+require 'rpasswd/sha1'
+require 'rpasswd/crypt'
+require 'rpasswd/plaintext'

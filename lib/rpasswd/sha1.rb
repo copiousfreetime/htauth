@@ -7,8 +7,9 @@ module Rpasswd
     # an implementation of the SHA based encoding algorithm 
     # as used in the apache htpasswd -s option
     class Sha1 < Algorithm
-        def name
-            "SHA1"
+        
+        # ignore the params
+        def initialize(params = {}) 
         end
 
         def prefix

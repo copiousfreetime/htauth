@@ -9,12 +9,8 @@ module Rpasswd
             
         DIGEST_LENGTH = 16
 
-        def initialize(in_salt = nil)
-            @salt = in_salt || gen_salt
-        end
-
-        def name
-            "MD5"
+        def initialize(params = {})
+            @salt = params['salt'] || params[:salt] || gen_salt
         end
 
         def prefix

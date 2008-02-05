@@ -5,10 +5,9 @@ module Rpasswd
 
     # the plaintext algorithm, which does absolutly  nothing
     class Plaintext < Algorithm
-        def name
-            "plaintext"
+        # ignore parameters
+        def initialize(params = {}) 
         end
-
         def prefix
             ""
         end

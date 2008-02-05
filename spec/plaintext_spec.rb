@@ -9,10 +9,6 @@ describe Rpasswd::Plaintext do
         Rpasswd::Plaintext.new.prefix.should == ""
     end
 
-    it "has a name" do
-        Rpasswd::Plaintext.new.name.should == "plaintext"
-    end
-
     it "encrypts the same way that apache does" do
         apache_result = "a secret"
         pt = Rpasswd::Plaintext.new

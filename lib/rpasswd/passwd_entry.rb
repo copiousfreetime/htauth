@@ -7,16 +7,6 @@ module Rpasswd
     # A single record in an htdigest file.  
     class PasswdEntry < Entry
 
-        # valid encryption types
-        MD5     = "md5"
-        CRYPT   = "crypt"
-        SHA     = "sha"
-        PLAIN   = "plaintext"
-
-        VALID_ALGORITHMS = [ MD5, CRYPT, SHA, PLAIN ]
-
-        APR1_ID = "$apr1$" # for detection of password encryption type.
-         
         attr_accessor :user
         attr_accessor :digest
         attr_accessor :algorithm
@@ -26,7 +16,7 @@ module Rpasswd
                 parts = is_entry!(line)
                 d = PasswdEntry.new(parts[0])
                 d.digest = parts[1]
-                d.algorithm = determine_algorithm(parts[1])
+                d.algorithm = Algorithm.algorithms_from_field(parts[1])
                 return d
             end
 
@@ -51,33 +41,18 @@ module Rpasswd
             end
         end
 
-        def initialize(user, password = "", algorithm = CRYPT)
-            raise InvalidPasswdEntry, "`#{algorithm}' is an invalid encryption mode, use one of: #{VALID_ALGORITHMS.join(', ')}" unless VALID_ALGORITHMS.include?(algorithm)
-
+        def initialize(user, password = "",alg = 'crypt', alg_params = {} ) 
             @user      = user
-            @algorithm = algorithm
-            @digest    = calc_digest(password)
+            @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
+            @digest    = algorithm.encode(password)
         end
 
         def password=(new_password)
-            @digest = calc_digest(new_password)
-        end
-
-        def calc_digest(password)
-            p = passwod
-            case algorithm
-            when CRYPT
-            when SHA1
-            when MD5
-            when PLAIN
-                nil
-            else
-                raise InvalidPasswordEntry
-            end
+            @digest = algorithm.encode(new_password)
         end
 
         def authenticated?(check_password)
-            d = calc_digest(check_passwd)
+            d = algorithm.encode(check_password)
             return d == digest
         end
 
