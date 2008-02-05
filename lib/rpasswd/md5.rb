@@ -6,8 +6,7 @@ module Rpasswd
     # an implementation of the MD5 based encoding algorithm 
     # as used in the apache htpasswd -m option
     class Md5 < Algorithm
-
-        SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
+            
         DIGEST_LENGTH = 16
 
         def initialize(in_salt = nil)
@@ -82,25 +81,6 @@ module Rpasswd
             encoded_password << to_64(pd[11],2)
 
             return encoded_password
-        end
-
-        private
-
-        # 8 bytes of random items from SALT_CHARS
-        def gen_salt
-            chars = []
-            8.times { chars << SALT_CHARS[rand(SALT_CHARS.size)] }
-            chars.join('')     
-        end
-
-        # this is not the Base64 encoding, this is the to64() method from apr
-        def to_64(number, rounds)
-            r = StringIO.new
-            rounds.times do |x|
-                r.print(SALT_CHARS[number % 64])
-                number >>= 6
-            end
-            return r.string
         end
     end
 end

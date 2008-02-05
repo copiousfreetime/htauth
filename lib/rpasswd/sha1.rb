@@ -8,7 +8,7 @@ module Rpasswd
     # as used in the apache htpasswd -s option
     class Sha1 < Algorithm
         def name
-            "SHA"
+            "SHA1"
         end
 
         def prefix
@@ -16,7 +16,7 @@ module Rpasswd
         end
 
         def encode(password)
-            Base64.encode64(SHA1.digest(password))
+            "#{prefix}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"
         end
     end
 end
