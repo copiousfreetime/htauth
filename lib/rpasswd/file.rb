@@ -15,8 +15,8 @@ module Rpasswd
         # file is altered, only if it already exists and ALTER is the mode.  
         # Altering a non-existent file is an error, and Creating an existing file is an error.
         def initialize(filename, mode = ALTER)
-            @filename  = filename
-            @mode      = mode
+            @filename   = filename
+            @mode       =  mode
             
             raise FileAccessError, "Invalid mode #{mode}" unless [ ALTER, CREATE ].include?(mode)
 
@@ -61,7 +61,6 @@ module Rpasswd
         # items in the file, like commented out lines or empty space
         def load_entries
             @lines   = IO.readlines(@filename)
-            
             @lines.each_with_index do |line,idx|
                 if entry_klass.is_entry?(line) then
                     entry = entry_klass.from_line(line)

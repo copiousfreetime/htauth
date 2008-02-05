@@ -5,8 +5,8 @@ require 'rpasswd/passwd_entry'
 
 describe Rpasswd::PasswdEntry do
     before(:each) do
-        @alice = Rpasswd::PasswdEntry.new("alice", "a secret", 'crypt', { :salt => "mD" })
-        @bob   = Rpasswd::PasswdEntry.new("bob", "b secret", 'crypt', { :salt => "b8"})
+        @alice = Rpasswd::PasswdEntry.new("alice", "a secret", "crypt", { :salt => "mD" })
+        @bob   = Rpasswd::PasswdEntry.new("bob", "b secret", "crypt", { :salt => "b8"})
     end
 
     it "initializes with a user and realm" do
@@ -32,6 +32,66 @@ describe Rpasswd::PasswdEntry do
         bob = Rpasswd::PasswdEntry.new("bob", "b secret", "plaintext", { :salt => @salt })
         bob.digest.should == "b secret"
     end
+
+    it "encrypts with crypt as a default, when parsed from crypt()'d line" do
+        bob2 = Rpasswd::PasswdEntry.from_line(@bob.to_s)
+        bob2.algorithm.should be_an_instance_of(Array)
+        bob2.algorithm.should have(2).items
+        bob2.password = "another secret"
+        bob2.algorithm.should be_an_instance_of(Rpasswd::Crypt)
+    end
+
+    it "encrypts with crypt as a default, when parsed from plaintext line" do
+        p = Rpasswd::PasswdEntry.new('paul', 'p secret', 'plaintext')
+        p2 = Rpasswd::PasswdEntry.from_line(p.to_s)
+        p2.algorithm.should be_an_instance_of(Array)
+        p2.algorithm.should have(2).items
+        p2.password = "another secret"
+        p2.algorithm.should be_an_instance_of(Rpasswd::Crypt)
+    end
+
+    it "encrypts with md5 as default, when parsed from an md5 line" do
+        m = Rpasswd::PasswdEntry.new("mary", "m secret", "md5") 
+        m2 = Rpasswd::PasswdEntry.from_line(m.to_s)
+        m2.algorithm.should be_an_instance_of(Rpasswd::Md5)
+    end
+    
+    it "encrypts with sha1 as default, when parsed from an sha1 line" do
+        s = Rpasswd::PasswdEntry.new("steve", "s secret", "sha1") 
+        s2 = Rpasswd::PasswdEntry.from_line(s.to_s)
+        s2.algorithm.should be_an_instance_of(Rpasswd::Sha1)
+    end
+
+    it "determins the algorithm to be crypt when checking a password" do
+        bob2 = Rpasswd::PasswdEntry.from_line(@bob.to_s)
+        bob2.algorithm.should be_an_instance_of(Array)
+        bob2.algorithm.should have(2).items
+        bob2.authenticated?("b secret").should == true
+        bob2.algorithm.should be_an_instance_of(Rpasswd::Crypt)
+    end
+    
+    it "determins the algorithm to be plain when checking a password" do
+        bob2 = Rpasswd::PasswdEntry.from_line("bob:b secret")
+        bob2.algorithm.should be_an_instance_of(Array)
+        bob2.algorithm.should have(2).items
+        bob2.authenticated?("b secret").should == true
+        bob2.algorithm.should be_an_instance_of(Rpasswd::Plaintext)
+    end
+
+    it "authenticates correctly against md5" do
+        m = Rpasswd::PasswdEntry.new("mary", "m secret", "md5") 
+        m2 = Rpasswd::PasswdEntry.from_line(m.to_s)
+        m2.authenticated?("m secret").should == true
+    end
+    
+    it "authenticates correctly against sha1" do
+        s = Rpasswd::PasswdEntry.new("steve", "s secret", "sha1") 
+        s2 = Rpasswd::PasswdEntry.from_line(s.to_s)
+        s2.authenticated?("s secret").should == true
+    end
+
+
+
 
     it "returns username for a key" do
         @alice.key.should == "alice"

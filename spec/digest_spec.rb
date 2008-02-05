@@ -8,7 +8,7 @@ describe Rpasswd::Digest do
 
         # existing 
         @tf = Tempfile.new("rpasswrd-digest-test")
-        @tf.write(IO.read(ORIGINAL_TEST_FILE))
+        @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
         @tf.close       
         @rdigest = Rpasswd::Digest.new
        
@@ -63,7 +63,7 @@ describe Rpasswd::Digest do
             @rdigest.run([ "-c", @new_file, "rpasswd", "bob" ])
         rescue SystemExit => se
             se.status.should == 0
-            IO.read(@new_file).should == IO.readlines(ORIGINAL_TEST_FILE).first
+            IO.read(@new_file).should == IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
         end
     end
 
@@ -75,7 +75,7 @@ describe Rpasswd::Digest do
             @rdigest.run([ @tf.path, "rpasswd-new", "charlie" ])
         rescue SystemExit => se
             se.status.should == 0
-            IO.read(@tf.path).should == IO.read(ADD_TEST_FILE)
+            IO.read(@tf.path).should == IO.read(DIGEST_ADD_TEST_FILE)
         end
     end
 
@@ -88,7 +88,7 @@ describe Rpasswd::Digest do
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
-            IO.read(@tf.path).should == IO.read(UPDATE_TEST_FILE)
+            IO.read(@tf.path).should == IO.read(DIGEST_UPDATE_TEST_FILE)
         end
     end
     
@@ -98,7 +98,7 @@ describe Rpasswd::Digest do
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
-            IO.read(@tf.path).should == IO.read(DELETE_TEST_FILE)
+            IO.read(@tf.path).should == IO.read(DIGEST_DELETE_TEST_FILE)
         end
     end
 

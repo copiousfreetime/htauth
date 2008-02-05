@@ -28,19 +28,18 @@ module Rpasswd
         end
 
         # add or update an entry as appropriate
-        def add_or_update(username, password)
+        def add_or_update(username, password, algorithm = Algorithm::DEFAULT)
             if has_entry?(username) then
-                update(username, password)
+                update(username, password, algorithm)
             else
-                add(username, password)
+                add(username, password, algorithm)
             end
         end
 
         # add an new record.  raises an error if the entry exists.
-        def add(username)
+        def add(username, password, algorithm = Algorithm::DEFAULT)
             raise PasswdFileError, "Unable to add already existing user #{username}" if has_entry?(username)
-            
-            new_entry = PasswdEntry.new(username, password)
+            new_entry = PasswdEntry.new(username, password, algorithm)
             new_index = @lines.size
             @lines << new_entry.to_s
             @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
@@ -48,9 +47,10 @@ module Rpasswd
         end
 
         # update an already existing entry with a new password.  raises an error if the entry does not exist
-        def update(username, password)
+        def update(username, password, algorithm = Algorithm::EXISTING)
             raise PasswdFileError, "Unable to update non-existent user #{username}" unless has_entry?(username)
             ir = internal_record(username)
+            ir['entry'].algorithm = algorithm
             ir['entry'].password = password
             @lines[ir['line_index']] = ir['entry'].to_s
             return nil

@@ -9,7 +9,7 @@ module Rpasswd
 
         attr_accessor :user
         attr_accessor :digest
-        attr_accessor :algorithm
+        attr_reader   :algorithm
 
         class << self
             def from_line(line)
@@ -41,19 +41,48 @@ module Rpasswd
             end
         end
 
-        def initialize(user, password = "",alg = 'crypt', alg_params = {} ) 
+        def initialize(user, password = "", alg = Algorithm::DEFAULT, alg_params = {} ) 
             @user      = user
             @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
             @digest    = algorithm.encode(password)
         end
 
+        def algorithm=(alg)
+            if alg.kind_of?(Array) then
+                if alg.size == 1 then
+                    @algorithm = alg.first
+                else
+                    @algorithm = alg
+                end
+            else
+                @algorithm = Algorithm.algorithm_from_name(alg) unless Algorithm::EXISTING == alg
+            end
+            return @algorithm
+        end
+
         def password=(new_password)
+            if algorithm.kind_of?(Array) then
+                @algorithm = Algorithm.algorithm_from_name("crypt")
+            end
             @digest = algorithm.encode(new_password)
         end
 
+        # check the password and make sure it works, in the case that the algorithm is unknown it
+        # tries all of the ones that it thinks it could be, and marks the algorithm if it matches
         def authenticated?(check_password)
-            d = algorithm.encode(check_password)
-            return d == digest
+            authed = false
+            if algorithm.kind_of?(Array) then
+                algorithm.each do |alg|
+                    if alg.encode(check_password) == digest then
+                        @algorithm = alg
+                        authed = true
+                        break
+                    end
+                end
+            else
+                authed = digest == algorithm.encode(check_password)
+            end
+            return authed
         end
 
         def key

@@ -7,7 +7,7 @@ describe Rpasswd::DigestFile do
 
     before(:each) do
         @tf             = Tempfile.new("rpasswrd-digest")
-        @tf.write(IO.read(ORIGINAL_TEST_FILE))
+        @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
         @tf.close       
         @digest_file    = Rpasswd::DigestFile.new(@tf.path)
         
@@ -23,7 +23,7 @@ describe Rpasswd::DigestFile do
 
     it "can add a new entry to an already existing digest file" do
         @digest_file.add_or_update("charlie", "rpasswd-new", "c secret")
-        @digest_file.contents.should == IO.read(ADD_TEST_FILE)
+        @digest_file.contents.should == IO.read(DIGEST_ADD_TEST_FILE)
     end
 
     it "can tell if an entry already exists in the digest file" do
@@ -33,7 +33,7 @@ describe Rpasswd::DigestFile do
     
     it "can update an entry in an already existing digest file" do
         @digest_file.add_or_update("alice", "rpasswd", "a new secret")
-        @digest_file.contents.should == IO.read(UPDATE_TEST_FILE)
+        @digest_file.contents.should == IO.read(DIGEST_UPDATE_TEST_FILE)
     end
 
     it "fetches a copy of an entry" do
@@ -55,6 +55,6 @@ describe Rpasswd::DigestFile do
 
     it "deletes an entry" do
         @digest_file.delete("alice", "rpasswd")
-        @digest_file.contents.should == IO.read(DELETE_TEST_FILE)
+        @digest_file.contents.should == IO.read(DIGEST_DELETE_TEST_FILE)
     end
 end

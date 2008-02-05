@@ -3,7 +3,10 @@ module Rpasswd
     class InvalidAlgorithmError < StandardError ; end
     # base class all the Passwd algorithms derive from
     class Algorithm
+
         SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
+        DEFAULT       = ( RUBY_PLATFORM !~ /mswin32/ ) ? "crypt" : "md5"
+        EXISTING      = "existing"
 
         class << self
             def algorithm_from_name(a_name, params = {})
@@ -13,15 +16,15 @@ module Rpasswd
 
             def algorithms_from_field(password_field)
                 matches = []
-       
 
                 if password_field.index(sub_klasses['sha1'].new.prefix) then
                     matches << sub_klasses['sha1'].new
                 elsif password_field.index(sub_klasses['md5'].new.prefix) then
-                    matches << sub_klasses['md5'].new
+                    p = password_field.split("$")
+                    matches << sub_klasses['md5'].new( :salt => p[2] )
                 else
                     matches << sub_klasses['plaintext'].new
-                    matches << sub_klasses['crypt'].new
+                    matches << sub_klasses['crypt'].new( :salt => password_field[0,2] )
                 end
 
                 return matches
