@@ -9,4 +9,4 @@ rescue LoadError
     retry
 end
 
-Rpasswd::HTPasswd.new.run(ARGV)
+Rpasswd::Passwd.new.run(ARGV)

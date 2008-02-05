@@ -19,10 +19,13 @@ module Rpasswd
         def options
             if @options.nil? then
                 @options                = ::OpenStruct.new
-                @options.show_version   = false
-                @options.show_help      = false
+                @options.batch_mode     = false
                 @options.file_mode      = PasswdFile::ALTER
                 @options.passwdfile     = nil
+                @options.algorithm      = Algorithm::DEFAULT
+
+                @options.show_version   = false
+                @options.show_help      = false
                 @options.realm          = nil
                 @options.username       = nil
                 @options.delete_entry   = false
@@ -33,23 +36,57 @@ module Rpasswd
         def option_parser
             if not @option_parser then
                 @option_parser = OptionParser.new do |op|
-                    op.banner = "Usage: #{op.program_name} [options] passwordfile realm username"
-                    op.on("-c", "--create", "create a new passwd password file.") do |c|
-                        options.file_mode = PasswdFile::CREATE
+                    op.banner = <<EOB
+Usage: 
+    #{op.program_name} [-cmdpsD] passwordfile username
+    #{op.program_name} -b[cmdpsD] passwordfile username password
+
+    #{op.program_name} -n[mdps] username
+    #{op.program_name} -nb[mdps] username password
+EOB
+
+                    op.separator ""
+
+                    op.on("-b", "--batch", "Batch mode, get the password from the command line, rather than prompt") do |b|
+                        options.batch_mode = b
                     end
 
-                    op.on("-d", "--delete", "delete the entry in the file") do |d|
+                    op.on("-c", "--create", "Create a new file; this overwrites an existing file.") do |c|
+                        options.file_mode = PasswdFile::CREATE
+                    end
+                    
+                    op.on("-d", "--crypt", "Force CRYPT encryption of the password (default).") do |c|
+                        options.algorithm = "crypt"
+                    end
+
+                    op.on("-D", "--delete", "Delete the specified user.") do |d|
                         options.delete_entry = d
                     end
 
-                    op.on("-h", "--help", "display this help") do |h|
+                    op.on("-h", "--help", "Display this help.") do |h|
                         options.show_help = h
                     end
 
-                    op.on("-v", "--version", "show version info") do |v|
+                    op.on("-m", "--md5", "Force MD5 encryption of the password (default on Windows).") do |m|
+                        options.algorithm = "md5"
+                    end
+
+                    op.on("-n", "--stdout", "Do not update the file; Display the results on stdout instead.") do |n|
+                        options.passwdfile = $stdout
+                    end
+                    
+                    op.on("-p", "--plaintext", "Do not encrypt the password (plaintext).") do |p|
+                        options.algorithm = "plaintext"
+                    end
+
+                    op.on("-s", "--sha1", "Force SHA encryption of the password.") do |s|
+                        options.algorithm = "sha1"
+                    end
+
+                    op.on("-v", "--version", "Show version info.") do |v|
                         options.show_version = v
                     end
-                end
+               end
             end
             @option_parser
         end

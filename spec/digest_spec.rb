@@ -67,6 +67,18 @@ describe Rpasswd::Digest do
         end
     end
 
+    it "creates truncates an exiting file if told to create a new file" do
+        begin
+            @stdin.puts "a secret"
+            @stdin.puts "a secret"
+            @stdin.rewind
+            @rdigest.run([ "-c", @tf.path, "rpasswd", "alice"])
+        rescue SystemExit => se
+            se.status.should == 0
+            IO.read(@tf.path).should == IO.read(DIGEST_DELETE_TEST_FILE)
+        end
+    end
+
     it "adds an entry to an existing file" do
         begin
             @stdin.puts "c secret"

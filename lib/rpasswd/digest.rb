@@ -34,19 +34,19 @@ module Rpasswd
             if not @option_parser then
                 @option_parser = OptionParser.new do |op|
                     op.banner = "Usage: #{op.program_name} [options] passwordfile realm username"
-                    op.on("-c", "--create", "create a new digest password file.") do |c|
+                    op.on("-c", "--create", "Create a new digest password file; this overwrites an existing file.") do |c|
                         options.file_mode = DigestFile::CREATE
                     end
 
-                    op.on("-d", "--delete", "delete the entry in the file") do |d|
+                    op.on("-D", "--delete", "Delete the specified user.") do |d|
                         options.delete_entry = d
                     end
 
-                    op.on("-h", "--help", "display this help") do |h|
+                    op.on("-h", "--help", "Display this help.") do |h|
                         options.show_help = h
                     end
 
-                    op.on("-v", "--version", "show version info") do |v|
+                    op.on("-v", "--version", "Show version info.") do |v|
                         options.show_version = v
                     end
                 end
