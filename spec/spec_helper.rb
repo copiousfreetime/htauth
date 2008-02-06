@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec'
 
 $: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-require 'rpasswd'
+require 'htauth'
 
 PASSWD_ORIGINAL_TEST_FILE  = File.join(File.dirname(__FILE__), "test.original.passwd")
 PASSWD_ADD_TEST_FILE       = File.join(File.dirname(__FILE__), "test.add.passwd")

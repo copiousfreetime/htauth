@@ -4,7 +4,7 @@
 #     rubytalk.
 #-----------------------------------------------------------------------
 def changes
-    change_file = File.expand_path(File.join(Rpasswd::ROOT_DIR,"CHANGES"))
+    change_file = File.expand_path(File.join(HTAuth::ROOT_DIR,"CHANGES"))
     sections    = File.read(change_file).split(/^(?===)/)
 end
 
@@ -13,13 +13,13 @@ def last_changeset
 end
 
 def announcement
-    urls    = "  #{Rpasswd::SPEC.homepage}"
-    subject = "#{Rpasswd::SPEC.name} #{Rpasswd::VERSION} Released"
-    title   = "#{Rpasswd::SPEC.name} version #{Rpasswd::VERSION} has been released."
+    urls    = "  #{HTAuth::SPEC.homepage}"
+    subject = "#{HTAuth::SPEC.name} #{HTAuth::VERSION} Released"
+    title   = "#{HTAuth::SPEC.name} version #{HTAuth::VERSION} has been released."
     body    = <<BODY
-#{Rpasswd::SPEC.description.rstrip}
+#{HTAuth::SPEC.description.rstrip}
 
-{{ Changelog for Version #{Rpasswd::VERSION} }}
+{{ Changelog for Version #{HTAuth::VERSION} }}
 
 #{last_changeset.rstrip}
 
@@ -34,7 +34,7 @@ namespace :announce do
         subject, title, body, urls = announcement
 
         File.open("email.txt", "w") do |mail|
-            mail.puts "From: #{Rpasswd::SPEC.author} <#{Rpasswd::SPEC.email}>"
+            mail.puts "From: #{HTAuth::SPEC.author} <#{HTAuth::SPEC.email}>"
             mail.puts "To: ruby-talk@ruby-lang.org"
             mail.puts "Date: #{Time.now.rfc2822}"
             mail.puts "Subject: [ANN] #{subject}"

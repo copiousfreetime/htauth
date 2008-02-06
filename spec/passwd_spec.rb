@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__),"spec_helper.rb")
 require 'rpasswd/passwd'
 require 'tempfile'
 
-describe Rpasswd::Passwd do
+describe HTAuth::Passwd do
 
     before(:each) do
 
@@ -10,7 +10,7 @@ describe Rpasswd::Passwd do
         @tf = Tempfile.new("rpasswrd-passwd-test")
         @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
         @tf.close       
-        @rpasswd = Rpasswd::Passwd.new
+        @rpasswd = HTAuth::Passwd.new
        
         # new file
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
@@ -51,7 +51,7 @@ describe Rpasswd::Passwd do
             @rpasswd.run([ "--version" ])
         rescue SystemExit => se
             se.status.should == 1
-            @stdout.string.should =~ /version #{Rpasswd::VERSION}/
+            @stdout.string.should =~ /version #{HTAuth::VERSION}/
         end
     end
     

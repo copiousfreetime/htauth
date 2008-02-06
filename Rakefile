@@ -7,7 +7,7 @@ require 'rake/clean'
 require 'rake/rdoctask'
 require 'rake/contrib/sshpublisher'
 
-require 'rpasswd'
+require 'htauth'
 
 load 'tasks/setup.rb'
 

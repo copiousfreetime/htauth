@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
 require 'rpasswd/digest_entry'
 
-describe Rpasswd::DigestEntry do
+describe HTAuth::DigestEntry do
     before(:each) do
-        @alice = Rpasswd::DigestEntry.new("alice", "rpasswd")
-        @bob   = Rpasswd::DigestEntry.new("bob", "rpasswd", "a secret")
+        @alice = HTAuth::DigestEntry.new("alice", "rpasswd")
+        @bob   = HTAuth::DigestEntry.new("bob", "rpasswd", "a secret")
     end
 
     it "initializes with a user and realm" do
@@ -31,28 +31,28 @@ describe Rpasswd::DigestEntry do
     end
 
     it "parses an input line" do
-        @bob_new = Rpasswd::DigestEntry.from_line("bob:rpasswd:0a90549e8ffb2dd62f98252a95d88697")
+        @bob_new = HTAuth::DigestEntry.from_line("bob:rpasswd:0a90549e8ffb2dd62f98252a95d88697")
         @bob.user.should == @bob_new.user
         @bob.digest.should == @bob_new.digest
         @bob.realm.should == @bob_new.realm
     end
 
     it "knows if an input line is a possible entry and raises an exception" do
-        lambda { Rpasswd::DigestEntry.is_entry!("#stuff") }.should raise_error(Rpasswd::InvalidDigestEntry)
-        lambda { Rpasswd::DigestEntry.is_entry!("this:that:other:stuff") }.should raise_error(Rpasswd::InvalidDigestEntry)
-        lambda { Rpasswd::DigestEntry.is_entry!("this:that:other") }.should raise_error(Rpasswd::InvalidDigestEntry)
-        lambda { Rpasswd::DigestEntry.is_entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.should raise_error(Rpasswd::InvalidDigestEntry)
+        lambda { HTAuth::DigestEntry.is_entry!("#stuff") }.should raise_error(HTAuth::InvalidDigestEntry)
+        lambda { HTAuth::DigestEntry.is_entry!("this:that:other:stuff") }.should raise_error(HTAuth::InvalidDigestEntry)
+        lambda { HTAuth::DigestEntry.is_entry!("this:that:other") }.should raise_error(HTAuth::InvalidDigestEntry)
+        lambda { HTAuth::DigestEntry.is_entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.should raise_error(HTAuth::InvalidDigestEntry)
     end
     
     it "knows if an input line is a possible entry and returns false" do
-        Rpasswd::DigestEntry.is_entry?("#stuff").should == false
-        Rpasswd::DigestEntry.is_entry?("this:that:other:stuff").should == false 
-        Rpasswd::DigestEntry.is_entry?("this:that:other").should == false 
-        Rpasswd::DigestEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz").should == false
+        HTAuth::DigestEntry.is_entry?("#stuff").should == false
+        HTAuth::DigestEntry.is_entry?("this:that:other:stuff").should == false 
+        HTAuth::DigestEntry.is_entry?("this:that:other").should == false 
+        HTAuth::DigestEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz").should == false
     end
     
     it "knows if an input line is a possible entry and returns true" do
-        Rpasswd::DigestEntry.is_entry?("bob:rpasswd:0a90549e8ffb2dd62f98252a95d88697").should == true
+        HTAuth::DigestEntry.is_entry?("bob:rpasswd:0a90549e8ffb2dd62f98252a95d88697").should == true
     end
 
     it "duplicates itself" do

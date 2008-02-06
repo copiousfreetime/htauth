@@ -1,9 +1,9 @@
 require 'rubygems'
-require 'rpasswd/specification'
-require 'rpasswd/version'
+require 'htauth/specification'
+require 'htauth/version'
 require 'rake'
 
-# The Gem Specification plus some extras for rpasswd.
+# The Gem Specification plus some extras for htauth.
 module HTAuth
     SPEC = HTAuth::Specification.new do |spec|
                 spec.name               = "htauth"
@@ -13,9 +13,9 @@ module HTAuth
                 spec.email              = "jeremy@hinegardner.org"
                 spec.homepage           = "http://copiousfreetime.rubyforge.org/htauth"
 
-                spec.summary            = "A Summary of rpasswd."
+                spec.summary            = "A Summary of htauth."
                 spec.description        = <<-DESC
-                A longer more detailed description of rpasswd.
+                A longer more detailed description of htauth.
                 DESC
 
                 spec.extra_rdoc_files   = FileList["[A-Z]*"]

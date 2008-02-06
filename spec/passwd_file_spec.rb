@@ -3,17 +3,17 @@ require File.join(File.dirname(__FILE__),"spec_helper.rb")
 require 'rpasswd/passwd_file'
 require 'tempfile'
 
-describe Rpasswd::PasswdFile do
+describe HTAuth::PasswdFile do
 
     before(:each) do
         @tf             = Tempfile.new("rpasswrd-passwd")
         @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
         @tf.close       
-        @passwd_file    = Rpasswd::PasswdFile.new(@tf.path)
+        @passwd_file    = HTAuth::PasswdFile.new(@tf.path)
         
         @tf2                = Tempfile.new("rpasswrd-passwd-empty")
         @tf2.close
-        @empty_passwd_file  = Rpasswd::PasswdFile.new(@tf2.path)
+        @empty_passwd_file  = HTAuth::PasswdFile.new(@tf2.path)
     end
 
     after(:each) do
@@ -41,12 +41,12 @@ describe Rpasswd::PasswdFile do
     end
 
     it "raises an error if an attempt is made to alter a non-existenet file" do
-        lambda { Rpasswd::PasswdFile.new("some-file") }.should raise_error(Rpasswd::FileAccessError)
+        lambda { HTAuth::PasswdFile.new("some-file") }.should raise_error(HTAuth::FileAccessError)
     end
 
     # this test will only work on systems that have /etc/ssh_host_rsa_key 
     it "raises an error if an attempt is made to open a file where no permissions are granted" do
-        lambda { Rpasswd::PasswdFile.new("/etc/ssh_host_rsa_key") }.should raise_error(Rpasswd::FileAccessError)
+        lambda { HTAuth::PasswdFile.new("/etc/ssh_host_rsa_key") }.should raise_error(HTAuth::FileAccessError)
     end
 
     it "deletes an entry" do
@@ -55,7 +55,7 @@ describe Rpasswd::PasswdFile do
     end
 
     it "is usable in a ruby manner and yeilds itself when opened" do
-        Rpasswd::PasswdFile.open(@tf.path) do |pf|
+        HTAuth::PasswdFile.open(@tf.path) do |pf|
             pf.add_or_update("alice", "a new secret", "md5")
             pf.delete('bob')
         end

@@ -1,4 +1,4 @@
-require 'rpasswd/algorithm'
+require 'htauth/algorithm'
 
 module HTAuth
 

@@ -9,15 +9,15 @@ namespace :test do
 
     Spec::Rake::SpecTask.new do |r| 
         r.rcov      = true
-        r.rcov_dir  = Rpasswd::SPEC.local_coverage_dir
-        r.libs      = Rpasswd::SPEC.require_paths
+        r.rcov_dir  = HTAuth::SPEC.local_coverage_dir
+        r.libs      = HTAuth::SPEC.require_paths
         r.spec_opts = %w(--format specdoc --color)
     end
 
     if HAVE_HEEL then
         desc "View the code coverage report locally"
         task :coverage => [:spec] do
-            sh "heel --root #{Rpasswd::SPEC.local_coverage_dir}"
+            sh "heel --root #{HTAuth::SPEC.local_coverage_dir}"
         end 
     end
     

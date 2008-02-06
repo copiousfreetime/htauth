@@ -1,4 +1,3 @@
-require 'rpasswd'
 require 'stringio'
 require 'tempfile'
 

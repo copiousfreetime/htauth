@@ -61,7 +61,7 @@ module HTAuth
         end
     end
 end
-require 'rpasswd/md5'
-require 'rpasswd/sha1'
-require 'rpasswd/crypt'
-require 'rpasswd/plaintext'
+require 'htauth/md5'
+require 'htauth/sha1'
+require 'htauth/crypt'
+require 'htauth/plaintext'

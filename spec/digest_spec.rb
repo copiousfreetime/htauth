@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__),"spec_helper.rb")
 require 'rpasswd/digest'
 require 'tempfile'
 
-describe Rpasswd::Digest do
+describe HTAuth::Digest do
 
     before(:each) do
 
@@ -10,7 +10,7 @@ describe Rpasswd::Digest do
         @tf = Tempfile.new("rpasswrd-digest-test")
         @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
         @tf.close       
-        @rdigest = Rpasswd::Digest.new
+        @rdigest = HTAuth::Digest.new
        
         # new file
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
@@ -51,7 +51,7 @@ describe Rpasswd::Digest do
             @rdigest.run([ "--version" ])
         rescue SystemExit => se
             se.status.should == 1
-            @stdout.string.should =~ /version #{Rpasswd::VERSION}/
+            @stdout.string.should =~ /version #{HTAuth::VERSION}/
         end
     end
     
