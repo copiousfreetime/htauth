@@ -111,7 +111,7 @@ EOB
                 raise ::OptionParser::ParseError, "Unable to send to stdout AND create a new file" if options.send_to_stdout and (options.file_mode == File::CREATE)
                 raise ::OptionParser::ParseError, "a username is needed" if options.send_to_stdout and argv.size < 1
                 raise ::OptionParser::ParseError, "a username and password are needed" if options.send_to_stdout and options.batch_mode  and ( argv.size < 2 ) 
-                raise ::OptionParser::ParseError, "a passwordfile, username and password are needed " if  options.batch_mode and ( argv.size < 3 )
+                raise ::OptionParser::ParseError, "a passwordfile, username and password are needed " if not options.send_to_stdout and options.batch_mode and ( argv.size < 3 )
                 raise ::OptionParser::ParseError, "a passwordfile and username are needed" if argv.size < 2
 
                 options.passwdfile = argv.shift unless options.send_to_stdout

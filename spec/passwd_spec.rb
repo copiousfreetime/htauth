@@ -159,6 +159,7 @@ describe HTAuth::Passwd do
             @htauth.run(["-n", "-p", "-b", "bradley", "a bad password"])
         rescue SystemExit => se
             se.status.should == 0
+            STDOUT.puts @stdout.string
             @stdout.string.strip.should == "bradley:a bad password"
         end
     end
@@ -170,7 +171,7 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ "-c", "/etc/you-cannot-create-me", "alice"])
         rescue SystemExit => se
-            @stderr.string.should =~ %r{Could not open password file /etc/you-cannot-create-me}m
+            @stderr.string.should =~ %r{Password file failure \(/etc/you-cannot-create-me\)}m
             se.status.should == 1
         end
     end
