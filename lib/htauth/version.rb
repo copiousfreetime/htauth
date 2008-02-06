@@ -3,7 +3,7 @@ module HTAuth
     class Version
         MAJOR   = 1
         MINOR   = 0
-        BUILD   = 0
+        BUILD   = 1
 
         class << self
             def to_a
