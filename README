@@ -1,38 +1,38 @@
-== rpasswd
+== HTAuth
 
-* Homepage[http://copiousfreetime.rubyforge.org/rpasswd]
+* Homepage[http://copiousfreetime.rubyforge.org/htauth]
 * {Rubyforge Project}[http://rubyforge.org/projects/copiousfreetime/]
 * email jeremy at hinegardner dot org
 
 == DESCRIPTION
 
-Rpasswd is a pure ruby replacement for the Apache support programs +htdigest+
+HTAuth is a pure ruby replacement for the Apache support programs +htdigest+
 and +htpasswd+ and a ruby library to manipulate the files that +htdigest+ and
 +htpasswd+ control.
 
 == FEATURES 
 
-Rpassword provides to drop in commands *rdigest* and *rpasswd* that can
-manipulate the digest and passwd files in the same manner as Apache's original
-commands.  
+Rpassword provides to drop in commands *htdigest-ruby* and *htpasswd-ruby* that
+can manipulate the digest and passwd files in the same manner as Apache's
+original commands.  
 
-*rdigest* and *rpasswd* are command line compatible with *htdigest* and
-*htpasswd*.  They have the same exact same command line options as the
-originals, and have some extra sugar.
+*htdigest-ruby* and *htpasswd-ruby* are command line compatible with *htdigest*
+and *htpasswd*.  They support the same exact same command line options as the
+originals, and have some extras.
 
-Additionally, you can access all the functionality of *rdigest* and *rpasswd*
-through an API.
+Additionally, you can access all the functionality of *htdigest-ruby* and
+*htpasswd-ruby* through an API.
 
 == SYNOPSIS
 
-* rpasswd command line application
+* htpasswd-ruby command line application
 
     Usage: 
-    rpasswd [-cmdpsD] passwordfile username
-    rpasswd -b[cmdpsD] passwordfile username password
+    htpasswd-ruby [-cmdpsD] passwordfile username
+    htpasswd-ruby -b[cmdpsD] passwordfile username password
 
-    rpasswd -n[mdps] username
-    rpasswd -nb[mdps] username password
+    htpasswd-ruby -n[mdps] username
+    htpasswd-ruby -nb[mdps] username password
 
     -b, --batch                      Batch mode, get the password from the command line, rather than prompt
     -c, --create                     Create a new file; this overwrites an existing file.
@@ -45,9 +45,9 @@ through an API.
     -s, --sha1                       Force SHA encryption of the password.
     -v, --version                    Show version info.
 
-* rdigest command line application
+* htdigest-ruby command line application
 
-    Usage: rdigest [options] passwordfile realm username
+    Usage: htdigest-ruby [options] passwordfile realm username
     -c, --create                     Create a new digest password file; this overwrites an existing file.
     -D, --delete                     Delete the specified user.
     -h, --help                       Display this help.
@@ -55,12 +55,12 @@ through an API.
 
 * API Usage
 
-   Rpasswd::DigestFile.new("some.htdigest") do |df|
+   HTAuth::DigestFile.new("some.htdigest") do |df|
       df.add_or_update('someuser', 'myrealm', 'a password')
       df.delete('someolduser', 'myotherrealm')
    end
 
-   Rpasswd::PasswdFile.new("some.htpasswd", Rpasswd::File::CREATE) do |pf|
+   HTAuth::PasswdFile.new("some.htpasswd", HTAuth::File::CREATE) do |pf|
       pf.add('someuser', 'a password', 'md5')
       pf.add('someotheruser', 'a different password', 'sha1')
    end
