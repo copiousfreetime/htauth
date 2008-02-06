@@ -9,4 +9,4 @@ rescue LoadError
     retry
 end
 
-Rpasswd::Digest.new.run(ARGV)
+HTAuth::Digest.new.run(ARGV)

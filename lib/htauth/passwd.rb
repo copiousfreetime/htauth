@@ -109,9 +109,15 @@ EOB
                 show_help if options.show_help 
                 raise ::OptionParser::ParseError, "Unable to send to stdout AND create a new file" if options.send_to_stdout and (options.file_mode == File::CREATE)
 
+                raise ::OptionParser::ParseError, "a username is needed" if options.send_to_stdout and argv.size < 1
+                raise ::OptionParser::ParseError, "a username and password are needed" if options.send_to_stdout and options.batch_mode  and ( argv.size < 2 ) 
+                raise ::OptionParser::ParseError, "a passwordfile, username and password are needed " if  options.batch_mode and ( argv.size < 3 )
+                raise ::OptionParser::ParseError, "a passwordfile and username are needed" if argv.size < 2
+
                 options.passwdfile = argv.shift unless options.send_to_stdout
                 options.username   = argv.shift
                 options.password   = argv.shift if options.batch_mode
+
             rescue ::OptionParser::ParseError => pe
                 $stderr.puts "ERROR: #{option_parser.program_name} - #{pe}"
                 $stderr.puts "Try `#{option_parser.program_name} --help` for more information"
@@ -148,9 +154,8 @@ EOB
                 passwd_file.save! 
 
             rescue HTAuth::FileAccessError => fae
-                msg = "Could not open password file #{options.passwdfile} "
+                msg = "Password file failure (#{options.passwdfile}) "
                 $stderr.puts "#{msg}: #{fae.message}"
-                $stderr.puts fae.backtrace.join("\n")
                 exit 1
             rescue HTAuth::PasswordError => pe
                 $stderr.puts "#{pe.message}"
