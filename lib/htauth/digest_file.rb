@@ -71,10 +71,6 @@ module HTAuth
             ENTRY_KLASS
         end
 
-        def file_type
-            "digest"
-        end
-
         private
 
         def internal_record(username, realm)

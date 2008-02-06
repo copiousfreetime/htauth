@@ -73,10 +73,6 @@ module HTAuth
             ENTRY_KLASS
         end
 
-        def file_type
-            "passwd"
-        end
-
         private
 
         def internal_record(username)
