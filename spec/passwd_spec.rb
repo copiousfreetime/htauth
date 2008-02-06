@@ -159,7 +159,6 @@ describe HTAuth::Passwd do
             @htauth.run(["-n", "-p", "-b", "bradley", "a bad password"])
         rescue SystemExit => se
             se.status.should == 0
-            STDOUT.puts @stdout.string
             @stdout.string.strip.should == "bradley:a bad password"
         end
     end
