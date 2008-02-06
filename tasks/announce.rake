@@ -5,7 +5,7 @@
 #-----------------------------------------------------------------------
 def changes
     change_file = File.expand_path(File.join(HTAuth::ROOT_DIR,"CHANGES"))
-    sections    = File.read(change_file).split(/^(?===)/)
+    sections    = File.read(change_file).split(/^(?=== )/)
 end
 
 def last_changeset
@@ -13,6 +13,7 @@ def last_changeset
 end
 
 def announcement
+    puts changes.size
     urls    = "  #{HTAuth::SPEC.homepage}"
     subject = "#{HTAuth::SPEC.name} #{HTAuth::VERSION} Released"
     title   = "#{HTAuth::SPEC.name} version #{HTAuth::VERSION} has been released."

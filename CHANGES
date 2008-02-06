@@ -1,4 +1,12 @@
-= rpasswd Changelog
-=== Version 1.0.0
+= HTAuth
+
+== Version 1.0.0
+
+=== Changes
 
 * Initial public release
+
+=== Release Notes
+
+* Look at 'htpasswd-ruby' and 'htdigest-ruby' to get started.
+
