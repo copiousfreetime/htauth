@@ -20,15 +20,15 @@ module Rpasswd
             if @options.nil? then
                 @options                = ::OpenStruct.new
                 @options.batch_mode     = false
-                @options.file_mode      = PasswdFile::ALTER
+                @options.file_mode      = File::ALTER
                 @options.passwdfile     = nil
-                @options.algorithm      = Algorithm::DEFAULT
-
+                @options.algorithm      = Algorithm::EXISTING
+                @options.send_to_stdout = false
                 @options.show_version   = false
                 @options.show_help      = false
-                @options.realm          = nil
                 @options.username       = nil
                 @options.delete_entry   = false
+                @options.password       = ""
             end
             @options
         end
@@ -52,7 +52,7 @@ EOB
                     end
 
                     op.on("-c", "--create", "Create a new file; this overwrites an existing file.") do |c|
-                        options.file_mode = PasswdFile::CREATE
+                        options.file_mode = Rpasswd::File::CREATE
                     end
                     
                     op.on("-d", "--crypt", "Force CRYPT encryption of the password (default).") do |c|
@@ -72,7 +72,8 @@ EOB
                     end
 
                     op.on("-n", "--stdout", "Do not update the file; Display the results on stdout instead.") do |n|
-                        options.passwdfile = $stdout
+                        options.send_to_stdout = true
+                        options.passwdfile     = Rpasswd::File::STDOUT_FLAG
                     end
                     
                     op.on("-p", "--plaintext", "Do not encrypt the password (plaintext).") do |p|
@@ -105,11 +106,12 @@ EOB
             begin
                 option_parser.parse!(argv)
                 show_version if options.show_version
-                show_help if options.show_help or argv.size < 3
+                show_help if options.show_help 
+                raise ::OptionParser::ParseError, "Unable to send to stdout AND create a new file" if options.send_to_stdout and (options.file_mode == File::CREATE)
 
-                options.passwdfile = argv.shift
-                options.realm      = argv.shift
+                options.passwdfile = argv.shift unless options.send_to_stdout
                 options.username   = argv.shift
+                options.password   = argv.shift if options.batch_mode
             rescue ::OptionParser::ParseError => pe
                 $stderr.puts "ERROR: #{option_parser.program_name} - #{pe}"
                 $stderr.puts "Try `#{option_parser.program_name} --help` for more information"
@@ -123,25 +125,27 @@ EOB
                 passwd_file = PasswdFile.new(options.passwdfile, options.file_mode)
 
                 if options.delete_entry then
-                    passwd_file.delete(options.username, options.realm)
+                    passwd_file.delete(options.username)
                 else
-                    # initialize here so that if $stdin is overwritten it gest picked up
-                    hl = ::HighLine.new
+                    unless options.batch_mode 
+                        # initialize here so that if $stdin is overwritten it gest picked up
+                        hl = ::HighLine.new
 
-                    action = passwd_file.has_entry?(options.username, options.realm) ? "Changing" : "Adding"
+                        action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
 
-                    $stdout.puts "#{action} password for #{options.username} in realm #{options.realm}."
+                        $stdout.puts "#{action} password for #{options.username}."
 
-                    pw_in       = hl.ask("        New password: ") { |q| q.echo = '*' } 
-                    raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
-                    
-                    pw_validate = hl.ask("Re-type new password: ") { |q| q.echo = '*' }
-                    raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
-
-                    passwd_file.add_or_update(options.username, options.realm, pw_in)
+                        pw_in       = hl.ask("        New password: ") { |q| q.echo = '*' } 
+                        raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
+                        
+                        pw_validate = hl.ask("Re-type new password: ") { |q| q.echo = '*' }
+                        raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
+                        options.password = pw_in
+                    end
+                    passwd_file.add_or_update(options.username, options.password, options.algorithm)
                 end
 
-                passwd_file.save!
+                passwd_file.save! 
 
             rescue Rpasswd::FileAccessError => fae
                 msg = "Could not open password file #{options.passwdfile} "

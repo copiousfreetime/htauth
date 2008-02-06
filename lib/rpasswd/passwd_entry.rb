@@ -43,6 +43,7 @@ module Rpasswd
 
         def initialize(user, password = "", alg = Algorithm::DEFAULT, alg_params = {} ) 
             @user      = user
+            alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
             @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
             @digest    = algorithm.encode(password)
         end

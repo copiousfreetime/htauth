@@ -5,6 +5,7 @@ module Rpasswd
     class File
         ALTER  = "alter"
         CREATE = "create"
+        STDOUT_FLAG = "-"
 
         attr_reader :filename
         attr_reader :file
@@ -20,14 +21,14 @@ module Rpasswd
             
             raise FileAccessError, "Invalid mode #{mode}" unless [ ALTER, CREATE ].include?(mode)
 
-            if mode == ALTER and not ::File.exist?(filename) then
+            if (filename != STDOUT_FLAG) and (mode == ALTER) and (not ::File.exist?(filename)) then
                 raise FileAccessError, "Could not open passwd file #{filename} for reading." 
             end
 
             begin
                 @entries  = {}
                 @lines    = []
-                load_entries if @mode == ALTER
+                load_entries if (@mode == ALTER) and (filename != STDOUT_FLAG)
             rescue => e
                 raise FileAccessError, e.message
             end
@@ -36,8 +37,13 @@ module Rpasswd
         # update the original file with the new contents
         def save!
             begin
-                ::File.open(@filename,"w") do |f|
-                    f.write(contents)
+                case filename
+                when STDOUT_FLAG
+                    $stdout.write(contents)
+                else
+                    ::File.open(@filename,"w") do |f|
+                        f.write(contents)
+                    end
                 end
             rescue => e
                 raise FileAccessError, "Error saving file #{@filename} : #{e.message}"
