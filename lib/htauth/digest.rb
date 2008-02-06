@@ -1,11 +1,11 @@
-require 'rpasswd/digest_file'
+require 'htauth/digest_file'
 require 'ostruct'
 require 'optparse'
 
 require 'rubygems'
 require 'highline'
 
-module Rpasswd
+module HTAuth
     class Digest
 
         MAX_PASSWD_LENGTH = 255
@@ -60,7 +60,7 @@ module Rpasswd
         end
 
         def show_version
-            $stdout.puts "#{option_parser.program_name}: version #{Rpasswd::VERSION}"
+            $stdout.puts "#{option_parser.program_name}: version #{HTAuth::VERSION}"
             exit 1
         end
 
@@ -106,15 +106,15 @@ module Rpasswd
 
                 digest_file.save!
 
-            rescue Rpasswd::FileAccessError => fae
+            rescue HTAuth::FileAccessError => fae
                 msg = "Could not open password file #{options.passwdfile} "
                 $stderr.puts "#{msg}: #{fae.message}"
                 $stderr.puts fae.backtrace.join("\n")
                 exit 1
-            rescue Rpasswd::PasswordError => pe
+            rescue HTAuth::PasswordError => pe
                 $stderr.puts "#{pe.message}"
                 exit 1
-            rescue Rpasswd::DigestFileError => fe
+            rescue HTAuth::DigestFileError => fe
                 $stderr.puts "#{fe.message}"
                 exit 1
             rescue SignalException => se

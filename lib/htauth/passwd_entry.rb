@@ -1,7 +1,7 @@
 
-require 'rpasswd/entry'
+require 'htauth/entry'
 
-module Rpasswd
+module HTAuth
     class InvalidPasswdEntry < StandardError ; end
 
     # A single record in an htdigest file.  

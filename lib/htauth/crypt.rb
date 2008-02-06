@@ -1,6 +1,6 @@
 require 'rpasswd/algorithm'
 
-module Rpasswd
+module HTAuth
 
     # The basic crypt algorithm
     class Crypt < Algorithm

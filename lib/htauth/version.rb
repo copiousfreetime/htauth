@@ -1,4 +1,4 @@
-module Rpasswd
+module HTAuth
     class Version
         MAJOR   = 1
         MINOR   = 0

@@ -1,7 +1,7 @@
-require 'rpasswd/algorithm'
+require 'htauth/algorithm'
 require 'digest/md5'
 
-module Rpasswd
+module HTAuth
 
     # an implementation of the MD5 based encoding algorithm 
     # as used in the apache htpasswd -m option

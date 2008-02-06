@@ -2,13 +2,13 @@ require 'rpasswd'
 require 'stringio'
 require 'tempfile'
 
-require 'rpasswd/passwd_entry'
+require 'htauth/passwd_entry'
 
-module Rpasswd
+module HTAuth
     class PasswdFileError < StandardError ; end
-    class PasswdFile < Rpasswd::File
+    class PasswdFile < HTAuth::File
 
-        ENTRY_KLASS = Rpasswd::PasswdEntry
+        ENTRY_KLASS = HTAuth::PasswdEntry
 
         # does the entry the the specified username and realm exist in the file
         def has_entry?(username)

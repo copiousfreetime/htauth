@@ -1,6 +1,6 @@
 require 'stringio'
 
-module Rpasswd
+module HTAuth
     class FileAccessError < StandardError ; end
     class File
         ALTER  = "alter"

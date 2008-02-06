@@ -1,6 +1,6 @@
 require 'digest/md5'
 
-module Rpasswd
+module HTAuth
     class InvalidDigestEntry < StandardError ; end
 
     # A single record in an htdigest file.  

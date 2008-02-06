@@ -1,8 +1,8 @@
-require 'rpasswd/algorithm'
+require 'htauth/algorithm'
 require 'digest/sha1'
 require 'base64'
 
-module Rpasswd
+module HTAuth
 
     # an implementation of the SHA based encoding algorithm 
     # as used in the apache htpasswd -s option

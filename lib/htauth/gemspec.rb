@@ -4,14 +4,14 @@ require 'rpasswd/version'
 require 'rake'
 
 # The Gem Specification plus some extras for rpasswd.
-module Rpasswd
-    SPEC = Rpasswd::Specification.new do |spec|
-                spec.name               = "rpasswd"
-                spec.version            = Rpasswd::VERSION
-                spec.rubyforge_project  = "rpasswd"
+module HTAuth
+    SPEC = HTAuth::Specification.new do |spec|
+                spec.name               = "htauth"
+                spec.version            = HTAuth::VERSION
+                spec.rubyforge_project  = "copiousfreetime"
                 spec.author             = "Jeremy Hinegardner"
                 spec.email              = "jeremy@hinegardner.org"
-                spec.homepage           = "http://rpasswd.rubyforge.org/"
+                spec.homepage           = "http://copiousfreetime.rubyforge.org/htauth"
 
                 spec.summary            = "A Summary of rpasswd."
                 spec.description        = <<-DESC
@@ -23,13 +23,9 @@ module Rpasswd
                 spec.rdoc_main          = "README"
                 spec.rdoc_options       = [ "--line-numbers" , "--inline-source" ]
 
-                spec.test_files         = FileList["spec/**/*.rb", "test/**/*.rb"]
+                spec.test_files         = FileList["spec/**/*"]
                 spec.files              = spec.test_files + spec.extra_rdoc_files + 
-                                          FileList["lib/**/*.rb", "resources/**/*"]
-                
-
-                # add dependencies
-                # spec.add_dependency("somegem", ">= 0.4.2")
+                                          FileList["lib/**/*.rb"]
                 
                 spec.platform           = Gem::Platform::RUBY
 

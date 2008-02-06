@@ -1,7 +1,6 @@
+require 'htauth/algorithm'
 
-require 'rpasswd/algorithm'
-
-module Rpasswd
+module HTAuth
 
     # the plaintext algorithm, which does absolutly  nothing
     class Plaintext < Algorithm

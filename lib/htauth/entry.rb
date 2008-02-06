@@ -1,4 +1,4 @@
-module Rpasswd
+module HTAuth
 
     # base class from which all entries are derived
     class Entry

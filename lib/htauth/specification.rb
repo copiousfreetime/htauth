@@ -2,9 +2,9 @@ require 'rubygems'
 require 'rubygems/specification'
 require 'rake'
 
-module Rpasswd 
+module HTAuth 
     # Add some additional items to Gem::Specification
-    # A Rpasswd::Specification adds additional pieces of information the
+    # A HTAuth::Specification adds additional pieces of information the
     # typical gem specification
     class Specification 
 

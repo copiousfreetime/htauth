@@ -1,11 +1,11 @@
-require 'rpasswd/passwd_file'
+require 'htauth/passwd_file'
 require 'ostruct'
 require 'optparse'
 
 require 'rubygems'
 require 'highline'
 
-module Rpasswd
+module HTAuth
     class Passwd
 
         MAX_PASSWD_LENGTH = 255
@@ -52,7 +52,7 @@ EOB
                     end
 
                     op.on("-c", "--create", "Create a new file; this overwrites an existing file.") do |c|
-                        options.file_mode = Rpasswd::File::CREATE
+                        options.file_mode = HTAuth::File::CREATE
                     end
                     
                     op.on("-d", "--crypt", "Force CRYPT encryption of the password (default).") do |c|
@@ -73,7 +73,7 @@ EOB
 
                     op.on("-n", "--stdout", "Do not update the file; Display the results on stdout instead.") do |n|
                         options.send_to_stdout = true
-                        options.passwdfile     = Rpasswd::File::STDOUT_FLAG
+                        options.passwdfile     = HTAuth::File::STDOUT_FLAG
                     end
                     
                     op.on("-p", "--plaintext", "Do not encrypt the password (plaintext).") do |p|
@@ -98,7 +98,7 @@ EOB
         end
 
         def show_version
-            $stdout.puts "#{option_parser.program_name}: version #{Rpasswd::VERSION}"
+            $stdout.puts "#{option_parser.program_name}: version #{HTAuth::VERSION}"
             exit 1
         end
 
@@ -147,15 +147,15 @@ EOB
 
                 passwd_file.save! 
 
-            rescue Rpasswd::FileAccessError => fae
+            rescue HTAuth::FileAccessError => fae
                 msg = "Could not open password file #{options.passwdfile} "
                 $stderr.puts "#{msg}: #{fae.message}"
                 $stderr.puts fae.backtrace.join("\n")
                 exit 1
-            rescue Rpasswd::PasswordError => pe
+            rescue HTAuth::PasswordError => pe
                 $stderr.puts "#{pe.message}"
                 exit 1
-            rescue Rpasswd::PasswdFileError => fe
+            rescue HTAuth::PasswdFileError => fe
                 $stderr.puts "#{fe.message}"
                 exit 1
             rescue SignalException => se
