@@ -1,6 +1,7 @@
 require 'stringio'
 require 'tempfile'
 
+require 'htauth/file'
 require 'htauth/passwd_entry'
 
 module HTAuth
