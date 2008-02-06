@@ -11,6 +11,8 @@ module HTAuth
         attr_reader :file
 
         class << self
+            # open a file yielding the the file object for use.  The file is saved when 
+            # the block exists, if the file has had alterations made.
             def open(filename, mode = ALTER) 
                 f = self.new(filename, mode)
                 if block_given?
@@ -24,11 +26,10 @@ module HTAuth
             end
         end
 
-        # Create or Alter a password file file.
+        # Create or Alter a password file.
         #
-        # A file can only be created if the CREATE mode is sent in and the file does not already exist.
-        # file is altered, only if it already exists and ALTER is the mode.  
-        # Altering a non-existent file is an error, and Creating an existing file is an error.
+        # Altering a non-existent file is an error.  Creating an existing file results in
+        # a truncation and overwrite of the existing file.
         def initialize(filename, mode = ALTER)
             @filename   = filename
             @mode       = mode
@@ -49,10 +50,12 @@ module HTAuth
             end
         end
 
+        # return whether or not an alteration to the file has happened
         def dirty?
             @dirty
         end
 
+        # mark the file as dirty
         def dirty!
             @dirty = true
         end

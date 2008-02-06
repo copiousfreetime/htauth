@@ -5,6 +5,8 @@ require 'htauth/passwd_entry'
 
 module HTAuth
     class PasswdFileError < StandardError ; end
+
+    # PasswdFile provides API style access to an +htpasswd+ produced file
     class PasswdFile < HTAuth::File
 
         ENTRY_KLASS = HTAuth::PasswdEntry
