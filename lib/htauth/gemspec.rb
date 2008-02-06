@@ -42,6 +42,10 @@ module HTAuth
 
                 spec.remote_site_dir    = "#{spec.name}/"
 
+                spec.post_install_message = <<EOM
+Try out 'htpasswd-ruby' or 'htdigest-ruby' to get started.
+EOM
+
            end
 end
 
