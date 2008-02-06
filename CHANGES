@@ -1,6 +1,18 @@
 = HTAuth
 
-== Version 1.0.0
+== Version 1.0.1 (2008-02-06)
+
+=== Changes
+
+* Bugs
+  - fix require dependency chain
+  - fix gem dependency on rake
+
+=== Release Notes
+
+* Look at 'htpasswd-ruby' and 'htdigest-ruby' to get started.
+
+== Version 1.0.0 (2008-02-05)
 
 === Changes
 
