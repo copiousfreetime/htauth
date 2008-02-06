@@ -10,6 +10,20 @@ module Rpasswd
         attr_reader :filename
         attr_reader :file
 
+        class << self
+            def open(filename, mode = ALTER) 
+                f = self.new(filename, mode)
+                if block_given?
+                    begin
+                        yield f
+                    ensure
+                        f.save! if f and f.dirty?
+                    end
+                end
+                return f
+            end
+        end
+
         # Create or Alter a password file file.
         #
         # A file can only be created if the CREATE mode is sent in and the file does not already exist.
@@ -17,7 +31,8 @@ module Rpasswd
         # Altering a non-existent file is an error, and Creating an existing file is an error.
         def initialize(filename, mode = ALTER)
             @filename   = filename
-            @mode       =  mode
+            @mode       = mode
+            @dirty      = false
             
             raise FileAccessError, "Invalid mode #{mode}" unless [ ALTER, CREATE ].include?(mode)
 
@@ -34,6 +49,14 @@ module Rpasswd
             end
         end
 
+        def dirty?
+            @dirty
+        end
+
+        def dirty!
+            @dirty = true
+        end
+
         # update the original file with the new contents
         def save!
             begin
@@ -45,6 +68,7 @@ module Rpasswd
                         f.write(contents)
                     end
                 end
+                @dirty = false
             rescue => e
                 raise FileAccessError, "Error saving file #{@filename} : #{e.message}"
             end

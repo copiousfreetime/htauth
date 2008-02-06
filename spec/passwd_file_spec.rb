@@ -53,4 +53,15 @@ describe Rpasswd::PasswdFile do
         @passwd_file.delete("bob")
         @passwd_file.contents.should == IO.read(PASSWD_DELETE_TEST_FILE)
     end
+
+    it "is usable in a ruby manner and yeilds itself when opened" do
+        Rpasswd::PasswdFile.open(@tf.path) do |pf|
+            pf.add_or_update("alice", "a new secret", "md5")
+            pf.delete('bob')
+        end
+        lines = IO.readlines(@tf.path)
+        lines.size.should == 1
+        lines.first.split(':').first.should == "alice"
+        lines.first.split(':').last.should =~ /\$apr1\$/
+    end
 end

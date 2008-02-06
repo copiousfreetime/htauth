@@ -23,6 +23,7 @@ module Rpasswd
                 line_index = ir['line_index']
                 @entries.delete(ir['entry'].key)
                 @lines[line_index] = nil
+                dirty!
             end
             nil
         end
@@ -43,6 +44,7 @@ module Rpasswd
             new_index = @lines.size
             @lines << new_entry.to_s
             @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
+            dirty!
             return nil
         end
 
@@ -53,6 +55,7 @@ module Rpasswd
             ir['entry'].algorithm = algorithm
             ir['entry'].password = password
             @lines[ir['line_index']] = ir['entry'].to_s
+            dirty!
             return nil
         end
 

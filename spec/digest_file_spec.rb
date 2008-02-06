@@ -53,4 +53,14 @@ describe Rpasswd::DigestFile do
         @digest_file.delete("alice", "rpasswd")
         @digest_file.contents.should == IO.read(DIGEST_DELETE_TEST_FILE)
     end
+    
+    it "is usable in a ruby manner and yeilds itself when opened" do
+        Rpasswd::DigestFile.open(@tf.path) do |pf|
+            pf.add_or_update("alice", "rpasswd", "a secret")
+            pf.delete('bob', 'rpasswd')
+        end
+        lines = IO.readlines(@tf.path)
+        lines.size.should == 1
+        lines.first.strip.should == "alice:rpasswd:a938ab78ca084b15c33bff7c36f85559"
+    end
 end
