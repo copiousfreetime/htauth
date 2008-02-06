@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'rubygems/specification'
 require 'rake'
+require 'htauth'
 
 module HTAuth 
     # Add some additional items to Gem::Specification

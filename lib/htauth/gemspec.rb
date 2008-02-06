@@ -30,7 +30,8 @@ module HTAuth
                 spec.executables        << "htpasswd-ruby" 
                 spec.files              = spec.test_files + spec.extra_rdoc_files + 
                                           FileList["lib/**/*.rb"]
-               
+              
+                spec.add_dependency("rake")
                 spec.add_dependency("highline", ">= 1.4.0")
 
                 spec.platform           = Gem::Platform::RUBY

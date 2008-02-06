@@ -1,3 +1,4 @@
+require 'htauth'
 module HTAuth
     class Version
         MAJOR   = 1

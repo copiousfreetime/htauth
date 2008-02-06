@@ -1,4 +1,5 @@
 require 'stringio'
+require 'htauth'
 
 module HTAuth
     class FileAccessError < StandardError ; end

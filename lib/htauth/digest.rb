@@ -1,4 +1,6 @@
+require 'htauth'
 require 'htauth/digest_file'
+
 require 'ostruct'
 require 'optparse'
 

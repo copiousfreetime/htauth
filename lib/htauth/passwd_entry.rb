@@ -1,5 +1,5 @@
-
 require 'htauth/entry'
+require 'htauth/algorithm'
 
 module HTAuth
     class InvalidPasswdEntry < StandardError ; end

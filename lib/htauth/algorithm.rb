@@ -1,3 +1,4 @@
+require 'htauth'
 
 module HTAuth
     class InvalidAlgorithmError < StandardError ; end

@@ -1,4 +1,6 @@
+require 'htauth'
 require 'htauth/passwd_file'
+
 require 'ostruct'
 require 'optparse'
 
