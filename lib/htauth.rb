@@ -1,4 +1,4 @@
-module Rpasswd
+module HTAuth
     
     ROOT_DIR        = ::File.expand_path(::File.join(::File.dirname(__FILE__),".."))
     LIB_DIR         = ::File.join(ROOT_DIR,"lib").freeze
@@ -24,4 +24,4 @@ module Rpasswd
     class PasswordError < StandardError ; end
 end
 
-Rpasswd.require_all_libs_relative_to(__FILE__)
+HTAuth.require_all_libs_relative_to(__FILE__)
