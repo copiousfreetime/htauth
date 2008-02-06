@@ -20,10 +20,6 @@ module Rpasswd
             
             raise FileAccessError, "Invalid mode #{mode}" unless [ ALTER, CREATE ].include?(mode)
 
-            if ::File.exist?(filename) and mode == CREATE then
-                raise FileAccessError, "Attempted to create a new #{file_type} file #{filename} but it already exists."
-            end
-
             if mode == ALTER and not ::File.exist?(filename) then
                 raise FileAccessError, "Could not open passwd file #{filename} for reading." 
             end

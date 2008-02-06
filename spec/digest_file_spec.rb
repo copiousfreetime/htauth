@@ -40,10 +40,6 @@ describe Rpasswd::DigestFile do
         @digest_file.fetch("alice", "rpasswd").to_s.should == "alice:rpasswd:a938ab78ca084b15c33bff7c36f85559"
     end
 
-    it "raises an error if an attempt is used to create an already existing file" do
-        lambda { Rpasswd::DigestFile.new(@tf.path, Rpasswd::DigestFile::CREATE) }.should raise_error(Rpasswd::FileAccessError)
-    end
-
     it "raises an error if an attempt is made to alter a non-existenet file" do
         lambda { Rpasswd::DigestFile.new("some-file") }.should raise_error(Rpasswd::FileAccessError)
     end

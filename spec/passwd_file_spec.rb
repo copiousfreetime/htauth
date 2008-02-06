@@ -40,10 +40,6 @@ describe Rpasswd::PasswdFile do
         @passwd_file.fetch("alice").to_s.should == "alice:$apr1$DghnA...$CsPcgerfsI/Ryy0AOAJtb0"
     end
 
-    it "raises an error if an attempt is used to create an already existing file" do
-        lambda { Rpasswd::PasswdFile.new(@tf.path, Rpasswd::PasswdFile::CREATE) }.should raise_error(Rpasswd::FileAccessError)
-    end
-
     it "raises an error if an attempt is made to alter a non-existenet file" do
         lambda { Rpasswd::PasswdFile.new("some-file") }.should raise_error(Rpasswd::FileAccessError)
     end
