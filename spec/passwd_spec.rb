@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
-require 'rpasswd/passwd'
+require 'htauth/passwd'
 require 'tempfile'
 
 describe HTAuth::Passwd do
@@ -10,7 +10,7 @@ describe HTAuth::Passwd do
         @tf = Tempfile.new("rpasswrd-passwd-test")
         @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
         @tf.close       
-        @rpasswd = HTAuth::Passwd.new
+        @htauth = HTAuth::Passwd.new
        
         # new file
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
@@ -39,7 +39,7 @@ describe HTAuth::Passwd do
 
     it "displays help appropriately" do
         begin
-            @rpasswd.run([ "-h" ])
+            @htauth.run([ "-h" ])
         rescue SystemExit => se
             se.status.should == 1
             @stdout.string.should =~ /passwordfile username/m
@@ -48,7 +48,7 @@ describe HTAuth::Passwd do
 
     it "displays the version appropriately" do
         begin
-            @rpasswd.run([ "--version" ])
+            @htauth.run([ "--version" ])
         rescue SystemExit => se
             se.status.should == 1
             @stdout.string.should =~ /version #{HTAuth::VERSION}/
@@ -60,7 +60,7 @@ describe HTAuth::Passwd do
             @stdin.puts "a secret"
             @stdin.puts "a secret"
             @stdin.rewind
-            @rpasswd.run([ "-m", "-c", @new_file, "alice" ])
+            @htauth.run([ "-m", "-c", @new_file, "alice" ])
         rescue SystemExit => se
             se.status.should == 0
             l = IO.readlines(@new_file)
@@ -76,7 +76,7 @@ describe HTAuth::Passwd do
             @stdin.puts "b secret"
             @stdin.puts "b secret"
             @stdin.rewind
-            @rpasswd.run([ "-c", @tf.path, "bob"])
+            @htauth.run([ "-c", @tf.path, "bob"])
         rescue SystemExit => se
             se.status.should == 0
             after_lines = IO.readlines(@tf.path)
@@ -91,7 +91,7 @@ describe HTAuth::Passwd do
             @stdin.puts "c secret"
             @stdin.puts "c secret"
             @stdin.rewind
-            @rpasswd.run([ "-s", @tf.path, "charlie" ])
+            @htauth.run([ "-s", @tf.path, "charlie" ])
         rescue SystemExit => se
             se.status.should == 0
             after_lines = IO.readlines(@tf.path)
@@ -107,7 +107,7 @@ describe HTAuth::Passwd do
             @stdin.puts "a bad password"
             @stdin.puts "a bad password"
             @stdin.rewind
-            @rpasswd.run(["-c", "-p", @tf.path, "bradley"])
+            @htauth.run(["-c", "-p", @tf.path, "bradley"])
         rescue SystemExit => se
             se.status.should == 0
             IO.read(@tf.path).strip.should == "bradley:a bad password"
@@ -116,7 +116,7 @@ describe HTAuth::Passwd do
 
     it "has a batch mode for command line passwords" do
         begin
-            @rpasswd.run(["-c", "-p", "-b", @tf.path, "bradley", "a bad password"])
+            @htauth.run(["-c", "-p", "-b", @tf.path, "bradley", "a bad password"])
         rescue SystemExit => se
             se.status.should == 0
             IO.read(@tf.path).strip.should == "bradley:a bad password"
@@ -129,7 +129,7 @@ describe HTAuth::Passwd do
             @stdin.puts "a new secret"
             @stdin.puts "a new secret"
             @stdin.rewind
-            @rpasswd.run([ "-d", @tf.path, "alice" ])
+            @htauth.run([ "-d", @tf.path, "alice" ])
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
@@ -146,7 +146,7 @@ describe HTAuth::Passwd do
     
     it "deletes an entry in an existing file" do
         begin
-            @rpasswd.run([ "-D", @tf.path, "bob" ])
+            @htauth.run([ "-D", @tf.path, "bob" ])
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
@@ -156,7 +156,7 @@ describe HTAuth::Passwd do
 
     it "sends to STDOUT when the -n option is used" do
         begin
-            @rpasswd.run(["-n", "-p", "-b", "bradley", "a bad password"])
+            @htauth.run(["-n", "-p", "-b", "bradley", "a bad password"])
         rescue SystemExit => se
             se.status.should == 0
             @stdout.string.strip.should == "bradley:a bad password"
@@ -168,7 +168,7 @@ describe HTAuth::Passwd do
             @stdin.puts "a secret"
             @stdin.puts "a secret"
             @stdin.rewind
-            @rpasswd.run([ "-c", "/etc/you-cannot-create-me", "alice"])
+            @htauth.run([ "-c", "/etc/you-cannot-create-me", "alice"])
         rescue SystemExit => se
             @stderr.string.should =~ %r{Could not open password file /etc/you-cannot-create-me}m
             se.status.should == 1
@@ -180,7 +180,7 @@ describe HTAuth::Passwd do
             @stdin.puts "a secret"
             @stdin.puts "a bad secret"
             @stdin.rewind
-            @rpasswd.run([ @tf.path, "alice"])
+            @htauth.run([ @tf.path, "alice"])
         rescue SystemExit => se
             @stderr.string.should =~ /They don't match, sorry./m
             se.status.should == 1
@@ -189,7 +189,7 @@ describe HTAuth::Passwd do
 
     it "has an error if the options are incorrect" do
         begin
-            @rpasswd.run(["--blah"])
+            @htauth.run(["--blah"])
         rescue SystemExit => se
             @stderr.string.should =~ /ERROR:/m
             se.status.should == 1
@@ -198,7 +198,7 @@ describe HTAuth::Passwd do
 
     it "errors if send to stdout and create a new file options are both used" do
         begin
-            @rpasswd.run(["-c", "-n"])
+            @htauth.run(["-c", "-n"])
         rescue SystemExit => se
             @stderr.string.should =~ /ERROR:/m
             se.status.should == 1

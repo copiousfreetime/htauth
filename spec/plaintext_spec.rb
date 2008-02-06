@@ -2,7 +2,7 @@
 
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/sha1'
+require 'htauth/sha1'
 
 describe HTAuth::Plaintext do
     it "has a prefix" do

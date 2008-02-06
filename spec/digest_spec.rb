@@ -1,5 +1,5 @@
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
-require 'rpasswd/digest'
+require 'htauth/digest'
 require 'tempfile'
 
 describe HTAuth::Digest do
@@ -60,7 +60,7 @@ describe HTAuth::Digest do
             @stdin.puts "b secret"
             @stdin.puts "b secret"
             @stdin.rewind
-            @rdigest.run([ "-c", @new_file, "rpasswd", "bob" ])
+            @rdigest.run([ "-c", @new_file, "htauth", "bob" ])
         rescue SystemExit => se
             se.status.should == 0
             IO.read(@new_file).should == IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
@@ -72,7 +72,7 @@ describe HTAuth::Digest do
             @stdin.puts "b secret"
             @stdin.puts "b secret"
             @stdin.rewind
-            @rdigest.run([ "-c", @tf.path, "rpasswd", "bob"])
+            @rdigest.run([ "-c", @tf.path, "htauth", "bob"])
         rescue SystemExit => se
             se.status.should == 0
             IO.read(@tf.path).should == IO.read(DIGEST_DELETE_TEST_FILE)
@@ -84,7 +84,7 @@ describe HTAuth::Digest do
             @stdin.puts "c secret"
             @stdin.puts "c secret"
             @stdin.rewind
-            @rdigest.run([ @tf.path, "rpasswd-new", "charlie" ])
+            @rdigest.run([ @tf.path, "htauth-new", "charlie" ])
         rescue SystemExit => se
             se.status.should == 0
             IO.read(@tf.path).should == IO.read(DIGEST_ADD_TEST_FILE)
@@ -96,7 +96,7 @@ describe HTAuth::Digest do
             @stdin.puts "a new secret"
             @stdin.puts "a new secret"
             @stdin.rewind
-            @rdigest.run([ @tf.path, "rpasswd", "alice" ])
+            @rdigest.run([ @tf.path, "htauth", "alice" ])
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
@@ -106,7 +106,7 @@ describe HTAuth::Digest do
     
     it "deletes an entry in an existing file" do
         begin
-            @rdigest.run([ "-d", @tf.path, "rpasswd", "alice" ])
+            @rdigest.run([ "-d", @tf.path, "htauth", "alice" ])
         rescue SystemExit => se
             @stderr.string.should == ""
             se.status.should == 0
@@ -119,7 +119,7 @@ describe HTAuth::Digest do
             @stdin.puts "a secret"
             @stdin.puts "a secret"
             @stdin.rewind
-            @rdigest.run([ "-c", "/etc/you-cannot-create-me", "rpasswd", "alice"])
+            @rdigest.run([ "-c", "/etc/you-cannot-create-me", "htauth", "alice"])
         rescue SystemExit => se
             @stderr.string.should =~ %r{Could not open password file /etc/you-cannot-create-me}m
             se.status.should == 1
@@ -131,7 +131,7 @@ describe HTAuth::Digest do
             @stdin.puts "a secret"
             @stdin.puts "a bad secret"
             @stdin.rewind
-            @rdigest.run([ @tf.path, "rpasswd", "alice"])
+            @rdigest.run([ @tf.path, "htauth", "alice"])
         rescue SystemExit => se
             @stderr.string.should =~ /They don't match, sorry./m
             se.status.should == 1

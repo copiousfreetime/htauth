@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/passwd_file'
+require 'htauth/passwd_file'
 require 'tempfile'
 
 describe HTAuth::PasswdFile do

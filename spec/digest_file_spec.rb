@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/digest_file'
+require 'htauth/digest_file'
 require 'tempfile'
 
 describe HTAuth::DigestFile do
@@ -22,22 +22,22 @@ describe HTAuth::DigestFile do
     end
 
     it "can add a new entry to an already existing digest file" do
-        @digest_file.add_or_update("charlie", "rpasswd-new", "c secret")
+        @digest_file.add_or_update("charlie", "htauth-new", "c secret")
         @digest_file.contents.should == IO.read(DIGEST_ADD_TEST_FILE)
     end
 
     it "can tell if an entry already exists in the digest file" do
-        @digest_file.has_entry?("alice", "rpasswd").should == true
+        @digest_file.has_entry?("alice", "htauth").should == true
         @digest_file.has_entry?("alice", "some other realm").should == false
     end
     
     it "can update an entry in an already existing digest file" do
-        @digest_file.add_or_update("alice", "rpasswd", "a new secret")
+        @digest_file.add_or_update("alice", "htauth", "a new secret")
         @digest_file.contents.should == IO.read(DIGEST_UPDATE_TEST_FILE)
     end
 
     it "fetches a copy of an entry" do
-        @digest_file.fetch("alice", "rpasswd").to_s.should == "alice:rpasswd:a938ab78ca084b15c33bff7c36f85559"
+        @digest_file.fetch("alice", "htauth").to_s.should == "alice:htauth:a938ab78ca084b15c33bff7c36f85559"
     end
 
     it "raises an error if an attempt is made to alter a non-existenet file" do
@@ -50,17 +50,17 @@ describe HTAuth::DigestFile do
     end
 
     it "deletes an entry" do
-        @digest_file.delete("alice", "rpasswd")
+        @digest_file.delete("alice", "htauth")
         @digest_file.contents.should == IO.read(DIGEST_DELETE_TEST_FILE)
     end
     
     it "is usable in a ruby manner and yeilds itself when opened" do
         HTAuth::DigestFile.open(@tf.path) do |pf|
-            pf.add_or_update("alice", "rpasswd", "a secret")
-            pf.delete('bob', 'rpasswd')
+            pf.add_or_update("alice", "htauth", "a secret")
+            pf.delete('bob', 'htauth')
         end
         lines = IO.readlines(@tf.path)
         lines.size.should == 1
-        lines.first.strip.should == "alice:rpasswd:a938ab78ca084b15c33bff7c36f85559"
+        lines.first.strip.should == "alice:htauth:a938ab78ca084b15c33bff7c36f85559"
     end
 end

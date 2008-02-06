@@ -1,7 +1,7 @@
 
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/crypt'
+require 'htauth/crypt'
 
 describe HTAuth::Crypt do
     it "has a prefix" do

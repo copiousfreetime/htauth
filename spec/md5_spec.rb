@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/md5'
+require 'htauth/md5'
 
 describe HTAuth::Md5 do
     it "has a prefix" do

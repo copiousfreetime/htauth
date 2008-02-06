@@ -1,7 +1,7 @@
 
 require File.join(File.dirname(__FILE__),"spec_helper.rb")
 
-require 'rpasswd/passwd_entry'
+require 'htauth/passwd_entry'
 
 describe HTAuth::PasswdEntry do
     before(:each) do
