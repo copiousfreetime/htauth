@@ -37,7 +37,7 @@ describe HTAuth::DigestFile do
     end
 
     it "fetches a copy of an entry" do
-        @digest_file.fetch("alice", "htauth").to_s.should == "alice:htauth:a938ab78ca084b15c33bff7c36f85559"
+        @digest_file.fetch("alice", "htauth").to_s.should == "alice:htauth:2f361db93147d84831eb34f19d05bfbb"
     end
 
     it "raises an error if an attempt is made to alter a non-existenet file" do
@@ -61,6 +61,6 @@ describe HTAuth::DigestFile do
         end
         lines = IO.readlines(@tf.path)
         lines.size.should == 1
-        lines.first.strip.should == "alice:htauth:a938ab78ca084b15c33bff7c36f85559"
+        lines.first.strip.should == "alice:htauth:2f361db93147d84831eb34f19d05bfbb"
     end
 end

@@ -5,7 +5,7 @@ require 'htauth/digest_entry'
 describe HTAuth::DigestEntry do
     before(:each) do
         @alice = HTAuth::DigestEntry.new("alice", "htauth")
-        @bob   = HTAuth::DigestEntry.new("bob", "htauth", "a secret")
+        @bob   = HTAuth::DigestEntry.new("bob", "htauth", "b secret")
     end
 
     it "initializes with a user and realm" do
@@ -15,7 +15,7 @@ describe HTAuth::DigestEntry do
 
     it "has the correct digest for a password" do
         @alice.password = "digit"
-        @alice.digest.should == "6977d799113273ade6d0738b1af3087b"
+        @alice.digest.should == "4ed9e5744c6747af8f292d28afd6372e"
     end
 
     it "returns username:realm for a key" do
@@ -23,15 +23,15 @@ describe HTAuth::DigestEntry do
     end
 
     it "checks the password correctly" do
-        @bob.authenticated?("a secret").should == true
+        @bob.authenticated?("b secret").should == true
     end
 
     it "formats correctly when put to a string" do
-        @bob.to_s.should == "bob:htauth:0a90549e8ffb2dd62f98252a95d88697"
+        @bob.to_s.should == "bob:htauth:fcbeab6821d2ab3b00934c958db0fd1e"
     end
 
     it "parses an input line" do
-        @bob_new = HTAuth::DigestEntry.from_line("bob:htauth:0a90549e8ffb2dd62f98252a95d88697")
+        @bob_new = HTAuth::DigestEntry.from_line("bob:htauth:fcbeab6821d2ab3b00934c958db0fd1e")
         @bob.user.should == @bob_new.user
         @bob.digest.should == @bob_new.digest
         @bob.realm.should == @bob_new.realm
