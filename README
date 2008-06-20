@@ -6,8 +6,8 @@
 
 == DESCRIPTION
 
-HTAuth is a pure ruby replacement for the Apache support programs +htdigest+ and
-+htpasswd+.  Command line and API access are provided for access to htdigest and
+HTAuth is a pure ruby replacement for the Apache support programs htdigest and
+htpasswd.  Command line and API access are provided for access to htdigest and
 htpasswd files.
 
 == FEATURES 

@@ -13,7 +13,7 @@ module HTAuth
                 spec.email              = "jeremy@hinegardner.org"
                 spec.homepage           = "http://copiousfreetime.rubyforge.org/htauth"
 
-                spec.summary            = "HTAuth provides htdigest and htpasswd support."
+                spec.summary            = "Pure Ruby replacement for the htdigest and htpasswd programs."
                 spec.description        = <<-DESC
                 HTAuth is a pure ruby replacement for the Apache support programs htdigest
                 and htpasswd.  Command line and API access are provided for access to
