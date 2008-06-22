@@ -12,7 +12,7 @@ htpasswd files.
 
 == FEATURES 
 
-Rpassword provides to drop in commands *htdigest-ruby* and *htpasswd-ruby* that
+HTAuth provides to drop in commands *htdigest-ruby* and *htpasswd-ruby* that
 can manipulate the digest and passwd files in the same manner as Apache's
 original commands.  
 
