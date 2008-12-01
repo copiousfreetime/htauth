@@ -1,19 +1,22 @@
 require 'htauth'
 module HTAuth
-    class Version
-        MAJOR   = 1
-        MINOR   = 0
-        BUILD   = 1
+  module Version
+    MAJOR   = 1
+    MINOR   = 0
+    BUILD   = 2
 
-        class << self
-            def to_a
-                [MAJOR, MINOR, BUILD]
-            end
-
-            def to_s
-                to_a.join(".")
-            end
-        end
+    def to_a
+      [MAJOR, MINOR, BUILD]
     end
-    VERSION = Version.to_s
+
+    def to_s
+      to_a.join(".")
+    end
+
+    module_function :to_a
+    module_function :to_s
+
+    STRING = Version.to_s
+  end
+  VERSION = Version.to_s
 end

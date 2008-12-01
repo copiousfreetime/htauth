@@ -1,12 +1,19 @@
 #!/usr/bin/env ruby
 
-begin
-    require 'htauth'
-rescue LoadError 
-    path = File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-    raise if $:.include?(path)
-    $: << path
-    retry
+begin 
+  require 'highline'
+rescue LoadError
+  require 'rubygems'
+  require 'highline'
 end
 
-HTAuth::Digest.new.run(ARGV)
+begin
+  require 'htauth'
+rescue LoadError 
+  path = File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
+  raise if $:.include?(path)
+  $: << path
+  retry
+end
+
+HTAuth::Digest.new.run(ARGV, ENV)

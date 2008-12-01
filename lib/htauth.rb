@@ -1,14 +1,36 @@
-module HTAuth
-    
-    ROOT_DIR        = ::File.expand_path(::File.join(::File.dirname(__FILE__),".."))
-    LIB_DIR         = ::File.join(ROOT_DIR,"lib").freeze
+#-- 
+# Copyrigth (c) 2008 Jeremy Hinegardner
+# All rights reserved.  See LICENSE and/or COPYING for details
+#++
 
-    class FileAccessError < StandardError ; end
-    class TempFileError < StandardError ; end
-    class PasswordError < StandardError ; end
+module HTAuth
+
+  # The root directory of the project is considered to be the parent directory
+  # of the 'lib' directory.
+  #
+  def self.root_dir
+    unless @root_dir
+      path_parts = ::File.expand_path( __FILE__ ).split( ::File::SEPARATOR )
+      lib_index  = path_parts.rindex( 'lib' )
+      @root_dir  = path_parts[ 0...lib_index].join( ::File::SEPARATOR ) + ::File::SEPARATOR
+    end
+    return @root_dir
+  end
+
+  def self.lib_path( *args )
+    self.sub_path( "lib", *args )
+  end
+
+  def self.sub_path( sub, *args )
+    sp = ::File.join( root_dir, sub ) + ::File::SEPARATOR
+    sp = ::File.join( sp, *args ) if args
+  end
+
+  class FileAccessError < StandardError ; end
+  class TempFileError < StandardError ; end
+  class PasswordError < StandardError ; end
 end
 
 require 'htauth/version'
-require 'htauth/gemspec'
 require 'htauth/passwd'
 require 'htauth/digest'

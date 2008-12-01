@@ -1,58 +1,38 @@
-#-----------------------------------------------------------------------
-# Announcement tasks
-#   - create a basic email template that can be used to send email to
-#     rubytalk.
-#-----------------------------------------------------------------------
-def changes
-    change_file = File.expand_path(File.join(HTAuth::ROOT_DIR,"CHANGES"))
-    sections    = File.read(change_file).split(/^(?=== )/)
-end
+require 'tasks/config'
+#-------------------------------------------------------------------------------
+# announcement methods
+#-------------------------------------------------------------------------------
 
-def last_changeset
-    changes[1]
-end
-
-def announcement
-    puts changes.size
-    urls    = "  #{HTAuth::SPEC.homepage}"
-    subject = "#{HTAuth::SPEC.name} #{HTAuth::VERSION} Released"
-    title   = "#{HTAuth::SPEC.name} version #{HTAuth::VERSION} has been released."
-    body    = <<BODY
-#{HTAuth::SPEC.description.rstrip}
-
-{{ Changelog for Version #{HTAuth::VERSION} }}
-
-#{last_changeset.rstrip}
-
-BODY
-
-    return subject, title, body, urls
-end
-
+proj_config = Configuration.for('project')
 namespace :announce do
-    desc "create email for ruby-talk"
-    task :email do
-        subject, title, body, urls = announcement
+  desc "create email for ruby-talk"
+  task :email do
+    info = Utils.announcement
 
-        File.open("email.txt", "w") do |mail|
-            mail.puts "From: #{HTAuth::SPEC.author} <#{HTAuth::SPEC.email}>"
-            mail.puts "To: ruby-talk@ruby-lang.org"
-            mail.puts "Date: #{Time.now.rfc2822}"
-            mail.puts "Subject: [ANN] #{subject}"
-            mail.puts
-            mail.puts title
-            mail.puts
-            mail.puts urls
-            mail.puts 
-            mail.puts body
-            mail.puts 
-            mail.puts urls
-        end
-        puts "Created the following as email.txt:"
-        puts "-" * 72
-        puts File.read("email.txt")
-        puts "-" * 72
-    end
-    
-    CLOBBER << "email.txt"
+    File.open("email.txt", "w") do |mail|
+      mail.puts "From: #{proj_config.author} <#{proj_config.email}>"
+      mail.puts "To: ruby-talk@ruby-lang.org"
+      mail.puts "Date: #{Time.now.rfc2822}"
+      mail.puts "Subject: [ANN] #{info[:subject]}"
+      mail.puts
+      mail.puts info[:title]
+      mail.puts
+      mail.puts info[:urls]
+      mail.puts 
+      mail.puts info[:description]
+      mail.puts 
+      mail.puts "{{ Release notes for Version #{HTAuth::VERSION} }}"
+      mail.puts 
+      mail.puts info[:release_notes]
+      mail.puts
+      mail.puts info[:urls]
+    end 
+    puts "Created the following as email.txt:"
+    puts "-" * 72
+    puts File.read("email.txt")
+    puts "-" * 72
+  end 
+
+  CLOBBER << "email.txt"
 end
+
