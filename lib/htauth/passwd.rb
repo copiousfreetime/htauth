@@ -126,7 +126,7 @@ EOB
       end
     end
 
-    def run(argv, env)
+    def run(argv, env = ENV)
       begin
         parse_options(argv)
         passwd_file = PasswdFile.new(options.passwdfile, options.file_mode)

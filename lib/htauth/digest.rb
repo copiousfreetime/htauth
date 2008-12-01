@@ -81,7 +81,7 @@ module HTAuth
       end
     end
 
-    def run(argv, env)
+    def run(argv, env = ENV)
       begin
         parse_options(argv)
         digest_file = DigestFile.new(options.passwdfile, options.file_mode)
