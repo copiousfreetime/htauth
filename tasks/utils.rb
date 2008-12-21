@@ -48,13 +48,13 @@ module Utils
     # release.  This is done by looking in the history file and grabbing the
     # information for the most recent release.  The history file is assumed to
     # be in RDoc format and version release are 2nd tier sections separated by
-    # '== Version X.Y.Z'
+    # '=== Version X.Y.Z'
     #
     # returns:: A hash of notes keyed by version number
     #
     def release_notes_from(history_file)
       releases = {}
-      File.read(history_file).split(/^(?==)/).each do |section|
+      File.read(history_file).split(/^(?=== Version)/).each do |section|
         lines = section.split("\n")
         md = %r{Version ((\w+\.)+\w+)}.match(lines.first)
         next unless md

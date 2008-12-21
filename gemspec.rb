@@ -21,7 +21,7 @@ HTAuth::GEM_SPEC = Gem::Specification.new do |spec|
 
   # add dependencies here
   # spec.add_dependency("rake", ">= 0.8.1")
-  spec.add_dependency("highline", "~> 1.4.0")
+  spec.add_dependency("highline", "~> 1.5.0")
    
   
   if rdoc = Configuration.for_if_exist?('rdoc') then

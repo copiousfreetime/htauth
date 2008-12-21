@@ -3,7 +3,7 @@ module HTAuth
   module Version
     MAJOR   = 1
     MINOR   = 0
-    BUILD   = 2
+    BUILD   = 3
 
     def to_a
       [MAJOR, MINOR, BUILD]
