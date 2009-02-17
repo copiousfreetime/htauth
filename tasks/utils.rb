@@ -1,4 +1,4 @@
-require 'crate/version'
+require 'htauth/version'
 
 #-------------------------------------------------------------------------------
 # Additions to the Configuration class that are useful
