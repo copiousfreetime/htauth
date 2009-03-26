@@ -56,12 +56,12 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
 
 * API Usage
 
-   HTAuth::DigestFile.new("some.htdigest") do |df|
+   HTAuth::DigestFile.open("some.htdigest") do |df|
       df.add_or_update('someuser', 'myrealm', 'a password')
       df.delete('someolduser', 'myotherrealm')
    end
 
-   HTAuth::PasswdFile.new("some.htpasswd", HTAuth::File::CREATE) do |pf|
+   HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::CREATE) do |pf|
       pf.add('someuser', 'a password', 'md5')
       pf.add('someotheruser', 'a different password', 'sha1')
    end
