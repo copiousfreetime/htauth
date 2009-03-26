@@ -1,5 +1,6 @@
 *~
 pkg/
 coverage/
+doc/
 *.swp
 *.swo
