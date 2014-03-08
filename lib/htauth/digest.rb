@@ -123,7 +123,7 @@ module HTAuth
         exit 1
       rescue SignalException => se
         $stderr.puts
-        $stderr.puts "Interrupted"
+        $stderr.puts "Interrupted #{se}"
         exit 1
       end
       exit 0
