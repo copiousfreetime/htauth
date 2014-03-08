@@ -1,5 +1,3 @@
-require 'htauth'
-
 module HTAuth
   class InvalidAlgorithmError < StandardError ; end
   # base class all the Passwd algorithms derive from
@@ -62,8 +60,3 @@ module HTAuth
     end
   end
 end
-
-require 'htauth/md5'
-require 'htauth/sha1'
-require 'htauth/crypt'
-require 'htauth/plaintext'

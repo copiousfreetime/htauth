@@ -1,5 +1,4 @@
-require File.join(File.dirname(__FILE__),"spec_helper.rb")
-
+require 'spec_helper'
 require 'htauth/digest_file'
 require 'tempfile'
 

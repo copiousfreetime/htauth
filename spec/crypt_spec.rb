@@ -1,6 +1,4 @@
-
-require File.join(File.dirname(__FILE__),"spec_helper.rb")
-
+require 'spec_helper'
 require 'htauth/crypt'
 
 describe HTAuth::Crypt do

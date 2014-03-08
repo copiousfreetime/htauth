@@ -1,4 +1,5 @@
-require 'htauth'
+require 'htauth/version'
+require 'htauth/errors'
 require 'htauth/digest_file'
 
 require 'ostruct'

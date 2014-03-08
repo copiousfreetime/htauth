@@ -1,5 +1,5 @@
 require 'stringio'
-
+require 'htauth/errors'
 require 'htauth/file'
 require 'htauth/digest_entry'
 

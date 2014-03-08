@@ -1,4 +1,4 @@
-require 'htauth'
+require 'htauth/errors'
 require 'htauth/passwd_file'
 
 require 'ostruct'

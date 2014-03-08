@@ -1,3 +1,4 @@
+require 'htauth/errors'
 require 'htauth/entry'
 require 'digest/md5'
 

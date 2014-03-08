@@ -26,11 +26,21 @@ module HTAuth
     sp = ::File.join( sp, *args ) if args
   end
 
-  class FileAccessError < StandardError ; end
-  class TempFileError < StandardError ; end
-  class PasswordError < StandardError ; end
 end
 
 require 'htauth/version'
-require 'htauth/passwd'
+require 'htauth/algorithm'
+require 'htauth/crypt'
 require 'htauth/digest'
+require 'htauth/digest_entry'
+require 'htauth/digest_file'
+require 'htauth/entry'
+require 'htauth/errors'
+require 'htauth/file'
+require 'htauth/md5'
+require 'htauth/passwd'
+require 'htauth/passwd_entry'
+require 'htauth/passwd_file'
+require 'htauth/plaintext'
+require 'htauth/sha1'
+

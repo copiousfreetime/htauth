@@ -1,4 +1,3 @@
-require 'htauth'
 module HTAuth
   VERSION = "1.0.4"
   module Version

@@ -1,8 +1,5 @@
-
-
-require File.join(File.dirname(__FILE__),"spec_helper.rb")
-
-require 'htauth/sha1'
+require 'spec_helper'
+require 'htauth/plaintext'
 
 describe HTAuth::Plaintext do
     it "has a prefix" do
