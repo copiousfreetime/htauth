@@ -58,7 +58,7 @@ EOB
             options.file_mode = HTAuth::File::CREATE
           end
 
-          op.on("-d", "--crypt", "Force CRYPT encryption of the password (default).") do |c|
+          op.on("-d", "--crypt", "Force CRYPT encryption of the password.") do |c|
             options.algorithm = "crypt"
           end
 
@@ -70,7 +70,7 @@ EOB
             options.show_help = h
           end
 
-          op.on("-m", "--md5", "Force MD5 encryption of the password (default on Windows).") do |m|
+          op.on("-m", "--md5", "Force MD5 encryption of the password (default).") do |m|
             options.algorithm = "md5"
           end
 

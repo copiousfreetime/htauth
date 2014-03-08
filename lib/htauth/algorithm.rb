@@ -4,7 +4,7 @@ module HTAuth
   class Algorithm
 
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
-    DEFAULT       = ( RUBY_PLATFORM !~ /mswin32/ ) ? "crypt" : "md5"
+    DEFAULT       = "md5"
     EXISTING      = "existing"
 
     class << self
