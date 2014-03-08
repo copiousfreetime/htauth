@@ -15,6 +15,8 @@ module HTAuth
 
     def initialize
       @passwd_file = nil
+      @option_parser = nil
+      @options = nil
     end
 
     def options

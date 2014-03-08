@@ -16,6 +16,8 @@ module HTAuth
 
     def initialize
       @digest_file = nil
+      @option_parser = nil
+      @options = nil
     end
 
     def options
