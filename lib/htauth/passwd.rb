@@ -90,6 +90,10 @@ EOB
           op.on("-v", "--version", "Show version info.") do |v|
             options.show_version = v
           end
+
+          op.separator ""
+
+          op.separator "The SHA algorihtm does not use a salt and is less secure than the MD5 algorithm"
         end
       end
       @option_parser
