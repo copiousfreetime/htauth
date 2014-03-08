@@ -22,35 +22,35 @@ describe HTAuth::PasswdFile do
 
     it "can add a new entry to an already existing passwd file" do
         @passwd_file.add_or_update("charlie", "c secret", "sha1")
-        @passwd_file.contents.should == IO.read(PASSWD_ADD_TEST_FILE)
+        @passwd_file.contents.must_equal IO.read(PASSWD_ADD_TEST_FILE)
     end
 
     it "can tell if an entry already exists in the passwd file" do
-        @passwd_file.has_entry?("alice").should == true
-        @passwd_file.has_entry?("david").should == false
+        @passwd_file.has_entry?("alice").must_equal true
+        @passwd_file.has_entry?("david").must_equal false
     end
     
     it "can update an entry in an already existing passwd file, algorithm can change" do
         @passwd_file.add_or_update("alice", "a new secret", "sha1")
-        @passwd_file.contents.should == IO.read(PASSWD_UPDATE_TEST_FILE)
+        @passwd_file.contents.must_equal IO.read(PASSWD_UPDATE_TEST_FILE)
     end
 
     it "fetches a copy of an entry" do
-        @passwd_file.fetch("alice").to_s.should == "alice:$apr1$DghnA...$CsPcgerfsI/Ryy0AOAJtb0"
+        @passwd_file.fetch("alice").to_s.must_equal "alice:$apr1$DghnA...$CsPcgerfsI/Ryy0AOAJtb0"
     end
 
     it "raises an error if an attempt is made to alter a non-existenet file" do
-        lambda { HTAuth::PasswdFile.new("some-file") }.should raise_error(HTAuth::FileAccessError)
+        lambda { HTAuth::PasswdFile.new("some-file") }.must_raise(HTAuth::FileAccessError)
     end
 
     # this test will only work on systems that have /etc/ssh_host_rsa_key 
     it "raises an error if an attempt is made to open a file where no permissions are granted" do
-        lambda { HTAuth::PasswdFile.new("/etc/ssh_host_rsa_key") }.should raise_error(HTAuth::FileAccessError)
+        lambda { HTAuth::PasswdFile.new("/etc/ssh_host_rsa_key") }.must_raise(HTAuth::FileAccessError)
     end
 
     it "deletes an entry" do
         @passwd_file.delete("bob")
-        @passwd_file.contents.should == IO.read(PASSWD_DELETE_TEST_FILE)
+        @passwd_file.contents.must_equal IO.read(PASSWD_DELETE_TEST_FILE)
     end
 
     it "is usable in a ruby manner and yeilds itself when opened" do
@@ -59,8 +59,8 @@ describe HTAuth::PasswdFile do
             pf.delete('bob')
         end
         lines = IO.readlines(@tf.path)
-        lines.size.should == 1
-        lines.first.split(':').first.should == "alice"
-        lines.first.split(':').last.should =~ /\$apr1\$/
+        lines.size.must_equal 1
+        lines.first.split(':').first.must_equal "alice"
+        lines.first.split(':').last.must_match( /\$apr1\$/ )
     end
 end

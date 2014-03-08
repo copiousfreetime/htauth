@@ -41,8 +41,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run([ "-h" ])
         rescue SystemExit => se
-            se.status.should == 1
-            @stdout.string.should =~ /passwordfile username/m
+            se.status.must_equal 1
+            @stdout.string.must_match( /passwordfile username/m )
         end
     end
 
@@ -50,8 +50,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run([ "--version" ])
         rescue SystemExit => se
-            se.status.should == 1
-            @stdout.string.should =~ /version #{HTAuth::VERSION}/
+            se.status.must_equal 1
+            @stdout.string.must_match( /version #{HTAuth::VERSION}/)
         end
     end
     
@@ -62,11 +62,11 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ "-m", "-c", @new_file, "alice" ])
         rescue SystemExit => se
-            se.status.should == 0
+            se.status.must_equal 0
             l = IO.readlines(@new_file)
             fields = l.first.split(':')
-            fields.first.should == "alice"
-            fields.last.should =~ /^\$apr1\$/
+            fields.first.must_equal "alice"
+            fields.last.must_match( /^\$apr1\$/ )
         end
     end
 
@@ -78,27 +78,26 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ "-c", @tf.path, "bob"])
         rescue SystemExit => se
-            se.status.should == 0
+            se.status.must_equal 0
             after_lines = IO.readlines(@tf.path)
-            after_lines.size.should == 1
-            before_lines.size.should == 2
+            after_lines.size.must_equal 1
+            before_lines.size.must_equal 2
         end
     end
 
     it "adds an entry to an existing file and force SHA" do
-        before_lines = IO.readlines(@tf.path)
         begin
             @stdin.puts "c secret"
             @stdin.puts "c secret"
             @stdin.rewind
             @htauth.run([ "-s", @tf.path, "charlie" ])
         rescue SystemExit => se
-            se.status.should == 0
+            se.status.must_equal 0
             after_lines = IO.readlines(@tf.path)
-            after_lines.should have(3).lines
+            after_lines.size.must_equal 3
             al = after_lines.last.split(':')
-            al.first.should == "charlie"
-            al.last.should =~ /\{SHA\}/
+            al.first.must_equal "charlie"
+            al.last.must_match( /\{SHA\}/ )
         end
     end
 
@@ -109,8 +108,8 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run(["-c", "-p", @tf.path, "bradley"])
         rescue SystemExit => se
-            se.status.should == 0
-            IO.read(@tf.path).strip.should == "bradley:a bad password"
+            se.status.must_equal 0
+            IO.read(@tf.path).strip.must_equal "bradley:a bad password"
         end
     end
 
@@ -118,8 +117,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run(["-c", "-p", "-b", @tf.path, "bradley", "a bad password"])
         rescue SystemExit => se
-            se.status.should == 0
-            IO.read(@tf.path).strip.should == "bradley:a bad password"
+            se.status.must_equal 0
+            IO.read(@tf.path).strip.must_equal "bradley:a bad password"
         end
     end
 
@@ -131,16 +130,16 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ "-d", @tf.path, "alice" ])
         rescue SystemExit => se
-            @stderr.string.should == ""
-            se.status.should == 0
+            @stderr.string.must_equal ""
+            se.status.must_equal 0
             after_lines = IO.readlines(@tf.path)
-            after_lines.size.should == before_lines.size
+            after_lines.size.must_equal before_lines.size
            
             a_b = before_lines.first.split(":")
             a_a = after_lines.first.split(":")
 
-            a_b.first.should == a_a.first
-            a_b.last.should_not == a_a.last
+            a_b.first.must_equal a_a.first
+            a_b.last.wont_equal a_a.last
         end
     end
     
@@ -148,9 +147,9 @@ describe HTAuth::Passwd do
         begin
             @htauth.run([ "-D", @tf.path, "bob" ])
         rescue SystemExit => se
-            @stderr.string.should == ""
-            se.status.should == 0
-            IO.read(@tf.path).should == IO.read(PASSWD_DELETE_TEST_FILE)
+            @stderr.string.must_equal ""
+            se.status.must_equal 0
+            IO.read(@tf.path).must_equal IO.read(PASSWD_DELETE_TEST_FILE)
         end
     end
 
@@ -158,8 +157,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run(["-n", "-p", "-b", "bradley", "a bad password"])
         rescue SystemExit => se
-            se.status.should == 0
-            @stdout.string.strip.should == "bradley:a bad password"
+            se.status.must_equal 0
+            @stdout.string.strip.must_equal "bradley:a bad password"
         end
     end
 
@@ -170,8 +169,8 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ "-c", "/etc/you-cannot-create-me", "alice"])
         rescue SystemExit => se
-            @stderr.string.should =~ %r{Password file failure \(/etc/you-cannot-create-me\)}m
-            se.status.should == 1
+            @stderr.string.must_match( %r{Password file failure \(/etc/you-cannot-create-me\)}m )
+            se.status.must_equal 1
         end
     end
 
@@ -182,8 +181,8 @@ describe HTAuth::Passwd do
             @stdin.rewind
             @htauth.run([ @tf.path, "alice"])
         rescue SystemExit => se
-            @stderr.string.should =~ /They don't match, sorry./m
-            se.status.should == 1
+            @stderr.string.must_match( /They don't match, sorry./m )
+            se.status.must_equal 1
         end
     end
 
@@ -191,8 +190,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run(["--blah"])
         rescue SystemExit => se
-            @stderr.string.should =~ /ERROR:/m
-            se.status.should == 1
+            @stderr.string.must_match( /ERROR:/m )
+            se.status.must_equal 1
         end
     end
 
@@ -200,8 +199,8 @@ describe HTAuth::Passwd do
         begin
             @htauth.run(["-c", "-n"])
         rescue SystemExit => se
-            @stderr.string.should =~ /ERROR:/m
-            se.status.should == 1
+            @stderr.string.must_match( /ERROR:/m )
+            se.status.must_equal 1
         end
     end
 end

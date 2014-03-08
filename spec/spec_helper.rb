@@ -1,8 +1,12 @@
-require 'rubygems'
-require 'spec'
+if RUBY_VERSION >= '1.9.2' then
+  require 'simplecov'
+  puts "Using coverage!"
+  SimpleCov.start if ENV['COVERAGE']
+end
 
-$: << File.expand_path(File.join(File.dirname(__FILE__),"..","lib"))
-require 'htauth'
+gem 'minitest'
+require 'minitest/autorun'
+require 'minitest/pride'
 
 PASSWD_ORIGINAL_TEST_FILE  = File.join(File.dirname(__FILE__), "test.original.passwd")
 PASSWD_ADD_TEST_FILE       = File.join(File.dirname(__FILE__), "test.add.passwd")
