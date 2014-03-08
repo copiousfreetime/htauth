@@ -60,6 +60,8 @@ module HTAuth
       end
 
 
+      pd = pd.bytes.to_a
+
       l = (pd[ 0]<<16) | (pd[ 6]<<8) | pd[12]
       encoded_password << to_64(l, 4)
 
