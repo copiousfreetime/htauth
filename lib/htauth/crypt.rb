@@ -10,7 +10,7 @@ module HTAuth
     end
 
     def prefix
-            ""
+      ""
     end
 
     def encode(password)

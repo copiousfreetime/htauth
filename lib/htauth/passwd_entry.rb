@@ -26,7 +26,7 @@ module HTAuth
       # where username, and password do not contain the ':' character 
       def is_entry!(line)
         raise InvalidPasswdEntry, "line commented out" if line =~ /\A#/
-          parts = line.strip.split(":")
+        parts = line.strip.split(":")
         raise InvalidPasswdEntry, "line must be of the format username:pssword" if parts.size != 2
         return parts
       end

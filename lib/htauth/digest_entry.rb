@@ -26,11 +26,11 @@ module HTAuth
       # and the md5sum must be 32 characters long.
       def is_entry!(line)
         raise InvalidDigestEntry, "line commented out" if line =~ /\A#/
-          parts = line.strip.split(":")
+        parts = line.strip.split(":")
         raise InvalidDigestEntry, "line must be of the format username:realm:md5checksum" if parts.size != 3
         raise InvalidDigestEntry, "md5 checksum is not 32 characters long" if parts.last.size  != 32
         raise InvalidDigestEntry, "md5 checksum has invalid characters" if parts.last !~ /\A[[:xdigit:]]{32}\Z/
-          return parts
+        return parts
       end
 
       # test if a line is an entry and return true or false
@@ -64,11 +64,11 @@ module HTAuth
     end
 
     def key
-            "#{user}:#{realm}"
+      "#{user}:#{realm}"
     end
 
     def to_s
-            "#{user}:#{realm}:#{digest}"
+      "#{user}:#{realm}:#{digest}"
     end
   end
 end
