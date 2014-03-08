@@ -132,6 +132,7 @@ class ThisProject
 
       spec.summary     = summary
       spec.description = description
+      spec.license     = license
 
       spec.files       = manifest
       spec.executables = spec.files.grep(/^bin/) { |f| File.basename(f) }
@@ -198,6 +199,10 @@ class ThisProject
   # Internal: Return the full description text from the READEM
   def description
     description_section.join(" ").tr("\n", ' ').gsub(/[{}]/,'').gsub(/\[[^\]]+\]/,'') # strip rdoc
+  end
+
+  def license
+    "ISC"
   end
 
   # Internal: The path to the gemspec file
