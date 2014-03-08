@@ -1,22 +1,22 @@
 require 'htauth'
 module HTAuth
+  VERSION = "1.0.4"
   module Version
-    MAJOR   = 1
-    MINOR   = 0
-    BUILD   = 3
+    STRING  = HTAuth::VERSION
+    MAJOR   = to_a[0]
+    MINOR   = to_a[1]
+    BUILD   = to_a[2]
 
     def to_a
-      [MAJOR, MINOR, BUILD]
+      STRING.split(".")
     end
 
     def to_s
-      to_a.join(".")
+      STRING
     end
 
     module_function :to_a
     module_function :to_s
 
-    STRING = Version.to_s
   end
-  VERSION = Version.to_s
 end
