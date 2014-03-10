@@ -1,4 +1,14 @@
 # Changelog
+
+## Version 1.1.0 2014-03-10
+
+* Update highline dependency
+* Change the default algorithm in htpasswd-ruby to be MD5
+* Convert tests to minitest
+* Update to [fixme](http://github.com/copiousfreetime/fixme) project structure
+* General update to ruby 1.9/2.0
+* Fix all -w warnings
+
 ## Version 1.0.3 2008-12-20
 
 * update highline dependency

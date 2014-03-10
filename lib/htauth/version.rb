@@ -1,5 +1,5 @@
 module HTAuth
-  VERSION = "1.0.4"
+  VERSION = "1.1.0"
   module Version
     STRING  = HTAuth::VERSION
     def to_a
