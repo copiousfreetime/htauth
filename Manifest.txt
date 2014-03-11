@@ -42,5 +42,4 @@ spec/test.original.passwd
 spec/test.update.digest
 spec/test.update.passwd
 tasks/default.rake
-tasks/man.rake
 tasks/this.rb
