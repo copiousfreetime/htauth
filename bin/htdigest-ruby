@@ -16,4 +16,4 @@ rescue LoadError
   retry
 end
 
-HTAuth::Digest.new.run(ARGV, ENV)
+HTAuth::CLI::Digest.new.run(ARGV, ENV)
