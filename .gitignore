@@ -4,3 +4,4 @@ coverage/
 doc/
 *.swp
 *.swo
+*.lock
