@@ -15,7 +15,7 @@ module HTAuth
     class << self
       def from_line(line)
         parts = is_entry!(line)
-        d = PasswdEntry.new(parts[0])
+        d = PasswdEntry.new(parts[0], nil)
         d.digest = parts[1]
         d.algorithm = Algorithm.algorithms_from_field(parts[1])
         return d
@@ -46,7 +46,7 @@ module HTAuth
       @user      = user
       alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
-      @digest    = algorithm.encode(password)
+      @digest    = algorithm.encode(password) unless password.nil?
     end
 
     def algorithm=(alg)
