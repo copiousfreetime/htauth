@@ -1,18 +1,42 @@
 # vim: syntax=ruby
-load 'tasks/this.rb'
+require 'rubygems'
+require 'bundler/setup'
 
-This.name     = "htauth"
-This.author   = "Jeremy Hinegardner"
-This.email    = "jeremy@copiousfreetime.org"
-This.homepage = "http://github.com/copiousfreetime/#{ This.name }"
+require File.expand_path('../lib/htauth/version', __FILE__)
 
-This.ruby_gemspec do |spec|
-  spec.add_development_dependency( 'rake'     , '~> 10.1')
-  spec.add_development_dependency( 'minitest' , '~> 5.0' )
-  spec.add_development_dependency( 'rdoc'     , '~> 4.0' )
-  spec.add_development_dependency( 'simplecov', '~> 0.9' )
+# task: build install release
+require 'bundler/gem_tasks'
 
-  spec.add_dependency("highline", "~> 1.6")
+# task: clean clobber
+require 'rake/clean'
+# .rbc files from ruby 2.0
+CLOBBER << FileList['**/*.rbc']
+
+# task: test
+require 'rake/testtask'
+Rake::TestTask.new(:test) do |t|
+  t.ruby_opts    = %w(-w -rubygems)
+  t.libs         = %w(lib spec test)
+  t.pattern      = '{test,spec}/**/{test_*,*_spec}.rb'
 end
 
-load 'tasks/default.rake'
+desc 'Run tests with code coverage'
+task :coverage do
+  ENV['COVERAGE'] = 'true'
+  Rake::Task[:test].execute
+end
+CLOBBER << FileList['coverage']
+
+# task: rdoc clobber_rdoc rerdoc
+gem 'rdoc'
+require 'rdoc/task'
+RDoc::Task.new do |t|
+  t.markup   = 'tomdoc'
+  t.rdoc_dir = 'doc'
+  t.main     = 'README.md'
+  t.title    = "HTAuth #{HTAuth::Version}"
+  t.rdoc_files.include(FileList['*.{rdoc,md,txt}'], FileList['lib/**/*.rb'])
+end
+
+# task: (default)
+task default: :test
