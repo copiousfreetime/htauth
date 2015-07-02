@@ -71,7 +71,7 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
 * [The Apache Software Foundation](http://www.apache.org/)
 * all the folks who contributed to htdigest and htpassword
 
-## LICENSE
+## MIT LICENSE
 
 Copyright (c) 2008 Jeremy Hinegardner
 
