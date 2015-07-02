@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'htauth/digest'
+require 'htauth/cli/digest'
 require 'tempfile'
 
-describe HTAuth::Digest do
+describe HTAuth::CLI::Digest do
 
     before(:each) do
 
@@ -10,7 +10,7 @@ describe HTAuth::Digest do
         @tf = Tempfile.new("rpasswrd-digest-test")
         @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
         @tf.close       
-        @rdigest = HTAuth::Digest.new
+        @rdigest = HTAuth::CLI::Digest.new
        
         # new file
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
