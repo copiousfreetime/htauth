@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = ["CONTRIBUTING.md", "HISTORY.md", "Manifest.txt", "README.md"]
   s.files = ["CONTRIBUTING.md", "HISTORY.md", "LICENSE", "Manifest.txt", "README.md", "Rakefile", "bin/htdigest-ruby", "bin/htpasswd-ruby", "lib/htauth.rb", "lib/htauth/algorithm.rb", "lib/htauth/crypt.rb", "lib/htauth/digest.rb", "lib/htauth/digest_entry.rb", "lib/htauth/digest_file.rb", "lib/htauth/entry.rb", "lib/htauth/errors.rb", "lib/htauth/file.rb", "lib/htauth/md5.rb", "lib/htauth/passwd.rb", "lib/htauth/passwd_entry.rb", "lib/htauth/passwd_file.rb", "lib/htauth/plaintext.rb", "lib/htauth/sha1.rb", "lib/htauth/version.rb", "spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/digest_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/passwd_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd", "tasks/default.rake", "tasks/this.rb"]
   s.homepage = "http://github.com/copiousfreetime/htauth"
-  s.licenses = ["ISC"]
+  s.licenses = ["MIT"]
   s.rdoc_options = ["--main", "README.md", "--markup", "tomdoc"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.3")
   s.rubygems_version = "2.4.5"
