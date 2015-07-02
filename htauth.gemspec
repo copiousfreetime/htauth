@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Jeremy Hinegardner"]
-  s.date = "2015-02-18"
+  s.date = "2015-07-02"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files."
   s.email = "jeremy@copiousfreetime.org"
   s.executables = ["htdigest-ruby", "htpasswd-ruby"]
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.licenses = ["ISC"]
   s.rdoc_options = ["--main", "README.md", "--markup", "tomdoc"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.3")
-  s.rubygems_version = "2.4.6"
+  s.rubygems_version = "2.4.5"
   s.summary = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files."
   s.test_files = ["spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/digest_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/passwd_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd"]
 
