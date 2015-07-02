@@ -42,11 +42,11 @@ module HTAuth
       end
     end
 
-    def initialize(user, password = "", alg = Algorithm::DEFAULT, alg_params = {} ) 
+    def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {} )
       @user      = user
       alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
-      @digest    = algorithm.encode(password)
+      @digest    = algorithm.encode(password) if password
     end
 
     def algorithm=(alg)
