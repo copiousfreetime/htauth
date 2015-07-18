@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 1.2.0 2015-07-xx
+## Version 1.2.0 2015-07-18
 
 * Clarify project license (its MIT) - [#7][(https://github.com/copiousfreetime/htauth/issues/7)
 * Cleanup travis ci config - [#8](https://github.com/copiousfreetime/htauth/issues/8)
