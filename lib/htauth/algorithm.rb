@@ -1,5 +1,6 @@
+require 'htauth/error'
 module HTAuth
-  class InvalidAlgorithmError < StandardError ; end
+  class InvalidAlgorithmError < Error; end
   # base class all the Passwd algorithms derive from
   class Algorithm
 

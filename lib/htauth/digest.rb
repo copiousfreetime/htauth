@@ -1,5 +1,5 @@
 require 'htauth/version'
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/digest_file'
 
 require 'ostruct'
@@ -115,11 +115,8 @@ module HTAuth
         $stderr.puts "#{msg}: #{fae.message}"
         $stderr.puts fae.backtrace.join("\n")
         exit 1
-      rescue HTAuth::PasswordError => pe
+      rescue HTAuth::Error => pe
         $stderr.puts "#{pe.message}"
-        exit 1
-      rescue HTAuth::DigestFileError => fe
-        $stderr.puts "#{fe.message}"
         exit 1
       rescue SignalException => se
         $stderr.puts

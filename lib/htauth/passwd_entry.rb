@@ -1,9 +1,8 @@
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/entry'
 require 'htauth/algorithm'
 
 module HTAuth
-  class InvalidPasswdEntry < StandardError ; end
 
   # A single record in an htdigest file.  
   class PasswdEntry < Entry

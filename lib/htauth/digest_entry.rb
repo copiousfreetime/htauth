@@ -1,9 +1,8 @@
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/entry'
 require 'digest/md5'
 
 module HTAuth
-  class InvalidDigestEntry < StandardError ; end
 
   # A single record in an htdigest file.  
   class DigestEntry

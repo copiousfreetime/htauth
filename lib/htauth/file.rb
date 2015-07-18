@@ -1,8 +1,7 @@
 require 'stringio'
-require 'htauth/errors'
+require 'htauth/error'
 
 module HTAuth
-  class FileAccessError < StandardError ; end
   class File
     ALTER  = "alter"
     CREATE = "create"

@@ -1,4 +1,4 @@
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/passwd_file'
 
 require 'ostruct'
@@ -164,11 +164,8 @@ EOB
         msg = "Password file failure (#{options.passwdfile}) "
         $stderr.puts "#{msg}: #{fae.message}"
         exit 1
-      rescue HTAuth::PasswordError => pe
+      rescue HTAuth::Error => pe
         $stderr.puts "#{pe.message}"
-        exit 1
-      rescue HTAuth::PasswdFileError => fe
-        $stderr.puts "#{fe.message}"
         exit 1
       rescue SignalException => se
         $stderr.puts
