@@ -6,6 +6,7 @@
 * Clarify project license (its MIT) - [#7][(https://github.com/copiousfreetime/htauth/issues/7)
 * Cleanup travis ci config - [#8](https://github.com/copiousfreetime/htauth/issues/8)
 * performance improvement in large passwd files - [#4](https://github.com/copiousfreetime/htauth/pull/4)
+* Add [Chulki Lee](https://github.com/chulkilee) as contributor.
 
 ## Version 1.1.0 2014-03-10
 
