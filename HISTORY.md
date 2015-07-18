@@ -1,5 +1,7 @@
 # Changelog
 
+## Version 2.0.0 - 2015-07-XX
+
 ## Version 1.2.0 2015-07-18
 
 * Clarify project license (its MIT) - [#7](https://github.com/copiousfreetime/htauth/issues/7)
