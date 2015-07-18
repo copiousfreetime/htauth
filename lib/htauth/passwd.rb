@@ -141,7 +141,7 @@ EOB
           passwd_file.delete(options.username)
         else
           unless options.batch_mode 
-            # initialize here so that if $stdin is overwritten it gest picked up
+            # initialize here so that if $stdin is overwritten it gets picked up
             hl = ::HighLine.new
 
             action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
