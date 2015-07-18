@@ -2,10 +2,12 @@
 
 ## Version 1.2.0 2015-07-xx
 
-* Update dependencies
 * Clarify project license (its MIT) - [#7][(https://github.com/copiousfreetime/htauth/issues/7)
 * Cleanup travis ci config - [#8](https://github.com/copiousfreetime/htauth/issues/8)
 * performance improvement in large passwd files - [#4](https://github.com/copiousfreetime/htauth/pull/4)
+* Update dependencies
+* Update project layout/tooling
+* Official notation that this project uses [Semantic Versioning](http://semver.org/)
 * Add [Chulki Lee](https://github.com/chulkilee) as contributor.
 
 ## Version 1.1.0 2014-03-10
