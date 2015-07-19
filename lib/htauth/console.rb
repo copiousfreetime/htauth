@@ -28,9 +28,3 @@ module HTAuth
     end
   end
 end
-
-  if $0 == __FILE__ then
-    c = HTAuth::Console.new
-    answer = c.ask "Passwd: "
-    puts "[#{answer}]"
-  end
