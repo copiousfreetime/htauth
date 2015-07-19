@@ -1,11 +1,10 @@
 require 'htauth/version'
 require 'htauth/error'
 require 'htauth/digest_file'
+require 'htauth/console'
 
 require 'ostruct'
 require 'optparse'
-
-require 'highline'
 
 module HTAuth
   class Digest
@@ -92,17 +91,16 @@ module HTAuth
         if options.delete_entry then
           digest_file.delete(options.username, options.realm)
         else
-          # initialize here so that if $stdin is overwritten it gets picked up
-          hl = ::HighLine.new
+          console = Console.new
 
           action = digest_file.has_entry?(options.username, options.realm) ? "Changing" : "Adding"
 
-          $stdout.puts "#{action} password for #{options.username} in realm #{options.realm}."
+          console.say "#{action} password for #{options.username} in realm #{options.realm}."
 
-          pw_in       = hl.ask("        New password: ") { |q| q.echo = '*' } 
+          pw_in       = console.ask("        New password: ")
           raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
 
-          pw_validate = hl.ask("Re-type new password: ") { |q| q.echo = '*' }
+          pw_validate = console.ask("Re-type new password: ")
           raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
 
           digest_file.add_or_update(options.username, options.realm, pw_in)

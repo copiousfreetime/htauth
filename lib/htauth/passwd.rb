@@ -1,10 +1,9 @@
 require 'htauth/error'
 require 'htauth/passwd_file'
+require 'htauth/console'
 
 require 'ostruct'
 require 'optparse'
-
-require 'highline'
 
 module HTAuth
   class Passwd
@@ -141,17 +140,17 @@ EOB
           passwd_file.delete(options.username)
         else
           unless options.batch_mode 
-            # initialize here so that if $stdin is overwritten it gets picked up
-            hl = ::HighLine.new
+            console = Console.new
 
             action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
 
-            $stdout.puts "#{action} password for #{options.username}."
+            console.say "#{action} password for #{options.username}."
 
-            pw_in       = hl.ask("        New password: ") { |q| q.echo = '*' } 
+            pw_in       = console.ask("        New password: ")
             raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
+            puts "new password: #{pw_in}"
 
-            pw_validate = hl.ask("Re-type new password: ") { |q| q.echo = '*' }
+            pw_validate = console.ask("Re-type new password: ")
             raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
             options.password = pw_in
           end

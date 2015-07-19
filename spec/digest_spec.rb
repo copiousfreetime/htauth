@@ -16,15 +16,15 @@ describe HTAuth::Digest do
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
 
         # rework stdout and stderr
-        @stdout = StringIO.new
+        @stdout = ConsoleIO.new
         @old_stdout = $stdout
         $stdout = @stdout
 
-        @stderr = StringIO.new
+        @stderr = ConsoleIO.new
         @old_stderr = $stderr
         $stderr = @stderr
 
-        @stdin = StringIO.new
+        @stdin = ConsoleIO.new
         @old_stdin = $stdin
         $stdin = @stdin
     end
