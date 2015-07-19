@@ -9,9 +9,9 @@ describe HTAuth::Passwd do
         # existing 
         @tf = Tempfile.new("rpasswrd-passwd-test")
         @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
-        @tf.close       
+        @tf.close
         @htauth = HTAuth::Passwd.new
-       
+
         # new file
         @new_file = File.join(File.dirname(@tf.path), "new-testfile")
 
