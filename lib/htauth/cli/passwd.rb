@@ -149,7 +149,6 @@ Usage:
 
               pw_in       = console.ask("        New password: ")
               raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
-              puts "new password: #{pw_in}"
 
               pw_validate = console.ask("Re-type new password: ")
               raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
