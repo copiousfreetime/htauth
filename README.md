@@ -1,6 +1,5 @@
 ## HTAuth
 
-* [Homepage](http://copiousfreetime.rubyforge.org/htauth)
 * [Github](http://github.com/copiousfreetime/htauth/tree/master)
 * email jeremy at copiousfreetime dot org
 
