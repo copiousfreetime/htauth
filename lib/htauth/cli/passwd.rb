@@ -7,6 +7,7 @@ require 'optparse'
 
 module HTAuth
   module CLI
+    # Internal: Implemenation of the commandline htpasswd-ruby
     class Passwd
 
       MAX_PASSWD_LENGTH = 255

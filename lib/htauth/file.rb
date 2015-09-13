@@ -2,17 +2,54 @@ require 'stringio'
 require 'htauth/error'
 
 module HTAuth
+  # Internal: A base class for DigestFile and PasswordFile to inherit from.
+  #
+  # This class should not be instantiated directly. You must use DigestFile or
+  # PasswordFile.
   class File
-    ALTER  = "alter"
-    CREATE = "create"
-    STDOUT_FLAG = "-"
+
+    # Public: The mode to pass to #open for updating a file
+    ALTER  = "alter".freeze
+
+    # Public: The mode to pass to #open for creating a new file
+    CREATE = "create".freeze
+
+    # Public: A special 'filename' that may be passed to #open for 'saving' to $stdout
+    STDOUT_FLAG = "-".freeze
 
     attr_reader :filename
     attr_reader :file
 
     class << self
-      # open a file yielding the the file object for use.  The file is saved when 
-      # the block exists, if the file has had alterations made.
+      # Public: The method to use to open a DigestFile or PasswordFile.
+      # Altering a non-existent file is an error. Creating an existing file 
+      # results in a truncation and overwrite of the existing file.
+      #
+      # filename - The name of the file to open
+      # mode     - The mode to open the file this must be either CREATE or
+      #            ALTER. (default: ALTER)
+      #
+      # Yields the instance of DigestFile or PasswordFile that was opened.
+      # The File will be saved at the end of the block if any entries have been
+      # added, updated, or deleted.
+      #
+      # Examples
+      #
+      #   df = ::HTAuth::DigestFile.open("my.digest")
+      #
+      #   ::HTAuth::Digestfile.open("my.digest") do |df|
+      #     # ...
+      #   end
+      #
+      #   pf = ::HTAuth::PasswordFile.open("my.passwd")
+      #
+      #   ::HTAuth::PasswordFile.open("my.passwd") do |pf|
+      #     # ...
+      #   end
+      #
+      # Returns the DigestFile or PasswordFile as appropriate.
+      # Raises FileAccessError if an invalid mode is used.
+      # Raises FileAccessError if ALTERing a non-existent file.
       def open(filename, mode = ALTER) 
         f = self.new(filename, mode)
         if block_given?
@@ -26,10 +63,25 @@ module HTAuth
       end
     end
 
-    # Create or Alter a password file.
+    # Public: Create a new DigestFile or PasswordFile.
+    # Generally you do not need to use this method. Use #open instead.
     #
-    # Altering a non-existent file is an error.  Creating an existing file results in
-    # a truncation and overwrite of the existing file.
+    # Altering a non-existent file is an error. Creating an existing file 
+    # results in a truncation and overwrite of the existing file.
+    #
+    # filename - The name of the file to open
+    # mode     - The mode to open the file this must be either CREATE or
+    #            ALTER. (default: ALTER)
+    #
+    # Examples
+    #
+    #   df = ::HTAuth::DigestFile.open("my.digest")
+    #
+    #   pf = ::HTAuth::PasswordFile.open("my.passwd")
+    #
+    # Returns the DigestFile or PasswordFile as appropriate.
+    # Raises FileAccessError if an invalid mode is used.
+    # Raises FileAccessError if ALTERing a non-existent file.
     def initialize(filename, mode = ALTER)
       @filename   = filename
       @mode       = mode
@@ -50,17 +102,30 @@ module HTAuth
       end
     end
 
-    # return whether or not an alteration to the file has happened
+    # Public: Returns if the file has had any alterations.
+    #
+    # Returns true or false
     def dirty?
       @dirty
     end
 
-    # mark the file as dirty
+    # Public: Explicitly mark the file as having had alterations
+    #
+    # Returns true
     def dirty!
       @dirty = true
     end
 
-    # update the original file with the new contents
+    # Public: Write out the file to filename from #open.
+    # This will write out the whole file at once. If writing to a filesystem
+    # file this overwrites the whole file.
+    #
+    # Example
+    #
+    #     df.save!
+    #
+    # Returns nothing
+    # Raises FileAccessError if there was a problem writing the file
     def save!
       begin
         case filename
@@ -77,7 +142,9 @@ module HTAuth
       end
     end
 
-    # return what should be the contents of the file
+    # Internal: Return the String of the entire file contents
+    #
+    # Returns String
     def contents
       c = StringIO.new
       @lines.each do |l| 
@@ -86,8 +153,12 @@ module HTAuth
       c.string
     end
 
-    # load up entries, keep items in the same order and do not trim out any 
-    # items in the file, like commented out lines or empty space
+    # Internal: Loads all the entries from the file into an internal array.
+    #
+    # This keeps the original lines in one array and all the entries in a
+    # separate structure indexed by key. This allows the file to be written back
+    # out in the same order it was read with the appropriate entries updated or
+    # deleted.
     def load_entries
       @lines   = IO.readlines(@filename)
       @lines.each_with_index do |line,idx|
@@ -97,6 +168,7 @@ module HTAuth
           @entries[entry.key] = v
         end
       end
+      nil
     end
   end
 end

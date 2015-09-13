@@ -3,9 +3,9 @@ require 'digest/sha1'
 require 'base64'
 
 module HTAuth
-
-  # an implementation of the SHA based encoding algorithm 
+  # Internal: an implementation of the SHA based encoding algorithm
   # as used in the apache htpasswd -s option
+  #
   class Sha1 < Algorithm
 
     # ignore the params

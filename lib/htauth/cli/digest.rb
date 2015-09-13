@@ -8,6 +8,7 @@ require 'optparse'
 
 module HTAuth
   module CLI
+    # Internal: Implemenation of the commandline htdigest-ruby
     class Digest
 
       MAX_PASSWD_LENGTH = 255

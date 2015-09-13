@@ -1,12 +1,28 @@
 require 'htauth/error'
 module HTAuth
   class InvalidAlgorithmError < Error; end
-  # base class all the Passwd algorithms derive from
+
+  # Internal: Base class all the password algorithms derive from
+  #
   class Algorithm
 
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
-    DEFAULT       = "md5"
-    EXISTING      = "existing"
+
+    # Public: flag for the md5 algorithm
+    MD5           = "md5".freeze
+    # Public: flag for the sha1 algorithm
+    SHA1          = "sha1".freeze
+    # Public: flag for the plaintext algorithm
+    PLAINTEXT     = "plaintext".freeze
+    # Public: flag for the crypt algorithm
+    CRYPT         = "crypt".freeze
+
+    # Public: flag for the default algorithm
+    DEFAULT       = MD5
+
+    # Public: flag to indicate using the existing algorithm of the entry
+    EXISTING      = "existing".freeze
+
 
     class << self
       def algorithm_from_name(a_name, params = {})
@@ -40,17 +56,21 @@ module HTAuth
       end
     end
 
+    # Internal
     def prefix ; end
+
+    # Internal
     def encode(password) ; end
 
-    # 8 bytes of random items from SALT_CHARS
+    # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt
       chars = []
       8.times { chars << SALT_CHARS[rand(SALT_CHARS.size)] }
-      chars.join('')     
+      chars.join('')
     end
 
-    # this is not the Base64 encoding, this is the to64() method from apr
+    # Internal: this is not the Base64 encoding, this is the to64() 
+    # method from the apache protable runtime library
     def to_64(number, rounds)
       r = StringIO.new
       rounds.times do |x|

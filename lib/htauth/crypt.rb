@@ -1,8 +1,7 @@
 require 'htauth/algorithm'
 
 module HTAuth
-
-  # The basic crypt algorithm
+  # Internal: The basic crypt algorithm
   class Crypt < Algorithm
 
     def initialize(params = {})

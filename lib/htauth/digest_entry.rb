@@ -3,15 +3,22 @@ require 'htauth/entry'
 require 'digest/md5'
 
 module HTAuth
-
-  # A single record in an htdigest file.  
+  # Internal: Object version of a single record from an htdigest file
   class DigestEntry
 
+    # Internal: The user of this entry
     attr_accessor :user
+    # Internal: The realm of this entry
     attr_accessor :realm
+    # Internal: The passwod digest of this entry
     attr_accessor :digest
 
     class << self
+      # Internal: Create an instance of this class from a line of text
+      #
+      # line - a line of text from a htdigest file
+      #
+      # Returns an instance of DigestEntry
       def from_line(line)
         parts = is_entry!(line)
         d = DigestEntry.new(parts[0], parts[1])
@@ -19,10 +26,16 @@ module HTAuth
         return d
       end
 
-      # test if a line is an entry, raise InvalidDigestEntry if it is not.
-      # an entry must be composed of 3 parts, username:realm:md5sum
-      # where username, and realm do not contain the ':' character 
-      # and the md5sum must be 32 characters long.
+      # Internal: test if the given line is valid for this Entry class
+      #
+      # A valid entry must be composed of 3 parts, username:realm:md5sum where
+      # username, and realm do not contain the ':' character; and md5sum must be
+      # 32 characters long
+      #
+      # line - a line of text from a file
+      #
+      # Returns the individual parts of the line
+      # Raises InvalidDigestEntry if it is not a a valid entry
       def is_entry!(line)
         raise InvalidDigestEntry, "line commented out" if line =~ /\A#/
         parts = line.strip.split(":")
@@ -32,7 +45,9 @@ module HTAuth
         return parts
       end
 
-      # test if a line is an entry and return true or false
+      # Internal: Returns whether or not the line is a valid entry
+      #
+      # Returns true or false
       def is_entry?(line)
         begin
           is_entry!(line)
@@ -43,29 +58,35 @@ module HTAuth
       end
     end
 
+    # Internal: Create a new Entry with the given user, realm and password
     def initialize(user, realm, password = "")
       @user     = user
       @realm    = realm
       @digest   = calc_digest(password)
     end
 
+    # Internal: Update the password of the entry with its new value
     def password=(new_password)
       @digest = calc_digest(new_password)
     end
 
+    # Internal: calculate the new digest of the given password
     def calc_digest(password)
       ::Digest::MD5.hexdigest("#{user}:#{realm}:#{password}")
     end
 
+    # Public: Check if the given password is the password of this entry.
     def authenticated?(check_password)
       hd = ::Digest::MD5.hexdigest("#{user}:#{realm}:#{check_password}")
       return hd == digest
     end
 
+    # Internal: Returns the key of this entry
     def key
       "#{user}:#{realm}"
     end
 
+    # Internal: Returns the file line for this entry
     def to_s
       "#{user}:#{realm}:#{digest}"
     end

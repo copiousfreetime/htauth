@@ -4,6 +4,7 @@ require 'htauth/error'
 # With many thanks to JEG2 - http://graysoftinc.com/terminal-tricks/random-access-terminal
 #
 module HTAuth
+  # Internal: Utility class for managing console input/output
   class Console
     attr_reader :input
     attr_reader :output

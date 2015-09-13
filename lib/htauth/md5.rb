@@ -2,8 +2,7 @@ require 'htauth/algorithm'
 require 'digest/md5'
 
 module HTAuth
-
-  # an implementation of the MD5 based encoding algorithm 
+  # Internal: an implementation of the MD5 based encoding algorithm
   # as used in the apache htpasswd -m option
   class Md5 < Algorithm
 

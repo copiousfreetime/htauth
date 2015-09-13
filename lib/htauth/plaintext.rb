@@ -1,8 +1,7 @@
 require 'htauth/algorithm'
 
 module HTAuth
-
-  # the plaintext algorithm, which does absolutly  nothing
+  # Internal: the plaintext algorithm, which does absolutly nothing
   class Plaintext < Algorithm
     # ignore parameters
     def initialize(params = {})
