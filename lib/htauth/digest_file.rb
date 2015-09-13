@@ -1,10 +1,9 @@
 require 'stringio'
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/file'
 require 'htauth/digest_entry'
 
 module HTAuth
-  class DigestFileError < StandardError ; end
   class DigestFile < HTAuth::File
 
     ENTRY_KLASS = HTAuth::DigestEntry

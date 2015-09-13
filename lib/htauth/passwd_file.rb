@@ -1,12 +1,11 @@
 require 'stringio'
 require 'tempfile'
 
-require 'htauth/errors'
+require 'htauth/error'
 require 'htauth/file'
 require 'htauth/passwd_entry'
 
 module HTAuth
-  class PasswdFileError < StandardError ; end
 
   # PasswdFile provides API style access to an +htpasswd+ produced file
   class PasswdFile < HTAuth::File

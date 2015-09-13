@@ -13,7 +13,7 @@ lib/htauth/digest.rb
 lib/htauth/digest_entry.rb
 lib/htauth/digest_file.rb
 lib/htauth/entry.rb
-lib/htauth/errors.rb
+lib/htauth/error.rb
 lib/htauth/file.rb
 lib/htauth/md5.rb
 lib/htauth/passwd.rb
