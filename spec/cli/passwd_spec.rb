@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'htauth/passwd'
+require 'htauth/cli/passwd'
 require 'tempfile'
 
-describe HTAuth::Passwd do
+describe HTAuth::CLI::Passwd do
 
   before(:each) do
 
@@ -10,7 +10,7 @@ describe HTAuth::Passwd do
     @tf = Tempfile.new("rpasswrd-passwd-test")
     @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
     @tf.close
-    @htauth = HTAuth::Passwd.new
+    @htauth = HTAuth::CLI::Passwd.new
 
     # new file
     @new_file = File.join(File.dirname(@tf.path), "new-testfile")
