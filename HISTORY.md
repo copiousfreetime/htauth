@@ -1,6 +1,9 @@
 # Changelog
 
-## Version 2.0.0 - 2015-07-XX
+## Version 2.0.0 - 2015-09-13
+
+* Remove highline dependency - [#9](https://github.com/copiousfreetime/htauth/pull/9)
+* Extract the commandline objects to their own module - [#2](https://github.com/copiousfreetime/htauth/issues/2)
 
 ## Version 1.2.0 2015-07-18
 
