@@ -77,7 +77,7 @@ module HTAuth
 
     # Public: Check if the given password is the password of this entry.
     def authenticated?(check_password)
-      hd = ::Digest::MD5.hexdigest("#{user}:#{realm}:#{check_password}")
+      hd = calc_digest(check_password)
       return hd == digest
     end
 
