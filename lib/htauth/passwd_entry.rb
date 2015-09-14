@@ -98,18 +98,21 @@ module HTAuth
     # Public: Check if the given password is the password of this entry
     # check the password and make sure it works, in the case that the algorithm is unknown it
     # tries all of the ones that it thinks it could be, and marks the algorithm if it matches
+    # when looking for a matche, we always compare all of them, no short
+    # circuiting
     def authenticated?(check_password)
       authed = false
       if algorithm.kind_of?(Array) then
         algorithm.each do |alg|
-          if alg.encode(check_password) == digest then
+          encoded = alg.encode(check_password)
+          if Algorithm.secure_compare(encoded, digest) then
             @algorithm = alg
             authed = true
-            break
           end
         end
       else
-        authed = digest == algorithm.encode(check_password)
+        encoded = algorithm.encode(check_password)
+        authed  = Algorithm.secure_compare(encoded, digest)
       end
       return authed
     end

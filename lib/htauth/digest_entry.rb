@@ -77,8 +77,8 @@ module HTAuth
 
     # Public: Check if the given password is the password of this entry.
     def authenticated?(check_password)
-      hd = calc_digest(check_password)
-      return hd == digest
+      check = calc_digest(check_password)
+      return Algorithm.secure_compare(check, digest)
     end
 
     # Internal: Returns the key of this entry
