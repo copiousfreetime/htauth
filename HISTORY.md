@@ -5,6 +5,7 @@
 * Remove highline dependency - [#9](https://github.com/copiousfreetime/htauth/pull/9)
 * Tomdoc the public interface - [#10](https://github.com/copiousfreetime/htauth/issues/10)
 * Extract the commandline objects to their own module - [#2](https://github.com/copiousfreetime/htauth/issues/2)
+* Use a secure comparison when comparing digests - [#11](https://github.com/copiousfreetime/htauth/issues/11)
 
 ## Version 1.2.0 2015-07-18
 
