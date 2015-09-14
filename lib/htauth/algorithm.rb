@@ -1,4 +1,5 @@
 require 'htauth/error'
+require 'securerandom'
 module HTAuth
   class InvalidAlgorithmError < Error; end
 
@@ -65,7 +66,7 @@ module HTAuth
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt
       chars = []
-      8.times { chars << SALT_CHARS[rand(SALT_CHARS.size)] }
+      8.times { chars << SALT_CHARS[SecureRandom.random_number(SALT_CHARS.size)] }
       chars.join('')
     end
 
