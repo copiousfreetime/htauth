@@ -10,19 +10,19 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Jeremy Hinegardner"]
-  s.date = "2015-09-13"
+  s.date = "2015-09-14"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files."
   s.email = "jeremy@copiousfreetime.org"
   s.executables = ["htdigest-ruby", "htpasswd-ruby"]
   s.extra_rdoc_files = ["CONTRIBUTING.md", "HISTORY.md", "Manifest.txt", "README.md"]
-  s.files = ["CONTRIBUTING.md", "HISTORY.md", "LICENSE", "Manifest.txt", "README.md", "Rakefile", "bin/htdigest-ruby", "bin/htpasswd-ruby", "lib/htauth.rb", "lib/htauth/algorithm.rb", "lib/htauth/crypt.rb", "lib/htauth/digest.rb", "lib/htauth/digest_entry.rb", "lib/htauth/digest_file.rb", "lib/htauth/entry.rb", "lib/htauth/error.rb", "lib/htauth/file.rb", "lib/htauth/md5.rb", "lib/htauth/passwd.rb", "lib/htauth/passwd_entry.rb", "lib/htauth/passwd_file.rb", "lib/htauth/plaintext.rb", "lib/htauth/sha1.rb", "lib/htauth/version.rb", "spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/digest_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/passwd_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd", "tasks/default.rake", "tasks/this.rb"]
+  s.files = ["CONTRIBUTING.md", "HISTORY.md", "LICENSE", "Manifest.txt", "README.md", "Rakefile", "bin/htdigest-ruby", "bin/htpasswd-ruby", "lib/htauth.rb", "lib/htauth/algorithm.rb", "lib/htauth/cli.rb", "lib/htauth/cli/digest.rb", "lib/htauth/cli/passwd.rb", "lib/htauth/console.rb", "lib/htauth/crypt.rb", "lib/htauth/digest_entry.rb", "lib/htauth/digest_file.rb", "lib/htauth/entry.rb", "lib/htauth/error.rb", "lib/htauth/file.rb", "lib/htauth/md5.rb", "lib/htauth/passwd_entry.rb", "lib/htauth/passwd_file.rb", "lib/htauth/plaintext.rb", "lib/htauth/sha1.rb", "lib/htauth/version.rb", "spec/cli/digest_spec.rb", "spec/cli/passwd_spec.rb", "spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd", "tasks/default.rake", "tasks/this.rb"]
   s.homepage = "http://github.com/copiousfreetime/htauth"
   s.licenses = ["MIT"]
   s.rdoc_options = ["--main", "README.md", "--markup", "tomdoc"]
   s.required_ruby_version = Gem::Requirement.new(">= 1.9.3")
   s.rubygems_version = "2.4.5"
   s.summary = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files."
-  s.test_files = ["spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/digest_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/passwd_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd"]
+  s.test_files = ["spec/cli/digest_spec.rb", "spec/cli/passwd_spec.rb", "spec/crypt_spec.rb", "spec/digest_entry_spec.rb", "spec/digest_file_spec.rb", "spec/md5_spec.rb", "spec/passwd_entry_spec.rb", "spec/passwd_file_spec.rb", "spec/plaintext_spec.rb", "spec/sha1_spec.rb", "spec/spec_helper.rb", "spec/test.add.digest", "spec/test.add.passwd", "spec/test.delete.digest", "spec/test.delete.passwd", "spec/test.original.digest", "spec/test.original.passwd", "spec/test.update.digest", "spec/test.update.passwd"]
 
   if s.respond_to? :specification_version then
     s.specification_version = 4
