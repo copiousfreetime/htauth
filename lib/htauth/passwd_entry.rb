@@ -62,7 +62,7 @@ module HTAuth
       @user      = user
       alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
-      @digest    = algorithm.encode(password) if password
+      @digest    = calc_digest(password)
     end
 
     # Internal: set the algorithm for the entry
@@ -80,11 +80,19 @@ module HTAuth
     end
 
     # Internal: Update the password of the entry with its new value
+    #
+    # If we have an array of algorithms, then we set it to CRYPT
     def password=(new_password)
       if algorithm.kind_of?(Array) then
         @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT)
       end
-      @digest = algorithm.encode(new_password)
+      @digest = calc_digest(new_password)
+    end
+
+    # Internal: calculate the new digest of the given password
+    def calc_digest(password)
+      return nil unless password
+      algorithm.encode(password)
     end
 
     # Public: Check if the given password is the password of this entry
