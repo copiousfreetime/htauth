@@ -82,7 +82,7 @@ module HTAuth
     # Internal: Update the password of the entry with its new value
     def password=(new_password)
       if algorithm.kind_of?(Array) then
-        @algorithm = Algorithm.algorithm_from_name("crypt")
+        @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT)
       end
       @digest = algorithm.encode(new_password)
     end

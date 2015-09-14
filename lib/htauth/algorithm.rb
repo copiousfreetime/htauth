@@ -33,14 +33,14 @@ module HTAuth
       def algorithms_from_field(password_field)
         matches = []
 
-        if password_field.index(sub_klasses['sha1'].new.prefix) then
-          matches << sub_klasses['sha1'].new
-        elsif password_field.index(sub_klasses['md5'].new.prefix) then
+        if password_field.index(sub_klasses[SHA1].new.prefix) then
+          matches << sub_klasses[SHA1].new
+        elsif password_field.index(sub_klasses[MD5].new.prefix) then
           p = password_field.split("$")
-          matches << sub_klasses['md5'].new( :salt => p[2] )
+          matches << sub_klasses[MD5].new( :salt => p[2] )
         else
-          matches << sub_klasses['plaintext'].new
-          matches << sub_klasses['crypt'].new( :salt => password_field[0,2] )
+          matches << sub_klasses[PLAINTEXT].new
+          matches << sub_klasses[CRYPT].new( :salt => password_field[0,2] )
         end
 
         return matches

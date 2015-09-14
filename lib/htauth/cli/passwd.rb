@@ -60,7 +60,7 @@ Usage:
             end
 
             op.on("-d", "--crypt", "Force CRYPT encryption of the password.") do |c|
-              options.algorithm = "crypt"
+              options.algorithm = Algorithm::CRYPT
             end
 
             op.on("-D", "--delete", "Delete the specified user.") do |d|
@@ -72,7 +72,7 @@ Usage:
             end
 
             op.on("-m", "--md5", "Force MD5 encryption of the password (default).") do |m|
-              options.algorithm = "md5"
+              options.algorithm = Algorithm::MD5
             end
 
             op.on("-n", "--stdout", "Do not update the file; Display the results on stdout instead.") do |n|
@@ -81,11 +81,11 @@ Usage:
             end
 
             op.on("-p", "--plaintext", "Do not encrypt the password (plaintext).") do |p|
-              options.algorithm = "plaintext"
+              options.algorithm = Algorithm::PLAINTEXT
             end
 
             op.on("-s", "--sha1", "Force SHA encryption of the password.") do |s|
-              options.algorithm = "sha1"
+              options.algorithm = Algorithm::SHA1
             end
 
             op.on("-v", "--version", "Show version info.") do |v|
