@@ -38,7 +38,7 @@ task :develop => "develop:default"
 begin
   require 'rake/testtask'
   Rake::TestTask.new( :test ) do |t|
-    t.ruby_opts    = %w[ -w -rubygems ]
+    t.ruby_opts    = %w[ -w ]
     t.libs         = %w[ lib spec test ]
     t.pattern      = "{test,spec}/**/{test_*,*_spec}.rb"
   end
@@ -159,7 +159,7 @@ namespace :fixme do
   end
 
   desc "See if the fixme tools are outdated"
-  task :outdated => :release_check do
+  task :outdated do
     if fixme_up_to_date? then
       puts "Fixme files are up to date."
     else
@@ -170,7 +170,7 @@ namespace :fixme do
   end
 
   desc "Update outdated fixme files"
-  task :update => :release_check do
+  task :update do
     if fixme_up_to_date? then
       puts "Fixme files are already up to date."
     else
