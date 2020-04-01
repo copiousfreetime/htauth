@@ -8,16 +8,13 @@ module HTAuth
   #
   class Sha1 < Algorithm
 
+    PREFIX      = '{SHA}'.freeze
     # ignore the params
     def initialize(params = {}) 
     end
 
-    def prefix
-      "{SHA}"
-    end
-
     def encode(password)
-      "#{prefix}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"
+      "#{PREFIX}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"
     end
   end
 end

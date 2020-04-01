@@ -7,6 +7,7 @@ module HTAuth
   class Md5 < Algorithm
 
     DIGEST_LENGTH = 16
+    PREFIX         = "$apr1$".freeze
 
     def initialize(params = {})
       @salt = params['salt'] || params[:salt] || gen_salt
@@ -20,7 +21,7 @@ module HTAuth
     def encode(password)
       primary = ::Digest::MD5.new
       primary << password
-      primary << prefix
+      primary << PREFIX
       primary << @salt
 
       md5_t = ::Digest::MD5.digest("#{password}#{@salt}#{password}")
@@ -46,7 +47,7 @@ module HTAuth
 
       pd = primary.digest
 
-      encoded_password = "#{prefix}#{@salt}$"
+      encoded_password = "#{PREFIX}#{@salt}$"
 
       # apr_md5_encode has this comment about a 60Mhz Pentium above this loop.
       1000.times do |x|

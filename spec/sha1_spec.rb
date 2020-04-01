@@ -2,10 +2,6 @@ require 'spec_helper'
 require 'htauth/sha1'
 
 describe HTAuth::Sha1 do
-  it "has a prefix" do
-    _(HTAuth::Sha1.new.prefix).must_equal "{SHA}"
-  end
-
   it "encrypts the same way that apache does" do
     apache_result = "{SHA}ZrnlrvmM7ZCOV3FAvM7la89NKbk="
     sha1 = HTAuth::Sha1.new

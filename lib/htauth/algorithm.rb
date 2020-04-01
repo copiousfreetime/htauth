@@ -76,9 +76,6 @@ module HTAuth
     end
 
     # Internal
-    def prefix ; end
-
-    # Internal
     def encode(password) ; end
 
     # Internal: 8 bytes of random items from SALT_CHARS

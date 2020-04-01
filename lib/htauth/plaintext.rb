@@ -7,10 +7,6 @@ module HTAuth
     def initialize(params = {})
     end
 
-    def prefix
-      ""
-    end
-
     def encode(password)
       "#{password}"
     end
