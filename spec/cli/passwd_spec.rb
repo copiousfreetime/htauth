@@ -70,6 +70,23 @@ describe HTAuth::CLI::Passwd do
     end
   end
 
+  it "creates a new file with one bcrypt entry" do
+    begin
+      @stdin.puts "b secret"
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-B", "-c", @new_file, "brenda" ])
+    rescue SystemExit => se
+      _(se.status).must_equal 0
+      l = IO.readlines(@new_file)
+      fields = l.first.split(':')
+      _(fields.first).must_equal "brenda"
+      bcrypt_hash = fields.last
+
+      _(::BCrypt::Password.valid_hash?(bcrypt_hash)).wont_be_nil
+    end
+  end
+
   it "truncates an exiting file if told to create a new file" do
     before_lines = IO.readlines(@tf.path)
     begin

@@ -42,17 +42,21 @@ module HTAuth
           @option_parser = OptionParser.new do |op|
             op.banner = <<-EOB
 Usage: 
-            #{op.program_name} [-cmdpsD] passwordfile username
-            #{op.program_name} -b[cmdpsD] passwordfile username password
+            #{op.program_name}  [-cmBdpsD] [-C cost] passwordfile username
+            #{op.program_name} -b[cmBdpsD] [-C cost] passwordfile username password
 
-            #{op.program_name} -n[mdps] username
-            #{op.program_name} -nb[mdps] username password
+            #{op.program_name} -n[mBdps] [-C cost] username
+            #{op.program_name} -nb[mBdps] [-C cost] username password
             EOB
 
             op.separator ""
 
             op.on("-b", "--batch", "Batch mode, get the password from the command line, rather than prompt") do |b|
               options.batch_mode = b
+            end
+
+            op.on("-B", "--bcrypt", "Force bcrypt encryptiong of the password.") do |b|
+              options.algorithm = Algorithm::BCRYPT
             end
 
             op.on("-c", "--create", "Create a new file; this overwrites an existing file.") do |c|
