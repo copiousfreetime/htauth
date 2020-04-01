@@ -55,7 +55,7 @@ Usage:
               options.batch_mode = b
             end
 
-            op.on("-B", "--bcrypt", "Force bcrypt encryptiong of the password.") do |b|
+            op.on("-B", "--bcrypt", "Force bcrypt encryption of the password.") do |b|
               options.algorithm = Algorithm::BCRYPT
             end
 
