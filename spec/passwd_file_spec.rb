@@ -39,7 +39,7 @@ describe HTAuth::PasswdFile do
     _(@passwd_file.fetch("alice").to_s).must_equal "alice:$apr1$DghnA...$CsPcgerfsI/Ryy0AOAJtb0"
   end
 
-  it "raises an error if an attempt is made to alter a non-existenet file" do
+  it "raises an error if an attempt is made to alter a non-existent file" do
     _ { HTAuth::PasswdFile.new("some-file") }.must_raise(HTAuth::FileAccessError)
   end
 
@@ -53,7 +53,7 @@ describe HTAuth::PasswdFile do
     _(@passwd_file.contents).must_equal IO.read(PASSWD_DELETE_TEST_FILE)
   end
 
-  it "is usable in a ruby manner and yeilds itself when opened" do
+  it "is usable in a ruby manner and yields itself when opened" do
     HTAuth::PasswdFile.open(@tf.path) do |pf|
       pf.add_or_update("alice", "a new secret", "md5")
       pf.delete('bob')
