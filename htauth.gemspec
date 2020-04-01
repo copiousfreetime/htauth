@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2020-03-31"
+  s.date = "2020-04-01"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["htdigest-ruby".freeze, "htpasswd-ruby".freeze]
@@ -29,20 +29,20 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-      s.add_development_dependency(%q<rake>.freeze, ["~> 12.3"])
+      s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
       s.add_development_dependency(%q<minitest>.freeze, ["~> 5.5"])
       s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.2"])
       s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.17"])
     else
       s.add_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-      s.add_dependency(%q<rake>.freeze, ["~> 12.3"])
+      s.add_dependency(%q<rake>.freeze, ["~> 13.0"])
       s.add_dependency(%q<minitest>.freeze, ["~> 5.5"])
       s.add_dependency(%q<rdoc>.freeze, ["~> 6.2"])
       s.add_dependency(%q<simplecov>.freeze, ["~> 0.17"])
     end
   else
     s.add_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-    s.add_dependency(%q<rake>.freeze, ["~> 12.3"])
+    s.add_dependency(%q<rake>.freeze, ["~> 13.0"])
     s.add_dependency(%q<minitest>.freeze, ["~> 5.5"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 6.2"])
     s.add_dependency(%q<simplecov>.freeze, ["~> 0.17"])
