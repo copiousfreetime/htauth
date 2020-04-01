@@ -159,7 +159,7 @@ Usage:
           if options.delete_entry then
             passwd_file.delete(options.username)
           else
-            unless options.batch_mode 
+            unless options.batch_mode
               console = Console.new
 
               action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
