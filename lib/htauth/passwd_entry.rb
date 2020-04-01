@@ -12,6 +12,8 @@ module HTAuth
     attr_accessor :digest
     # Internal: the algorithm used to create the digest of this entry
     attr_reader   :algorithm
+    # Internal: the algorithm arguments used to create the digest of this entry
+    attr_reader   :algorithm_args
 
     class << self
       # Internal: Create an instance of this class from a line of text
@@ -77,6 +79,13 @@ module HTAuth
         raise InvalidAlgorithm, "Unable to assigne #{alg} to algorithm"
       end
       return @algorithm
+    end
+
+    # Internal: set fields on the algorithm
+    def algorithm_args=(args = {})
+      args.each do |key, value|
+        @algorithm.send(key, value) if algorithm.respond_to?(key)
+      end
     end
 
     # Internal: Update the password of the entry with its new value

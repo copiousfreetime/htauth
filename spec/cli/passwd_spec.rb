@@ -87,6 +87,51 @@ describe HTAuth::CLI::Passwd do
     end
   end
 
+  it "allows the bcrypt cost to be set" do
+    begin
+      cost = 12
+      @stdin.puts "b secret"
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-C", "#{cost}", "-B", "-c", @new_file, "brenda" ])
+    rescue SystemExit => se
+      _(se.status).must_equal 0
+      l = IO.readlines(@new_file)
+      fields = l.first.split(':')
+      _(fields.first).must_equal "brenda"
+      bcrypt_hash = fields.last
+      _(::BCrypt::Password.valid_hash?(bcrypt_hash)).wont_be_nil
+
+      _, _version, count, _rest = bcrypt_hash.split("$")
+      _(count).must_equal ("%02d" % cost)
+    end
+  end
+
+  it "raises an error if the bcrypt cost is out of range" do
+    begin
+      @stdin.puts "b secret"
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-C", "42", "-B", "-c", @new_file, "brenda" ])
+    rescue SystemExit => se
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
+    end
+  end
+
+  it "raises an error if the bcrypt cost is not an integer" do
+    begin
+      @stdin.puts "b secret"
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-C", "forty-two", "-B", "-c", @new_file, "brenda" ])
+    rescue SystemExit => se
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
+    end
+ 
+  end
+
   it "truncates an exiting file if told to create a new file" do
     before_lines = IO.readlines(@tf.path)
     begin

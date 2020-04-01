@@ -27,6 +27,7 @@ module HTAuth
           @options.file_mode      = File::ALTER
           @options.passwdfile     = nil
           @options.algorithm      = Algorithm::EXISTING
+          @options.algorithm_args = {}
           @options.send_to_stdout = false
           @options.show_version   = false
           @options.show_help      = false
@@ -57,6 +58,19 @@ Usage:
 
             op.on("-B", "--bcrypt", "Force bcrypt encryption of the password.") do |b|
               options.algorithm = Algorithm::BCRYPT
+            end
+
+            op.on("-CCOST", "--cost COST", "Set the computing time used for the bcrypt algorithm (higher is more secure but slower, default: 5, valid: 4 to 31).") do |c|
+              if c !~ /\A\d+\z/ then
+                  raise ::OptionParser::ParseError, "the bcrypt cost must be an integer from 4 to 31, `#{c}` is invalid"
+              end
+
+              cost = c.to_i
+              if (4..31).include?(cost)
+                options.algorithm_args = { :cost => cost }
+              else
+                raise ::OptionParser::ParseError, "the bcrypt cost must be an integer from 4 to 31, `#{c}` is invalid"
+              end
             end
 
             op.on("-c", "--create", "Create a new file; this overwrites an existing file.") do |c|
@@ -159,7 +173,7 @@ Usage:
               raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
               options.password = pw_in
             end
-            passwd_file.add_or_update(options.username, options.password, options.algorithm)
+            passwd_file.add_or_update(options.username, options.password, options.algorithm, options.algorithm_args)
           end
 
           passwd_file.save! 

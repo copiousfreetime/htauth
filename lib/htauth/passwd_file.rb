@@ -68,7 +68,11 @@ module HTAuth
     # username  - the username of the entry
     # password  - the username of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
-    #             "md5", "sha1", "plaintext", or "crypt"
+    #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    # algorithm_args - key-value pairs of arguments that are passed to the
+    #                  algorithm, currently this is only used to pass the cost
+    #                  to the bcrypt algorithm
+    #
     #
     # Examples
     #
@@ -79,11 +83,11 @@ module HTAuth
     #   passwd_file.save!
     #
     # Returns nothing.
-    def add_or_update(username, password, algorithm = Algorithm::DEFAULT)
+    def add_or_update(username, password, algorithm = Algorithm::DEFAULT, algorithm_args = {})
       if has_entry?(username) then
-        update(username, password, algorithm)
+        update(username, password, algorithm, algorithm_args)
       else
-        add(username, password, algorithm)
+        add(username, password, algorithm, algorithm_args)
       end
     end
 
@@ -92,7 +96,10 @@ module HTAuth
     # username  - the username of the entry
     # password  - the username of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
-    #             "md5", "sha1", "plaintext", or "crypt"
+    #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    # algorithm_args - key-value pairs of arguments that are passed to the
+    #                  algorithm, currently this is only used to pass the cost
+    #                  to the bcrypt algorithm
     #
     # Examples
     #
@@ -102,11 +109,14 @@ module HTAuth
     #   passwd_file.add("newuser", "password", "sha1")
     #   passwd_file.save!
     #
+    #   passwd_file.add("newuser", "password", "bcrypt", { cost: 12 })
+    #   passwd_file.save!
+    #
     # Returns nothing.
     # Raises PasswdFileError if the give username already exists.
-    def add(username, password, algorithm = Algorithm::DEFAULT)
+    def add(username, password, algorithm = Algorithm::DEFAULT, algorithm_args = {})
       raise PasswdFileError, "Unable to add already existing user #{username}" if has_entry?(username)
-      new_entry = PasswdEntry.new(username, password, algorithm)
+      new_entry = PasswdEntry.new(username, password, algorithm, algorithm_args)
       new_index = @lines.size
       @lines << new_entry.to_s
       @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
@@ -123,7 +133,10 @@ module HTAuth
     # username  - the username of the entry
     # password  - the username of the entry
     # algorithm - the algorithm to use (default: "existing"). Valid options are:
-    #             "existing", "md5", "sha1", "plaintext", or "crypt"
+    #             "existing", "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    # algorithm_args - key-value pairs of arguments that are passed to the
+    #                  algorithm, currently this is only used to pass the cost
+    #                  to the bcrypt algorithm
     #
     # Examples
     #
@@ -133,12 +146,16 @@ module HTAuth
     #   passwd_file.update("newuser", "password", "sha1")
     #   passwd_file.save!
     #
+    #   passwd_file.update("newuser", "password", "bcrypt", { cost: 12 })
+    #   passwd_file.save!
+    #
     # Returns nothing.
     # Raises PasswdFileError if the give username does not exist.
-    def update(username, password, algorithm = Algorithm::EXISTING)
+    def update(username, password, algorithm = Algorithm::EXISTING, algorithm_args = {})
       raise PasswdFileError, "Unable to update non-existent user #{username}" unless has_entry?(username)
       ir = internal_record(username)
       ir['entry'].algorithm = algorithm
+      ir['entry'].algorithm_args = algorithm_args.dup
       ir['entry'].password = password
       @lines[ir['line_index']] = ir['entry'].to_s
       dirty!
