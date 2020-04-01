@@ -28,6 +28,7 @@ module HTAuth
           @options.passwdfile     = nil
           @options.algorithm      = Algorithm::EXISTING
           @options.algorithm_args = {}
+          @options.read_stdin_once= false
           @options.send_to_stdout = false
           @options.show_version   = false
           @options.show_help      = false
@@ -89,6 +90,10 @@ Usage:
               options.show_help = h
             end
 
+            op.on("-i", "--stdin", "Read the passwod from stdin without verivication (for script usage).") do |i|
+              options.read_stdin_once = true
+            end
+
             op.on("-m", "--md5", "Force MD5 encryption of the password (default).") do |m|
               options.algorithm = Algorithm::MD5
             end
@@ -139,6 +144,7 @@ Usage:
           raise ::OptionParser::ParseError, "a username and password are needed" if options.send_to_stdout and options.batch_mode  and ( argv.size < 2 ) 
           raise ::OptionParser::ParseError, "a passwordfile, username and password are needed " if not options.send_to_stdout and options.batch_mode and ( argv.size < 3 )
           raise ::OptionParser::ParseError, "a passwordfile and username are needed" if argv.size < 2
+          raise ::OptionParser::ParseError, "options -i and -b are mutually exclusive" if options.batch_mode && options.read_stdin_once
 
           options.passwdfile = argv.shift unless options.send_to_stdout
           options.username   = argv.shift

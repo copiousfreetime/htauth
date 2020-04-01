@@ -132,6 +132,17 @@ describe HTAuth::CLI::Passwd do
  
   end
 
+  it "does not allow options -i and -b to both be set" do
+    begin
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-i", "-b", "-B", "-c", @new_file, "brenda", "b-secret" ])
+    rescue SystemExit => se
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
+    end
+  end
+
   it "truncates an exiting file if told to create a new file" do
     before_lines = IO.readlines(@tf.path)
     begin
