@@ -76,7 +76,7 @@ module HTAuth
       when ::HTAuth::Algorithm
         @algorithm = alg
       else
-        raise InvalidAlgorithm, "Unable to assigne #{alg} to algorithm"
+        raise InvalidAlgorithm, "Unable to assign #{alg} to algorithm"
       end
       return @algorithm
     end
