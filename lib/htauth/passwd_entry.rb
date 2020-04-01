@@ -23,7 +23,7 @@ module HTAuth
         parts = is_entry!(line)
         d = PasswdEntry.new(parts[0])
         d.digest = parts[1]
-        d.algorithm = Algorithm.algorithms_from_field(parts[1])
+        d.algorithm = Algorithm.algorithm_from_field(parts[1])
         return d
       end
 
@@ -67,14 +67,14 @@ module HTAuth
 
     # Internal: set the algorithm for the entry
     def algorithm=(alg)
-      if alg.kind_of?(Array) then
-        if alg.size == 1 then
-          @algorithm = alg.first
-        else
-          @algorithm = alg
-        end
+      return @algorithm if Algorithm::EXISTING == alg
+      case alg
+      when String
+        @algorithm = Algorithm.algorithm_from_name(alg)
+      when ::HTAuth::Algorithm
+        @algorithm = alg
       else
-        @algorithm = Algorithm.algorithm_from_name(alg) unless Algorithm::EXISTING == alg
+        raise InvalidAlgorithm, "Unable to assigne #{alg} to algorithm"
       end
       return @algorithm
     end
@@ -83,7 +83,7 @@ module HTAuth
     #
     # If we have an array of algorithms, then we set it to CRYPT
     def password=(new_password)
-      if algorithm.kind_of?(Array) then
+      if algorithm.kind_of?(HTAuth::Plaintext) then
         @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT)
       end
       @digest = calc_digest(new_password)

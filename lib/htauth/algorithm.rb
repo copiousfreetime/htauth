@@ -1,4 +1,5 @@
 require 'htauth/error'
+require 'htauth/descendant_tracker'
 require 'securerandom'
 module HTAuth
   class InvalidAlgorithmError < Error; end
@@ -6,6 +7,8 @@ module HTAuth
   # Internal: Base class all the password algorithms derive from
   #
   class Algorithm
+
+    extend DescendantTracker
 
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
     SALT_LENGTH   = 8
@@ -27,34 +30,36 @@ module HTAuth
 
 
     class << self
+      def algorithm_name
+        self.name.split("::").last.downcase
+      end
+
       def algorithm_from_name(a_name, params = {})
-        raise InvalidAlgorithmError, "`#{a_name}' is an invalid encryption algorithm, use one of #{sub_klasses.keys.join(', ')}" unless sub_klasses[a_name.downcase]
-        sub_klasses[a_name.downcase].new(params)
-      end
-
-      def algorithms_from_field(password_field)
-        matches = []
-
-        if password_field.index(sub_klasses[SHA1].new.prefix) then
-          matches << sub_klasses[SHA1].new
-        elsif password_field.index(sub_klasses[MD5].new.prefix) then
-          p = password_field.split("$")
-          matches << sub_klasses[MD5].new( :salt => p[2] )
-        else
-          matches << sub_klasses[PLAINTEXT].new
-          matches << sub_klasses[CRYPT].new( :salt => password_field[0,2] )
+        found = children.find { |c| c.algorithm_name == a_name }
+        if !found then
+          names = children.map { |c| c.algorithm_name }
+          raise InvalidAlgorithmError, "`#{a_name}' is an unknown encryption algorithm, use one of #{names.join(', ')}"
         end
-
-        return matches
+        return found.new(params)
       end
 
-      def inherited(sub_klass)
-        k = sub_klass.name.split("::").last.downcase
-        sub_klasses[k] = sub_klass
+      # NOTE: if it is plaintext, and the length is 13 - it may matched crypt
+      #       and be tested that way. If that is the case - this is explicitly
+      #       siding with crypt() as you shouldn't be using plaintext. Or
+      #       crypt for that matter.
+      def algorithm_from_field(password_field)
+        match = find_child(:handles?, password_field)
+        match = ::HTAuth::Plaintext if match.nil? && ::HTAuth::Plaintext.entry_matches?(password_field)
+
+        raise InvalidAlgorithmError, "unknown encryption algorithm used for `#{password_field}`" if match.nil?
+
+        return match.new(:existing => password_field)
       end
 
-      def sub_klasses
-        @sub_klasses ||= {}
+      # Internal: Does this class handle this type of password entry
+      #
+      def handles?(password_entry)
+        raise NotImplementedError, "#{self.name} must impelement #{self.name}.handles?(password_entry)"
       end
 
       # Internal: Constant time string comparison.

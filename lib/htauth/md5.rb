@@ -6,15 +6,34 @@ module HTAuth
   # as used in the apache htpasswd -m option
   class Md5 < Algorithm
 
-    DIGEST_LENGTH = 16
+    DIGEST_LENGTH  = 16
+    PAD_LENGTH     = 6
     PREFIX         = "$apr1$".freeze
+    SALT_CHARS_STR = SALT_CHARS.join('')
+    ENTRY_REGEX    = %r[
+      \A
+      #{Regexp.escape(PREFIX)}
+      [#{SALT_CHARS_STR}]{#{SALT_LENGTH}}
+      #{Regexp.escape("$")}
+      [#{SALT_CHARS_STR}]{#{DIGEST_LENGTH + PAD_LENGTH}}
+      \z
+      ]x
 
-    def initialize(params = {})
-      @salt = params['salt'] || params[:salt] || gen_salt
+    def self.handles?(password_entry)
+      ENTRY_REGEX.match?(password_entry)
     end
 
-    def prefix
-      "$apr1$"
+    def self.extract_salt_from_existing_password_field(existing)
+      p = existing.split("$")
+      return p[2]
+    end
+
+    def initialize(params = {})
+      if existing = (params['existing'] || params[:existing]) then
+        @salt = self.class.extract_salt_from_existing_password_field(existing)
+      else
+        @salt = params[:salt] || params['salt'] || gen_salt
+      end
     end
 
     # this algorigthm pulled straight from apr_md5_encode() and converted to ruby syntax

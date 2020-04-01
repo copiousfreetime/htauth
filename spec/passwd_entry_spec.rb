@@ -34,8 +34,7 @@ describe HTAuth::PasswdEntry do
 
   it "encrypts with crypt as a default, when parsed from crypt()'d line" do
     bob2 = HTAuth::PasswdEntry.from_line(@bob.to_s)
-    _(bob2.algorithm).must_be_instance_of( Array )
-    _(bob2.algorithm.size).must_equal 2
+    _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
     bob2.password = "another secret"
     _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
   end
@@ -43,8 +42,7 @@ describe HTAuth::PasswdEntry do
   it "encrypts with crypt as a default, when parsed from plaintext line" do
     p = HTAuth::PasswdEntry.new('paul', 'p secret', 'plaintext')
     p2 = HTAuth::PasswdEntry.from_line(p.to_s)
-    _(p2.algorithm).must_be_instance_of(Array)
-    _(p2.algorithm.size).must_equal 2
+    _(p2.algorithm).must_be_instance_of(HTAuth::Plaintext)
     p2.password = "another secret"
     _(p2.algorithm).must_be_instance_of(HTAuth::Crypt)
   end
@@ -63,16 +61,14 @@ describe HTAuth::PasswdEntry do
 
   it "determins the algorithm to be crypt when checking a password" do
     bob2 = HTAuth::PasswdEntry.from_line(@bob.to_s)
-    _(bob2.algorithm).must_be_instance_of(Array)
-    _(bob2.algorithm.size).must_equal 2
+    _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
     _(bob2.authenticated?("b secret")).must_equal true
     _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
   end
 
   it "determins the algorithm to be plain when checking a password" do
     bob2 = HTAuth::PasswdEntry.from_line("bob:b secret")
-    _(bob2.algorithm).must_be_instance_of(Array)
-    _(bob2.algorithm.size).must_equal 2
+    _(bob2.algorithm).must_be_instance_of(HTAuth::Plaintext)
     _(bob2.authenticated?("b secret")).must_equal true
     _(bob2.algorithm).must_be_instance_of(HTAuth::Plaintext)
   end
