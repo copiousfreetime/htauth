@@ -8,6 +8,7 @@ module HTAuth
   class Algorithm
 
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
+    SALT_LENGTH   = 8
 
     # Public: flag for the md5 algorithm
     MD5           = "md5".freeze
@@ -79,13 +80,13 @@ module HTAuth
     def encode(password) ; end
 
     # Internal: 8 bytes of random items from SALT_CHARS
-    def gen_salt
+    def gen_salt(length = SALT_LENGTH)
       chars = []
-      8.times { chars << SALT_CHARS[SecureRandom.random_number(SALT_CHARS.size)] }
+      SALT_LENGTH.times { chars << SALT_CHARS[SecureRandom.random_number(SALT_CHARS.size)] }
       chars.join('')
     end
 
-    # Internal: this is not the Base64 encoding, this is the to64() 
+    # Internal: this is not the Base64 encoding, this is the to64()
     # method from the apache protable runtime library
     def to_64(number, rounds)
       r = StringIO.new
