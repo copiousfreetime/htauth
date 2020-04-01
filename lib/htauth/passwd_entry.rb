@@ -102,14 +102,9 @@ module HTAuth
     # circuiting
     def authenticated?(check_password)
       authed = false
-      if algorithm.kind_of?(Array) then
-        algorithm.each do |alg|
-          encoded = alg.encode(check_password)
-          if Algorithm.secure_compare(encoded, digest) then
-            @algorithm = alg
-            authed = true
-          end
-        end
+      if algorithm.kind_of?(Bcrypt) then
+        bc = ::BCrypt::Password.new(digest)
+        authed = bc.is_password?(check_password)
       else
         encoded = algorithm.encode(check_password)
         authed  = Algorithm.secure_compare(encoded, digest)

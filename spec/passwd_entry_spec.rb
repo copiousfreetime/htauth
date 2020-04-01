@@ -59,6 +59,12 @@ describe HTAuth::PasswdEntry do
     _(s2.algorithm).must_be_instance_of(HTAuth::Sha1)
   end
 
+  it "encrypts with bcrypt as default when parsed from a bcrypt line" do
+    b = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
+    b2 = HTAuth::PasswdEntry.from_line(b.to_s)
+    _(b2.algorithm).must_be_instance_of(HTAuth::Bcrypt)
+  end
+
   it "determins the algorithm to be crypt when checking a password" do
     bob2 = HTAuth::PasswdEntry.from_line(@bob.to_s)
     _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
@@ -85,7 +91,11 @@ describe HTAuth::PasswdEntry do
     _(s2.authenticated?("s secret")).must_equal true
   end
 
-
+  it "authenticates correctly against bcrypt" do
+    s = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
+    s2 = HTAuth::PasswdEntry.from_line(s.to_s)
+    _(s2.authenticated?("b secret")).must_equal true
+  end
 
 
   it "returns username for a key" do
@@ -125,7 +135,7 @@ describe HTAuth::PasswdEntry do
     _(HTAuth::PasswdEntry.is_entry?("bob:b secreat")).must_equal true
     _(HTAuth::PasswdEntry.is_entry?("bob:{SHA}b/tjGXbX80MEKVnF200S43ca4hY=")).must_equal true
     _(HTAuth::PasswdEntry.is_entry?("bob:$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1")).must_equal true
-
+    _(HTAuth::PasswdEntry.is_entry?("bob:$2y$05$ts3k1r.t0Cne6j6DLt0/SepT5X4qthDFEdfqHBBMO5MhqzyMz34j2")).must_equal true
   end
 
   it "duplicates itself" do
