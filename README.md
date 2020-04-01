@@ -1,7 +1,7 @@
 ## HTAuth
 
 * [Github](http://github.com/copiousfreetime/htauth/tree/master)
-* email jeremy at copiousfreetime dot org
+* [![Build Status](https://travis-ci.org/copiousfreetime/htauth.svg?branch=master)](https://travis-ci.org/copiousfreetime/htauth)
 
 ## DESCRIPTION
 
