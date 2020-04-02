@@ -292,4 +292,21 @@ describe HTAuth::CLI::Passwd do
       _(se.status).must_equal 1
     end
   end
+
+  it "errors if multiple types of operations are attmpted to be used at once" do
+    begin
+      @htauth.run(["-n", "-D"])
+    rescue SystemExit => se
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
+    end
+
+    begin
+      @htauth.run(["--verify", "-D"])
+    rescue SystemExit => se
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
+    end
+ 
+  end
 end
