@@ -35,6 +35,15 @@ describe HTAuth::PasswdFile do
     _(@passwd_file.contents).must_equal IO.read(PASSWD_UPDATE_TEST_FILE)
   end
 
+  it "can update an entry in an already existing passwd file, algorithm and arguments can change" do
+    @passwd_file.add_or_update("brenda", "b secret", "bcrypt")
+    entry = @passwd_file.fetch("brenda")
+    _(entry.algorithm.cost).must_equal(::HTAuth::Bcrypt::DEFAULT_APACHE_COST)
+    @passwd_file.add_or_update("brenda", "b secret", "bcrypt", :cost => 12)
+    entry = @passwd_file.fetch("brenda")
+    _(entry.algorithm.cost).must_equal(12)
+  end
+
   it "fetches a copy of an entry" do
     _(@passwd_file.fetch("alice").to_s).must_equal "alice:$apr1$DghnA...$CsPcgerfsI/Ryy0AOAJtb0"
   end

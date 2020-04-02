@@ -28,10 +28,6 @@ module HTAuth
       end
     end
 
-    def prefix
-      "$2".freeze
-    end
-
     def encode(password)
       ::BCrypt::Password.create(password, :cost => cost)
     end

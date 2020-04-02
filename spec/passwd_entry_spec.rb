@@ -97,6 +97,21 @@ describe HTAuth::PasswdEntry do
     _(s2.authenticated?("b secret")).must_equal true
   end
 
+  it "can update the cost of an entry after initialization before encoding password" do
+    s = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
+    _(s.algorithm.cost).must_equal(::HTAuth::Bcrypt::DEFAULT_APACHE_COST)
+
+    s2 = HTAuth::PasswdEntry.from_line(s.to_s)
+    s2.algorithm_args = { :cost => 12 }
+    s2.password = "b secret" # forces recalculation
+
+    _(s2.algorithm.cost).must_equal(12)
+  end
+
+  it "raises an error if assinging an invalid algorithm" do
+    b = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
+    _ { b.algorithm = 42 }.must_raise(HTAuth::InvalidAlgorithmError)
+  end
 
   it "returns username for a key" do
     _(@alice.key).must_equal "alice"

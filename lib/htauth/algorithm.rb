@@ -61,7 +61,7 @@ module HTAuth
       # Internal: Does this class handle this type of password entry
       #
       def handles?(password_entry)
-        raise NotImplementedError, "#{self.name} must impelement #{self.name}.handles?(password_entry)"
+        raise NotImplementedError, "#{self.name} must implement #{self.name}.handles?(password_entry)"
       end
 
       # Internal: Constant time string comparison.

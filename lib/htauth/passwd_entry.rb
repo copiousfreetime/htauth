@@ -76,15 +76,16 @@ module HTAuth
       when ::HTAuth::Algorithm
         @algorithm = alg
       else
-        raise InvalidAlgorithm, "Unable to assign #{alg} to algorithm"
+        raise InvalidAlgorithmError, "Unable to assign #{alg} to algorithm"
       end
       return @algorithm
     end
 
     # Internal: set fields on the algorithm
-    def algorithm_args=(args = {})
+    def algorithm_args=(args)
       args.each do |key, value|
-        @algorithm.send(key, value) if algorithm.respond_to?(key)
+        method = "#{key}="
+        @algorithm.send(method, value) if @algorithm.respond_to?(method)
       end
     end
 
