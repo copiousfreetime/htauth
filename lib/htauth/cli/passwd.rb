@@ -41,14 +41,14 @@ module HTAuth
 
       def option_parser
         if not @option_parser then
-          @option_parser = OptionParser.new do |op|
+          @option_parser = OptionParser.new(nil, 16) do |op|
             op.banner = <<-EOB
-Usage: 
-            #{op.program_name}  [-cmBdpsD] [-C cost] passwordfile username
-            #{op.program_name} -b[cmBdpsD] [-C cost] passwordfile username password
+Usage:
+        #{op.program_name} [-cimBdpsD] [-C cost] passwordfile username
+        #{op.program_name} -b[cmBdpsD] [-C cost] passwordfile username password
 
-            #{op.program_name} -n[mBdps] [-C cost] username
-            #{op.program_name} -nb[mBdps] [-C cost] username password
+        #{op.program_name} -n[imBdps] [-C cost] username
+        #{op.program_name} -nb[mBdps] [-C cost] username password
             EOB
 
             op.separator ""
@@ -61,7 +61,8 @@ Usage:
               options.algorithm = Algorithm::BCRYPT
             end
 
-            op.on("-CCOST", "--cost COST", "Set the computing time used for the bcrypt algorithm (higher is more secure but slower, default: 5, valid: 4 to 31).") do |c|
+            op.on("-CCOST", "--cost COST", "Set the computing time used for the bcrypt algorithm",
+                                           "(higher is more secure but slower, default: 5, valid: 4 to 31).") do |c|
               if c !~ /\A\d+\z/ then
                   raise ::OptionParser::ParseError, "the bcrypt cost must be an integer from 4 to 31, `#{c}` is invalid"
               end
@@ -117,7 +118,7 @@ Usage:
 
             op.separator ""
 
-            op.separator "The SHA algorihtm does not use a salt and is less secure than the MD5 algorithm"
+            op.separator "The SHA algorihtm does not use a salt and is less secure than the MD5 algorithm."
           end
         end
         @option_parser
