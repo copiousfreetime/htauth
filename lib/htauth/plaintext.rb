@@ -3,12 +3,19 @@ require 'htauth/algorithm'
 module HTAuth
   # Internal: the plaintext algorithm, which does absolutly nothing
   class Plaintext < Algorithm
-    # ignore parameters
-    def initialize(params = {})
+
+    ENTRY_REGEX = /\A[^$:]*\Z/
+
+    def self.entry_matches?(entry)
+      ENTRY_REGEX.match?(entry)
     end
 
-    def prefix
-      ""
+    def self.handles?(password_entry)
+      false
+    end
+
+    # ignore parameters
+    def initialize(params = {})
     end
 
     def encode(password)

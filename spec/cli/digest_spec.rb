@@ -41,8 +41,8 @@ describe HTAuth::CLI::Digest do
     begin
       @rdigest.run([ "-h" ])
     rescue SystemExit => se
-      se.status.must_equal 1
-      @stdout.string.must_match( /passwordfile realm username/m )
+      _(se.status).must_equal 1
+      _(@stdout.string).must_match( /passwordfile realm username/m )
     end
   end
 
@@ -50,8 +50,8 @@ describe HTAuth::CLI::Digest do
     begin
       @rdigest.run([ "--version" ])
     rescue SystemExit => se
-      se.status.must_equal 1
-      @stdout.string.must_match( /version #{HTAuth::VERSION}/ )
+      _(se.status).must_equal 1
+      _(@stdout.string).must_match( /version #{HTAuth::VERSION}/ )
     end
   end
 
@@ -62,8 +62,8 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ "-c", @new_file, "htauth", "bob" ])
     rescue SystemExit => se
-      se.status.must_equal 0
-      IO.read(@new_file).must_equal IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
+      _(se.status).must_equal 0
+      _(IO.read(@new_file)).must_equal IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
     end
   end
 
@@ -74,8 +74,8 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ "-c", @tf.path, "htauth", "bob"])
     rescue SystemExit => se
-      se.status.must_equal 0
-      IO.read(@tf.path).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
+      _(se.status).must_equal 0
+      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
     end
   end
 
@@ -86,8 +86,8 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ @tf.path, "htauth-new", "charlie" ])
     rescue SystemExit => se
-      se.status.must_equal 0
-      IO.read(@tf.path).must_equal IO.read(DIGEST_ADD_TEST_FILE)
+      _(se.status).must_equal 0
+      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_ADD_TEST_FILE)
     end
   end
 
@@ -98,9 +98,9 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ @tf.path, "htauth", "alice" ])
     rescue SystemExit => se
-      @stderr.string.must_equal ""
-      se.status.must_equal 0
-      IO.read(@tf.path).must_equal IO.read(DIGEST_UPDATE_TEST_FILE)
+      _(@stderr.string).must_equal ""
+      _(se.status).must_equal 0
+      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_UPDATE_TEST_FILE)
     end
   end
 
@@ -108,9 +108,9 @@ describe HTAuth::CLI::Digest do
     begin
       @rdigest.run([ "-d", @tf.path, "htauth", "alice" ])
     rescue SystemExit => se
-      @stderr.string.must_equal ""
-      se.status.must_equal 0
-      IO.read(@tf.path).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
+      _(@stderr.string).must_equal ""
+      _(se.status).must_equal 0
+      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
     end
   end
 
@@ -121,8 +121,8 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ "-c", "/etc/you-cannot-create-me", "htauth", "alice"])
     rescue SystemExit => se
-      @stderr.string.must_match( %r{Could not open password file /etc/you-cannot-create-me}m )
-      se.status.must_equal 1
+      _(@stderr.string).must_match( %r{Could not open password file /etc/you-cannot-create-me}m )
+      _(se.status).must_equal 1
     end
   end
 
@@ -133,8 +133,8 @@ describe HTAuth::CLI::Digest do
       @stdin.rewind
       @rdigest.run([ @tf.path, "htauth", "alice"])
     rescue SystemExit => se
-      @stderr.string.must_match( /They don't match, sorry./m )
-      se.status.must_equal 1
+      _(@stderr.string).must_match( /They don't match, sorry./m )
+      _(se.status).must_equal 1
     end
   end
 
@@ -142,9 +142,8 @@ describe HTAuth::CLI::Digest do
     begin
       @rdigest.run(["--blah"])
     rescue SystemExit => se
-      @stderr.string.must_match( /ERROR:/m )
-      se.status.must_equal 1
+      _(@stderr.string).must_match( /ERROR:/m )
+      _(se.status).must_equal 1
     end
   end
-
 end

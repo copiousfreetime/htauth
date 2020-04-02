@@ -31,6 +31,7 @@ end
 require 'htauth/version'
 require 'htauth/algorithm'
 require 'htauth/console'
+require 'htauth/bcrypt'
 require 'htauth/crypt'
 require 'htauth/digest_entry'
 require 'htauth/digest_file'

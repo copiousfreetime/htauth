@@ -20,12 +20,16 @@ module HTAuth
 
     def ask(prompt)
       output.print prompt
-      answer = input.noecho(&:gets)
+      answer = read_answer
       output.puts
       raise ConsoleError, "No input given" if answer.nil?
       answer.strip!
       raise ConsoleError, "No input given" if answer.length == 0
       return answer
+    end
+
+    def read_answer
+      input.noecho(&:gets)
     end
   end
 end

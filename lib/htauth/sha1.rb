@@ -8,16 +8,19 @@ module HTAuth
   #
   class Sha1 < Algorithm
 
+    PREFIX      = '{SHA}'.freeze
+    ENTRY_REGEX = %r[\A#{Regexp.escape(PREFIX)}[A-Za-z0-9+\/=]{28}\z].freeze
+
+    def self.handles?(password_entry)
+      ENTRY_REGEX.match?(password_entry)
+    end
+
     # ignore the params
     def initialize(params = {}) 
     end
 
-    def prefix
-      "{SHA}"
-    end
-
     def encode(password)
-      "#{prefix}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"
+      "#{PREFIX}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"
     end
   end
 end

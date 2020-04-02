@@ -1,7 +1,7 @@
 ## HTAuth
 
 * [Github](http://github.com/copiousfreetime/htauth/tree/master)
-* email jeremy at copiousfreetime dot org
+* [![Build Status](https://travis-ci.org/copiousfreetime/htauth.svg?branch=master)](https://travis-ci.org/copiousfreetime/htauth)
 
 ## DESCRIPTION
 
@@ -26,32 +26,38 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
 
 ### htpasswd-ruby command line application
 
-
     Usage:
-    htpasswd-ruby [-cmdpsD] passwordfile username
-    htpasswd-ruby -b[cmdpsD] passwordfile username password
+            htpasswd-ruby [-cimBdpsD] [-C cost] passwordfile username
+            htpasswd-ruby -b[cmBdpsD] [-C cost] passwordfile username password
 
-    htpasswd-ruby -n[mdps] username
-    htpasswd-ruby -nb[mdps] username password
+            htpasswd-ruby -n[imBdps] [-C cost] username
+            htpasswd-ruby -nb[mBdps] [-C cost] username password
 
-    -b, --batch                      Batch mode, get the password from the command line, rather than prompt
-    -c, --create                     Create a new file; this overwrites an existing file.
-    -d, --crypt                      Force CRYPT encryption of the password (default).
-    -D, --delete                     Delete the specified user.
-    -h, --help                       Display this help.
-    -m, --md5                        Force MD5 encryption of the password (default on Windows).
-    -n, --stdout                     Do not update the file; Display the results on stdout instead.
-    -p, --plaintext                  Do not encrypt the password (plaintext).
-    -s, --sha1                       Force SHA encryption of the password.
-    -v, --version                    Show version info.
+        -b, --batch      Batch mode, get the password from the command line, rather than prompt
+        -B, --bcrypt     Force bcrypt encryption of the password.
+        -C, --cost COST  Set the computing time used for the bcrypt algorithm
+                         (higher is more secure but slower, default: 5, valid: 4 to 31).
+        -c, --create     Create a new file; this overwrites an existing file.
+        -d, --crypt      Force CRYPT encryption of the password.
+        -D, --delete     Delete the specified user.
+        -h, --help       Display this help.
+        -i, --stdin      Read the passwod from stdin without verivication (for script usage).
+        -m, --md5        Force MD5 encryption of the password (default).
+        -n, --stdout     Do not update the file; Display the results on stdout instead.
+        -p, --plaintext  Do not encrypt the password (plaintext).
+        -s, --sha1       Force SHA encryption of the password.
+        -v, --version    Show version info.
+            --verify     Verify password for the specified user
+
+    The SHA algorihtm does not use a salt and is less secure than the MD5 algorithm.
 
 ### htdigest-ruby command line application
 
     Usage: htdigest-ruby [options] passwordfile realm username
-    -c, --create                     Create a new digest password file; this overwrites an existing file.
-    -D, --delete                     Delete the specified user.
-    -h, --help                       Display this help.
-    -v, --version                    Show version info.
+        -c, --create   Create a new digest password file; this overwrites an existing file.
+        -D, --delete   Delete the specified user.
+        -h, --help     Display this help.
+        -v, --version  Show version info.
 
 ### API Usage
 
@@ -63,6 +69,14 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
     HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::CREATE) do |pf|
       pf.add('someuser', 'a password', 'md5')
       pf.add('someotheruser', 'a different password', 'sha1')
+    end
+
+    HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::ALTER) do |pf|
+      pf.update('someuser', 'a password', 'bcrypt')
+    end
+
+    HTAuth::PasswdFile.open("some.htpasswd") do |pf|
+      pf.authenticated?('someuser', 'a password')
     end
 
 ## CREDITS

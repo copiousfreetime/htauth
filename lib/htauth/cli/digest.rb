@@ -37,7 +37,7 @@ module HTAuth
 
       def option_parser
         if not @option_parser then
-          @option_parser = OptionParser.new do |op|
+          @option_parser = OptionParser.new(nil, 14) do |op|
             op.banner = "Usage: #{op.program_name} [options] passwordfile realm username"
             op.on("-c", "--create", "Create a new digest password file; this overwrites an existing file.") do |c|
               options.file_mode = DigestFile::CREATE

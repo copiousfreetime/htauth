@@ -12,6 +12,8 @@ module HTAuth
     attr_accessor :digest
     # Internal: the algorithm used to create the digest of this entry
     attr_reader   :algorithm
+    # Internal: the algorithm arguments used to create the digest of this entry
+    attr_reader   :algorithm_args
 
     class << self
       # Internal: Create an instance of this class from a line of text
@@ -23,7 +25,7 @@ module HTAuth
         parts = is_entry!(line)
         d = PasswdEntry.new(parts[0])
         d.digest = parts[1]
-        d.algorithm = Algorithm.algorithms_from_field(parts[1])
+        d.algorithm = Algorithm.algorithm_from_field(parts[1])
         return d
       end
 
@@ -67,23 +69,31 @@ module HTAuth
 
     # Internal: set the algorithm for the entry
     def algorithm=(alg)
-      if alg.kind_of?(Array) then
-        if alg.size == 1 then
-          @algorithm = alg.first
-        else
-          @algorithm = alg
-        end
+      return @algorithm if Algorithm::EXISTING == alg
+      case alg
+      when String
+        @algorithm = Algorithm.algorithm_from_name(alg)
+      when ::HTAuth::Algorithm
+        @algorithm = alg
       else
-        @algorithm = Algorithm.algorithm_from_name(alg) unless Algorithm::EXISTING == alg
+        raise InvalidAlgorithmError, "Unable to assign #{alg} to algorithm"
       end
       return @algorithm
+    end
+
+    # Internal: set fields on the algorithm
+    def algorithm_args=(args)
+      args.each do |key, value|
+        method = "#{key}="
+        @algorithm.send(method, value) if @algorithm.respond_to?(method)
+      end
     end
 
     # Internal: Update the password of the entry with its new value
     #
     # If we have an array of algorithms, then we set it to CRYPT
     def password=(new_password)
-      if algorithm.kind_of?(Array) then
+      if algorithm.kind_of?(HTAuth::Plaintext) then
         @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT)
       end
       @digest = calc_digest(new_password)
@@ -102,14 +112,9 @@ module HTAuth
     # circuiting
     def authenticated?(check_password)
       authed = false
-      if algorithm.kind_of?(Array) then
-        algorithm.each do |alg|
-          encoded = alg.encode(check_password)
-          if Algorithm.secure_compare(encoded, digest) then
-            @algorithm = alg
-            authed = true
-          end
-        end
+      if algorithm.kind_of?(Bcrypt) then
+        bc = ::BCrypt::Password.new(digest)
+        authed = bc.is_password?(check_password)
       else
         encoded = algorithm.encode(check_password)
         authed  = Algorithm.secure_compare(encoded, digest)
