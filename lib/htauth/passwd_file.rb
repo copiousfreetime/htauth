@@ -193,7 +193,7 @@ module HTAuth
     # Returns true or false if the user exists
     # Raises PasswordFileErrorif the given username does not exist
     def authenticated?(username, password)
-      raise PasswdFileError, "Unable to verify a non-existent user #{username}" unless has_entry?(username)
+      raise PasswdFileError, "Unable to authenticate a non-existent user #{username}" unless has_entry?(username)
       ir = internal_record(username)
       return ir['entry'].authenticated?(password)
     end
