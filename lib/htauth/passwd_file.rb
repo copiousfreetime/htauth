@@ -66,7 +66,7 @@ module HTAuth
     # The file is not written to disk until #save! is called.
     #
     # username  - the username of the entry
-    # password  - the username of the entry
+    # password  - the password of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
     #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
@@ -94,7 +94,7 @@ module HTAuth
     # Public: Add a new record to the file.
     #
     # username  - the username of the entry
-    # password  - the username of the entry
+    # password  - the password of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
     #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
@@ -131,7 +131,7 @@ module HTAuth
     # setting the `algorithm` parameter.
     #
     # username  - the username of the entry
-    # password  - the username of the entry
+    # password  - the password of the entry
     # algorithm - the algorithm to use (default: "existing"). Valid options are:
     #             "existing", "md5", "bcrypt", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
