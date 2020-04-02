@@ -1,4 +1,11 @@
 # Changelog
+## Version 2.1.0 - 2020-04-02
+
+* Update minimum ruby versions to modern versions
+* Support bcrypt password entries [#12](https://github.com/copiousfreetime/htauth/issues/12)
+* Support authentication at the password file level
+* implement --verify commandline option (-v in apache htpasswd)
+* implement --stdin commandline option (-i in apache htpasswd)
 
 ## Version 2.0.0 - 2015-09-13
 
