@@ -14,6 +14,12 @@ This.ruby_gemspec do |spec|
   spec.add_development_dependency( 'rdoc'     , '~> 6.2' )
   spec.add_development_dependency( 'simplecov', '~> 0.17' )
 
+  spec.metadata = {
+    "bug_tracker_uri" => "https://github.com/copiousfreetime/htauth/issues",
+    "changelog_uri"   => "https://github.com/copiousfreetime/htauth/blob/master/HISTORY.md",
+    "homepage_uri"    => "https://github.com/copiousfreetime/htauth",
+    "source_code_uri" => "https://github.com/copiousfreetime/htauth",
+  }
   spec.license = "MIT"
 end
 
