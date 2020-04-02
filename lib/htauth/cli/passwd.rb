@@ -165,18 +165,21 @@ Usage:
           if options.delete_entry then
             passwd_file.delete(options.username)
           else
-            unless options.batch_mode
+            action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
+            if !options.batch_mode then
               console = Console.new
 
-              action = passwd_file.has_entry?(options.username) ? "Changing" : "Adding"
+              if options.read_stdin_once then
+                pw_in = console.read_answer
+              else
+                console.say "#{action} password for #{options.username}."
 
-              console.say "#{action} password for #{options.username}."
+                pw_in       = console.ask("        New password: ")
+                raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
 
-              pw_in       = console.ask("        New password: ")
-              raise PasswordError, "password '#{pw_in}' too long" if pw_in.length >= MAX_PASSWD_LENGTH
-
-              pw_validate = console.ask("Re-type new password: ")
-              raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
+                pw_validate = console.ask("Re-type new password: ")
+                raise PasswordError, "They don't match, sorry." unless pw_in == pw_validate
+              end
               options.password = pw_in
             end
             passwd_file.add_or_update(options.username, options.password, options.algorithm, options.algorithm_args)

@@ -132,6 +132,22 @@ describe HTAuth::CLI::Passwd do
  
   end
 
+  it "does not verify the password from stdin on -i option" do
+    begin
+      @stdin.puts "b secret"
+      @stdin.rewind
+      @htauth.run([ "-i", "-B", "-c", @new_file, "brenda" ])
+    rescue SystemExit => se
+      _(se.status).must_equal 0
+      l = IO.readlines(@new_file)
+      fields = l.first.split(':')
+      _(fields.first).must_equal "brenda"
+      bcrypt_hash = fields.last
+
+      _(::BCrypt::Password.valid_hash?(bcrypt_hash)).wont_be_nil
+    end
+  end
+
   it "does not allow options -i and -b to both be set" do
     begin
       @stdin.puts "b secret"
