@@ -88,9 +88,7 @@ module HTAuth
 
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)
-      chars = []
-      SALT_LENGTH.times { chars << SALT_CHARS[SecureRandom.random_number(SALT_CHARS.size)] }
-      chars.join('')
+      Array.new(length) { SALT_CHARS.sample }.join('')
     end
 
     # Internal: this is not the Base64 encoding, this is the to64()
