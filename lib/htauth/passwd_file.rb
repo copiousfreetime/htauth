@@ -181,6 +181,23 @@ module HTAuth
       return ir['entry'].dup
     end
 
+    # Public: authenticates the password of a given username
+    #
+    # Check the password file for the given user, and check the input password
+    # against the existing one.
+    #
+    # Examples
+    #
+    #   authenticated = password_file.authenticated?("alice", "a secret")
+    #
+    # Returns true or false if the user exists
+    # Raises PasswordFileErrorif the given username does not exist
+    def authenticated?(username, password)
+      raise PasswdFileError, "Unable to verify a non-existent user #{username}" unless has_entry?(username)
+      ir = internal_record(username)
+      return ir['entry'].authenticated?(password)
+    end
+
     # Internal: returns the class used for each entry
     #
     # Returns a Class

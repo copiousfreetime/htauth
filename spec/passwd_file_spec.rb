@@ -53,6 +53,15 @@ describe HTAuth::PasswdFile do
     _(@passwd_file.contents).must_equal IO.read(PASSWD_DELETE_TEST_FILE)
   end
 
+  it "checks authentication of an entry - true" do
+    _(@passwd_file.authenticated?("alice", "a secret")).must_equal true
+  end
+
+  it "checks authentication of an entry - false" do
+    _(@passwd_file.authenticated?("alice", "the wrong secret")).must_equal false
+  end
+
+
   it "is usable in a ruby manner and yields itself when opened" do
     HTAuth::PasswdFile.open(@tf.path) do |pf|
       pf.add_or_update("alice", "a new secret", "md5")

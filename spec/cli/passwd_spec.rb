@@ -251,6 +251,24 @@ describe HTAuth::CLI::Passwd do
     end
   end
 
+  it "verifies a password when --verify is used - valid" do
+    begin
+      @htauth.run(["--verify", "-b", @tf.path, "alice", "a secret"])
+    rescue SystemExit => se
+      _(@stderr.string.strip).must_equal "Password for user alice correct."
+      _(se.status).must_equal 0
+    end
+  end
+
+  it "verifies a password when --verify is used - invalid" do
+    begin
+      @htauth.run(["--verify", "-b", @tf.path, "alice", "the wrong secret"])
+    rescue SystemExit => se
+      _(@stderr.string.strip).must_equal "Password verification for user alice failed."
+      _(se.status).must_equal 1
+    end
+  end
+
   it "has an error if it does not have permissions on the file" do
     begin
       @stdin.puts "a secret"
