@@ -1,5 +1,5 @@
 # Changelog
-## Version 2.1.0 - 2020-04-02
+## Version 2.1.1 - 2020-04-02
 
 * Update minimum ruby versions to modern versions
 * Support bcrypt password entries [#12](https://github.com/copiousfreetime/htauth/issues/12)
