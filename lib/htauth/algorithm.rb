@@ -92,7 +92,8 @@ module HTAuth
     end
 
     # Internal: this is not the Base64 encoding, this is the to64()
-    # method from the apache protable runtime library
+    # method from the Apache Portable Runtime (APR) library
+    # https://github.com/apache/apr/blob/trunk/crypto/apr_md5.c#L493-L502
     def to_64(number, rounds)
       r = StringIO.new
       rounds.times do |x|
