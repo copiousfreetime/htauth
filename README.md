@@ -51,7 +51,7 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
         -v, --version    Show version info.
             --verify     Verify password for the specified user
 
-    The SHA algorihtm does not use a salt and is less secure than the MD5 algorithm.
+    The SHA algorithm does not use a salt and is less secure than the MD5 algorithm.
 
 ### htdigest-ruby command line application
 
