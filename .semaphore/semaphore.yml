@@ -32,12 +32,10 @@ blocks:
             - bundle config set --local path vendor/bundle
             - gem install --no-doc bundler:2.4.3
             - bundle install
-            - TESTOPTS=--junit bundle exec rake test
-global_job_config:
-  epilogue:
-    always:
-      commands:
-         - '[[ -f report.xml ]] && test-results publish report.xml'
+            - mkdir -p tmp/test-results/
+            - export TEST_RESULTS_FILE=tmp/test-results/${RUBY_VERSION}.xml
+            - TESTOPTS="--junit --junit-filename=${TEST_RESULTS_FILE}" bundle exec rake test
+            - test-results publish ${TEST_RESULTS_FILE}
 
 after_pipeline:
   task:

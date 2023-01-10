@@ -6,3 +6,4 @@ doc/
 *.swo
 .gem/
 .ruby-version
+report.xml
