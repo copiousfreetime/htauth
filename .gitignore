@@ -5,3 +5,4 @@ doc/
 *.swp
 *.swo
 .gem/
+.ruby-version
