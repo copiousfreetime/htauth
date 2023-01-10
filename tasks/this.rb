@@ -25,7 +25,7 @@ class ThisProject
   #
   # Yields self
   def initialize(&block)
-    @exclude_from_manifest = Regexp.union(/\.(git|DS_Store)/,
+    @exclude_from_manifest = Regexp.union(/\.(git|DS_Store|semaphore)/,
                                           /^(doc|coverage|pkg|tmp|Gemfile(\.lock)?)/,
                                           /^[^\/]+\.gemspec/,
                                           /\.(swp|jar|bundle|so|rvmrc|travis.yml|byebug_history|fossa.yml|ruby-version)$/,
@@ -146,7 +146,7 @@ class ThisProject
       spec.rdoc_options = [ "--main"  , 'README.md',
                             "--markup", "tomdoc" ]
 
-      spec.required_ruby_version = '>= 2.2.2'
+      spec.required_ruby_version = '>= 2.3.0'
     end
   end
 

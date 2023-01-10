@@ -1,4 +1,10 @@
 # Changelog
+## Version 2.2.0 - 2023-01-XX
+
+* Update ruby versions
+* Add to sempahore for CI
+* fix various spelling issues
+
 ## Version 2.1.1 - 2020-04-02
 
 * Update minimum ruby versions to modern versions

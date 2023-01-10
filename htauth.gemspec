@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.metadata = { "bug_tracker_uri" => "https://github.com/copiousfreetime/htauth/issues", "changelog_uri" => "https://github.com/copiousfreetime/htauth/blob/master/HISTORY.md", "homepage_uri" => "https://github.com/copiousfreetime/htauth", "source_code_uri" => "https://github.com/copiousfreetime/htauth" } if s.respond_to? :metadata=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2020-04-02"
+  s.date = "2023-01-10"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["htdigest-ruby".freeze, "htpasswd-ruby".freeze]
@@ -20,32 +20,16 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/copiousfreetime/htauth".freeze
   s.licenses = ["MIT".freeze]
   s.rdoc_options = ["--main".freeze, "README.md".freeze, "--markup".freeze, "tomdoc".freeze]
-  s.required_ruby_version = Gem::Requirement.new(">= 2.2.2".freeze)
-  s.rubygems_version = "3.0.3".freeze
+  s.required_ruby_version = Gem::Requirement.new(">= 2.3.0".freeze)
+  s.rubygems_version = "3.4.1".freeze
   s.summary = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files.".freeze
   s.test_files = ["spec/algorithm_spec.rb".freeze, "spec/bcrypt_spec.rb".freeze, "spec/cli/digest_spec.rb".freeze, "spec/cli/passwd_spec.rb".freeze, "spec/crypt_spec.rb".freeze, "spec/digest_entry_spec.rb".freeze, "spec/digest_file_spec.rb".freeze, "spec/md5_spec.rb".freeze, "spec/passwd_entry_spec.rb".freeze, "spec/passwd_file_spec.rb".freeze, "spec/plaintext_spec.rb".freeze, "spec/sha1_spec.rb".freeze, "spec/spec_helper.rb".freeze, "spec/test.add.digest".freeze, "spec/test.add.passwd".freeze, "spec/test.delete.digest".freeze, "spec/test.delete.passwd".freeze, "spec/test.original.digest".freeze, "spec/test.original.passwd".freeze, "spec/test.update.digest".freeze, "spec/test.update.passwd".freeze]
 
-  if s.respond_to? :specification_version then
-    s.specification_version = 4
+  s.specification_version = 4
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-      s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
-      s.add_development_dependency(%q<minitest>.freeze, ["~> 5.5"])
-      s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.2"])
-      s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.17"])
-    else
-      s.add_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-      s.add_dependency(%q<rake>.freeze, ["~> 13.0"])
-      s.add_dependency(%q<minitest>.freeze, ["~> 5.5"])
-      s.add_dependency(%q<rdoc>.freeze, ["~> 6.2"])
-      s.add_dependency(%q<simplecov>.freeze, ["~> 0.17"])
-    end
-  else
-    s.add_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
-    s.add_dependency(%q<rake>.freeze, ["~> 13.0"])
-    s.add_dependency(%q<minitest>.freeze, ["~> 5.5"])
-    s.add_dependency(%q<rdoc>.freeze, ["~> 6.2"])
-    s.add_dependency(%q<simplecov>.freeze, ["~> 0.17"])
-  end
+  s.add_runtime_dependency(%q<bcrypt>.freeze, ["~> 3.1"])
+  s.add_development_dependency(%q<rake>.freeze, ["~> 13.0"])
+  s.add_development_dependency(%q<minitest>.freeze, ["~> 5.5"])
+  s.add_development_dependency(%q<rdoc>.freeze, ["~> 6.2"])
+  s.add_development_dependency(%q<simplecov>.freeze, ["~> 0.17"])
 end

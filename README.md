@@ -1,7 +1,9 @@
 ## HTAuth
 
-* [Github](http://github.com/copiousfreetime/htauth/tree/master)
-* [![Build Status](https://travis-ci.org/copiousfreetime/htauth.svg?branch=master)](https://travis-ci.org/copiousfreetime/htauth)
+[![Build Status](https://copiousfreetime.semaphoreci.com/badges/htauth/branches/main.svg)](https://copiousfreetime.semaphoreci.com/projects/htauth)
+
+* [Homepage](http://github.com/copiousfreetime/htauth)
+* [Github](http://github.com/copiousfreetime/htauth)
 
 ## DESCRIPTION
 
