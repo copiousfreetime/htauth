@@ -8,6 +8,9 @@ blocks:
   - name: Run tests in Linux environment
     dependencies: []
     task:
+      prologue:
+        commands:
+          - sudo apt-get update && sudo apt-get install -y libyaml-dev
       jobs:
         - name: run tests
           matrix:
