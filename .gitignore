@@ -4,5 +4,4 @@ coverage/
 doc/
 *.swp
 *.swo
-*.lock
 .gem/
