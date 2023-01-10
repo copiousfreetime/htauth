@@ -28,6 +28,8 @@ GEM
     stringio (3.0.4)
 
 PLATFORMS
+  arm64-darwin-21
+  linux
   ruby
 
 DEPENDENCIES
