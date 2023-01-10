@@ -8,14 +8,18 @@ GEM
   remote: https://rubygems.org/
   specs:
     bcrypt (3.1.18)
+    bcrypt (3.1.18-java)
     builder (3.2.4)
     docile (1.4.0)
+    jar-dependencies (0.4.1)
     minitest (5.17.0)
     minitest-junit (1.1.0)
       builder (~> 3.2)
       minitest (~> 5.11)
     psych (5.0.1)
       stringio
+    psych (5.0.1-java)
+      jar-dependencies (>= 0.1.7)
     rake (13.0.6)
     rdoc (6.5.0)
       psych (>= 4.0.0)
@@ -29,6 +33,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  java
   linux
   ruby
 
