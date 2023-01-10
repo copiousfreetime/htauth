@@ -8,8 +8,12 @@ GEM
   remote: https://rubygems.org/
   specs:
     bcrypt (3.1.18)
+    builder (3.2.4)
     docile (1.4.0)
     minitest (5.17.0)
+    minitest-junit (1.1.0)
+      builder (~> 3.2)
+      minitest (~> 5.11)
     psych (5.0.1)
       stringio
     rake (13.0.6)
@@ -28,9 +32,10 @@ PLATFORMS
 
 DEPENDENCIES
   htauth!
-  minitest (~> 5.5)
+  minitest (~> 5.11)
+  minitest-junit (~> 1.0)
   rake (~> 13.0)
-  rdoc (~> 6.2)
+  rdoc (~> 6.4)
   simplecov (~> 0.17)
 
 BUNDLED WITH

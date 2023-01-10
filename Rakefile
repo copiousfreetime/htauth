@@ -10,8 +10,9 @@ This.ruby_gemspec do |spec|
   spec.add_dependency( 'bcrypt', '~> 3.1' )
 
   spec.add_development_dependency( 'rake'     , '~> 13.0')
-  spec.add_development_dependency( 'minitest' , '~> 5.5' )
-  spec.add_development_dependency( 'rdoc'     , '~> 6.2' )
+  spec.add_development_dependency( 'minitest' , '~> 5.11' )
+  spec.add_development_dependency( 'minitest-junit' , '~> 1.0' )
+  spec.add_development_dependency( 'rdoc'     , '~> 6.4' )
   spec.add_development_dependency( 'simplecov', '~> 0.17' )
 
   spec.metadata = {
