@@ -27,7 +27,7 @@ blocks:
                 - jruby-9.4.0.0
                 - truffleruby-22.3.0
           commands:
-            - sem-version ruby ${RUBY_VERSION}
+            - sem-version ruby ${RUBY_VERSION} -f
             - bundle config set --local deployment true
             - bundle config set --local path vendor/bundle
             - gem install --no-doc bundler:2.4.3
