@@ -1,5 +1,5 @@
 # Changelog
-## Version 2.2.0 - 2023-01-XX
+## Version 2.2.0 - 2023-02-XX
 
 * Update ruby versions
 * Add to sempahore for CI
