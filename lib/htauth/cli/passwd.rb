@@ -44,8 +44,8 @@ module HTAuth
           @option_parser = OptionParser.new(nil, 16) do |op|
             op.banner = <<-EOB
 Usage:
-        #{op.program_name} [-cimBdpsD] [-C cost] passwordfile username
-        #{op.program_name} -b[cmBdpsD] [-C cost] passwordfile username password
+        #{op.program_name} [-cimBdpsD] [--verify] [-C cost] passwordfile username
+        #{op.program_name} -b[cmBdpsD] [--verify] [-C cost] passwordfile username password
 
         #{op.program_name} -n[imBdps] [-C cost] username
         #{op.program_name} -nb[mBdps] [-C cost] username password
