@@ -1,5 +1,10 @@
 # Changelog
-## Version 2.2.0 - 2023-02-XX
+## Version 2.3.0 - 2024-01-XX
+
+* Update ruby version - dropping official support for 2.6 and 2.7
+* Semaphore updates
+
+## Version 2.2.0 - 2023-02-06
 
 * Update ruby versions
 * Add to sempahore for CI
