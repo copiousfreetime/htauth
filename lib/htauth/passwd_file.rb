@@ -68,7 +68,7 @@ module HTAuth
     # username  - the username of the entry
     # password  - the password of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
-    #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    #             "md5", "bcrypt", "argon2", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
     #                  algorithm, currently this is only used to pass the cost
     #                  to the bcrypt algorithm
@@ -96,7 +96,7 @@ module HTAuth
     # username  - the username of the entry
     # password  - the password of the entry
     # algorithm - the algorithm to use (default: "md5"). Valid options are:
-    #             "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    #             "md5", "bcrypt", "argon2", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
     #                  algorithm, currently this is only used to pass the cost
     #                  to the bcrypt algorithm
@@ -133,7 +133,7 @@ module HTAuth
     # username  - the username of the entry
     # password  - the password of the entry
     # algorithm - the algorithm to use (default: "existing"). Valid options are:
-    #             "existing", "md5", "bcrypt", "sha1", "plaintext", or "crypt"
+    #             "existing", "md5", "bcrypt", "argon2", "sha1", "plaintext", or "crypt"
     # algorithm_args - key-value pairs of arguments that are passed to the
     #                  algorithm, currently this is only used to pass the cost
     #                  to the bcrypt algorithm

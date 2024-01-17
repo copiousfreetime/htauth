@@ -44,14 +44,18 @@ module HTAuth
           @option_parser = OptionParser.new(nil, 16) do |op|
             op.banner = <<-EOB
 Usage:
-        #{op.program_name} [-cimBdpsD] [--verify] [-C cost] passwordfile username
-        #{op.program_name} -b[cmBdpsD] [--verify] [-C cost] passwordfile username password
+        #{op.program_name} [-acimBdpsD] [--verify] [-C cost] passwordfile username
+        #{op.program_name} -b[acmBdpsD] [--verify] [-C cost] passwordfile username password
 
         #{op.program_name} -n[imBdps] [-C cost] username
         #{op.program_name} -nb[mBdps] [-C cost] username password
             EOB
 
             op.separator ""
+
+            op.on("-a", "--argon2", "Force argon2 encryption of the password.") do |a|
+              options.algorithm = Algorithm::ARGON2
+            end
 
             op.on("-b", "--batch", "Batch mode, get the password from the command line, rather than prompt") do |b|
               options.batch_mode = b

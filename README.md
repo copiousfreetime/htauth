@@ -35,6 +35,7 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
             htpasswd-ruby -n[imBdps] [-C cost] username
             htpasswd-ruby -nb[mBdps] [-C cost] username password
 
+        -a, --argon2     Force argon2 encryption of the password
         -b, --batch      Batch mode, get the password from the command line, rather than prompt
         -B, --bcrypt     Force bcrypt encryption of the password.
         -C, --cost COST  Set the computing time used for the bcrypt algorithm
@@ -80,6 +81,24 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
     HTAuth::PasswdFile.open("some.htpasswd") do |pf|
       pf.authenticated?('someuser', 'a password')
     end
+
+## Supported Hash Algorithms
+
+Out of the box, `htauth` supports the classic algorithms that ship with Apache
+`htpasswd`.
+
+- Okay to use:
+    - md5
+    - sha1
+    - bcrypt
+
+- Please **Do Not use** available only for backwards compatibility with `htpasswd`
+    - plaintext
+    - crypt
+
+- Suported, but not default
+    - argon2 -- to use this add `gem 'argon2'` to your `Gemfile`. `argon2` will
+      now be a valid algorithm to use in `HTAuth::PasswdFile` API.
 
 ## CREDITS
 

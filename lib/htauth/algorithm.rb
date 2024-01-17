@@ -13,6 +13,8 @@ module HTAuth
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
     SALT_LENGTH   = 8
 
+    # Public: flag for the argon2 algorithm
+    ARGON2        = "argon2".freeze
     # Public: flag for the bcrypt algorithm
     BCRYPT        = "bcrypt".freeze
     # Public: flag for the md5 algorithm
