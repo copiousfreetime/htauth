@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency(%q<bcrypt>.freeze, ["~> 3.1".freeze])
   s.add_runtime_dependency(%q<base64>.freeze, ["~> 0.2".freeze])
   s.add_development_dependency(%q<argon2>.freeze, ["~> 2.3".freeze])
-  s.add_development_dependency(%q<debug>.freeze, ["~> 1.9".freeze])
   s.add_development_dependency(%q<rake>.freeze, ["~> 13.1".freeze])
   s.add_development_dependency(%q<minitest>.freeze, ["~> 5.21".freeze])
   s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.1".freeze])
