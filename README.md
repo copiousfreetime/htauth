@@ -87,17 +87,18 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
 Out of the box, `htauth` supports the classic algorithms that ship with Apache
 `htpasswd`.
 
-- Okay to use:
-    - md5
-    - sha1
-    - bcrypt
+- Built in
+    - Generally accepted
+        - MD5 (default for compatibilty reasons)
+        - bcrypt (probably the better choice)
 
-- Please **Do Not use** available only for backwards compatibility with `htpasswd`
-    - plaintext
-    - crypt
+    - **Not Recommended** - available only for backwards compatibility with `htpasswd`
+        - SHA1
+        - crypt
+        - plaintext
 
-- Suported, but not default
-    - argon2 -- to use this add `gem 'argon2'` to your `Gemfile`. `argon2` will
+- Available with the installation of additional libraries:
+    - argon2 - to use, add `gem 'argon2'` to your `Gemfile`. `argon2` will
       now be a valid algorithm to use in `HTAuth::PasswdFile` API.
 
 ## CREDITS
