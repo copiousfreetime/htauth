@@ -16,7 +16,7 @@ module HTAuth
     end
 
     # ignore the params
-    def initialize(params = {}) 
+    def initialize(params = {})
     end
 
     def encode(password)
