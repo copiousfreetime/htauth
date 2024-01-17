@@ -108,7 +108,7 @@ describe HTAuth::PasswdEntry do
     _(s2.algorithm.cost).must_equal(12)
   end
 
-  it "raises an error if assinging an invalid algorithm" do
+  it "raises an error if assigning an invalid algorithm" do
     b = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
     _ { b.algorithm = 42 }.must_raise(HTAuth::InvalidAlgorithmError)
   end
