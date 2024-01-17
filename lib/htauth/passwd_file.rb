@@ -11,9 +11,9 @@ module HTAuth
   # Examples
   #
   #   ::HTAuth::PasswdFile.open("my.passwd") do |pf|
-  #     pf.has_entry?('myuser', 'myrealm')
-  #     pf.add_or_update('someuser', 'myrealm', 'a password')
-  #     pf.delete('someolduser', 'myotherrealm')
+  #     pf.has_entry?('myuser')
+  #     pf.add_or_update('someuser', 'a password')
+  #     pf.delete('someolduser')
   #   end
   #
   class PasswdFile < HTAuth::File
