@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.metadata = { "bug_tracker_uri" => "https://github.com/copiousfreetime/htauth/issues", "changelog_uri" => "https://github.com/copiousfreetime/htauth/blob/master/HISTORY.md", "homepage_uri" => "https://github.com/copiousfreetime/htauth", "source_code_uri" => "https://github.com/copiousfreetime/htauth" } if s.respond_to? :metadata=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2024-01-16"
+  s.date = "2024-01-17"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["htdigest-ruby".freeze, "htpasswd-ruby".freeze]
@@ -28,6 +28,9 @@ Gem::Specification.new do |s|
   s.specification_version = 4
 
   s.add_runtime_dependency(%q<bcrypt>.freeze, ["~> 3.1".freeze])
+  s.add_runtime_dependency(%q<base64>.freeze, ["~> 0.2".freeze])
+  s.add_development_dependency(%q<argon2>.freeze, ["~> 2.3".freeze])
+  s.add_development_dependency(%q<debug>.freeze, ["~> 1.9".freeze])
   s.add_development_dependency(%q<rake>.freeze, ["~> 13.1".freeze])
   s.add_development_dependency(%q<minitest>.freeze, ["~> 5.21".freeze])
   s.add_development_dependency(%q<minitest-junit>.freeze, ["~> 1.1".freeze])
