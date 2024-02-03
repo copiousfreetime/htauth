@@ -53,7 +53,7 @@ Usage:
 
             op.separator ""
 
-            op.on("-a", "--argon2", "Force argon2 encryption of the password.") do |a|
+            op.on("--argon2", "Force argon2 encryption of the password.") do |a|
               options.algorithm = Algorithm::ARGON2
             end
 
