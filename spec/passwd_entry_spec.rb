@@ -32,6 +32,14 @@ describe HTAuth::PasswdEntry do
     _(bob.digest).must_equal "b secret"
   end
 
+  it "encypts correctly for argon2" do
+    # Don't do this in real life, do not pass in a salt, let the algorithm generate it internally
+    salt = ";L\xCDMRO\v\x13;\x012\x9B'\xEE\\i"
+    agatha = HTAuth::PasswdEntry.new("agatha","ag secret", "argon2", {salt_do_not_supply: salt} )
+    expected = "$argon2id$v=19$m=65536,t=3,p=4$O0zNTVJPCxM7ATKbJ+5caQ$e7wIsl7AY+uIbN+1StYOKkVCJhOrvX7BxAlQ+sPC+Nc"
+    _(agatha.digest).must_equal expected
+  end
+
   it "encrypts with crypt as a default, when parsed from crypt()'d line" do
     bob2 = HTAuth::PasswdEntry.from_line(@bob.to_s)
     _(bob2.algorithm).must_be_instance_of(HTAuth::Crypt)
@@ -95,6 +103,12 @@ describe HTAuth::PasswdEntry do
     s = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
     s2 = HTAuth::PasswdEntry.from_line(s.to_s)
     _(s2.authenticated?("b secret")).must_equal true
+  end
+
+  it "authenticates correctly against argon2" do
+    s = HTAuth::PasswdEntry.new("agatha", "ag secret", "argon2")
+    s2 = HTAuth::PasswdEntry.from_line(s.to_s)
+    _(s2.authenticated?("ag secret")).must_equal true
   end
 
   it "can update the cost of an entry after initialization before encoding password" do
