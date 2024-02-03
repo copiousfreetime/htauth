@@ -28,12 +28,16 @@ module HTAuth
       !::Gem.win_platform?
     end
 
+    def self.ensure_available!
+      raise NotSupportedError unless supported?
+      raise NotInstalledError unless ARGON2_GEM_INSTALLED
+    end
+
     attr_accessor :options
 
      def self.handles?(password_entry)
       return false unless PREFIX.match?(password_entry)
-      raise NotSupportedError unless supported?
-      raise NotInstalledError unless ARGON2_GEM_INSTALLED
+      ensure_available!
 
       return ::Argon2::Password.valid_hash?(password_entry)
      end
@@ -53,6 +57,7 @@ module HTAuth
      end
 
      def initialize(params = { profile: :rfc_9106_low_memory })
+       self.class.ensure_available!
        if existing = (params['existing'] || params[:existing]) then
          @options = self.class.extract_options_from_existing_password_field(existing)
        else
