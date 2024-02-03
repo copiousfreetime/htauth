@@ -86,7 +86,9 @@ module HTAuth
     end
 
     # Internal
-    def encode(password) ; end
+    def encode(password)
+      raise NotImplementedError, "#{self.class.name} must implement #{self.class.name}.encode(password)"
+    end
 
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)
