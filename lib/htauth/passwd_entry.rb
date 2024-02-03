@@ -62,7 +62,7 @@ module HTAuth
     # Internal: Create a new Entry with the given user, password, and algorithm
     def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {} )
       @user      = user
-      alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
+      alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
       @digest    = calc_digest(password)
     end
@@ -113,7 +113,7 @@ module HTAuth
 
     # Internal: Returns the key of this entry
     def key
-      return "#{user}"
+      "#{user}"
     end
 
     # Internal: Returns the file line for this entry
