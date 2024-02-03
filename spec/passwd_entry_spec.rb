@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/passwd_entry'
 
 describe HTAuth::PasswdEntry do
   before(:each) do

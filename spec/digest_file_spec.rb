@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/digest_file'
 require 'tempfile'
 
 describe HTAuth::DigestFile do

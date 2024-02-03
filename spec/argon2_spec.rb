@@ -1,6 +1,5 @@
 require 'spec_helper'
 require 'argon2'
-require 'htauth/argon2'
 
 describe HTAuth::Argon2 do
 

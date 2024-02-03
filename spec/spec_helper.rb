@@ -22,3 +22,4 @@ class ConsoleIO < StringIO
     yield self
   end
 end
+require 'htauth'

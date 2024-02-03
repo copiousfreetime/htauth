@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/digest_entry'
 
 describe HTAuth::DigestEntry do
   before(:each) do

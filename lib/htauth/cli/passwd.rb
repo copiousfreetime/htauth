@@ -1,6 +1,4 @@
-require 'htauth/error'
-require 'htauth/passwd_file'
-require 'htauth/console'
+require 'htauth/cli'
 
 require 'ostruct'
 require 'optparse'

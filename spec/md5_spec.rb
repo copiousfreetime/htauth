@@ -1,6 +1,4 @@
-require File.join(File.dirname(__FILE__),"spec_helper.rb")
-
-require 'htauth/md5'
+require 'spec_helper'
 
 describe HTAuth::Md5 do
   it "encrypts the same way that apache does" do

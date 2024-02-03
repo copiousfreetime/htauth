@@ -1,5 +1,6 @@
 require 'htauth/error'
 require 'htauth/entry'
+require 'htauth/algorithm'
 require 'digest/md5'
 
 module HTAuth

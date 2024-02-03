@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/algorithm'
 
 describe HTAuth::Algorithm do
   it "raises an error if it encouners an unknown algorithm" do

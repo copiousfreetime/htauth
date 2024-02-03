@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/crypt'
 
 describe HTAuth::Crypt do
   it "encrypts the same way that apache does" do

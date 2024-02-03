@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/bcrypt'
 
 describe HTAuth::Bcrypt do
   it "encrypts the same way that apache does by default" do
