@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.metadata = { "bug_tracker_uri" => "https://github.com/copiousfreetime/htauth/issues", "changelog_uri" => "https://github.com/copiousfreetime/htauth/blob/master/HISTORY.md", "homepage_uri" => "https://github.com/copiousfreetime/htauth", "source_code_uri" => "https://github.com/copiousfreetime/htauth" } if s.respond_to? :metadata=
   s.require_paths = ["lib".freeze]
   s.authors = ["Jeremy Hinegardner".freeze]
-  s.date = "2024-01-17"
+  s.date = "2024-02-03"
   s.description = "HTAuth is a pure ruby replacement for the Apache support programs htdigest and htpasswd.  Command line and API access are provided for access to htdigest and htpasswd files.".freeze
   s.email = "jeremy@copiousfreetime.org".freeze
   s.executables = ["htdigest-ruby".freeze, "htpasswd-ruby".freeze]
