@@ -31,5 +31,10 @@ module HTAuth
     def encode(password)
       ::BCrypt::Password.create(password, :cost => cost)
     end
+
+    def verify_password?(password, digest)
+      bc = ::BCrypt::Password.new(digest)
+      bc.is_password?(password)
+    end
   end
 end

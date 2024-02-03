@@ -54,5 +54,9 @@ module HTAuth
        argon2 = ::Argon2::Password.new(options)
        argon2.create(password)
      end
+
+    def verify_password?(password, digest)
+      ::Argon2::Password.verify_password(password, digest)
+    end
   end
 end

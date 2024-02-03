@@ -90,6 +90,14 @@ module HTAuth
       raise NotImplementedError, "#{self.class.name} must implement #{self.class.name}.encode(password)"
     end
 
+    # Internal: Does the given password match the digest, the default just
+    # encodes and secure compares the result, different algorithms may overide
+    # this method
+    def verify_password?(password, digest)
+      encoded = encode(password)
+      self.class.secure_compare(encoded, digest)
+    end
+
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)
       Array.new(length) { SALT_CHARS.sample }.join('')
