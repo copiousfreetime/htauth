@@ -22,7 +22,7 @@ GEM
       ffi (>= 1.0.0)
       rake
     jar-dependencies (0.4.1)
-    minitest (5.21.1)
+    minitest (5.21.2)
     minitest-junit (1.1.0)
       builder (~> 3.2)
       minitest (~> 5.11)
