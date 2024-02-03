@@ -129,7 +129,23 @@ describe HTAuth::CLI::Passwd do
       _(@stderr.string).must_match( /ERROR:/m )
       _(se.status).must_equal 1
     end
- 
+  end
+
+  it "creates a new file with one argon2 entry" do
+    begin
+      @stdin.puts "a secret"
+      @stdin.puts "a secret"
+      @stdin.rewind
+      @htauth.run([ "--argon", "-c", @new_file, "agatha" ])
+    rescue SystemExit => se
+      _(se.status).must_equal 0
+      l = IO.readlines(@new_file)
+      fields = l.first.split(':')
+      _(fields.first).must_equal "agatha"
+      argon2_hash = fields.last
+
+      _(::Argon2::Password.valid_hash?(argon2_hash)).wont_be_nil
+    end
   end
 
   it "does not verify the password from stdin on -i option" do
