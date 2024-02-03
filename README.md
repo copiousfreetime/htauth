@@ -7,9 +7,7 @@
 
 ## DESCRIPTION
 
-HTAuth is a pure ruby replacement for the Apache support programs htdigest and
-htpasswd.  Command line and API access are provided for access to htdigest and
-htpasswd files.
+HTAuth provides both commandline and API access to htpasswd and htdigest files.
 
 ## FEATURES
 
@@ -35,8 +33,8 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
             htpasswd-ruby -n[imBdps] [-C cost] username
             htpasswd-ruby -nb[mBdps] [-C cost] username password
 
-        -a, --argon2     Force argon2 encryption of the password
-        -b, --batch      Batch mode, get the password from the command line, rather than prompt
+            --argon2     Force argon2 encryption of the password.
+        -b, --batch      Batch mode, get the password from the command line, rather than prompt.
         -B, --bcrypt     Force bcrypt encryption of the password.
         -C, --cost COST  Set the computing time used for the bcrypt algorithm
                          (higher is more secure but slower, default: 5, valid: 4 to 31).
@@ -50,7 +48,7 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
         -p, --plaintext  Do not encrypt the password (plaintext).
         -s, --sha1       Force SHA encryption of the password.
         -v, --version    Show version info.
-            --verify     Verify password for the specified user
+            --verify     Verify password for the specified user.
 
     The SHA algorithm does not use a salt and is less secure than the MD5 algorithm.
 

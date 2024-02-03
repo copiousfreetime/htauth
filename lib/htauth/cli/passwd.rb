@@ -55,7 +55,7 @@ Usage:
               options.algorithm = Algorithm::ARGON2
             end
 
-            op.on("-b", "--batch", "Batch mode, get the password from the command line, rather than prompt") do |b|
+            op.on("-b", "--batch", "Batch mode, get the password from the command line, rather than prompt.") do |b|
               options.batch_mode = b
             end
 
@@ -120,7 +120,7 @@ Usage:
               options.show_version = v
             end
 
-            op.on("--verify", "Verify password for the specified user") do |v|
+            op.on("--verify", "Verify password for the specified user.") do |v|
               options.operation << :verify
             end
 
