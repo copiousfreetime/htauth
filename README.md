@@ -7,22 +7,44 @@
 
 ## DESCRIPTION
 
-HTAuth provides both commandline and API access to htpasswd and htdigest files.
+HTAuth provides an API, and commandline tools for managing Apache/httpd style
+htpasswd and htdigest files.
 
 ## FEATURES
 
-HTAuth provides to drop in commands *htdigest-ruby* and *htpasswd-ruby* that
-can manipulate the digest and passwd files in the same manner as Apache's
-original commands.
+HTAuth provides an API allowing direct manipulation of Apache/httpd style
+`htdigest` and `htpasswd` files. Supporting full programtaic manipulation and
+authentication of user credentials.
 
-*htdigest-ruby* and *htpasswd-ruby* are command line compatible with *htdigest*
-and *htpasswd*.  They support the same exact same command line options as the
-originals, and have some extras.
+HTAuth also includes drop-in, commandline compatible replacements for the Apache
+utilities `htpasswd` and `htdigest` with the respective `htpasswd-ruby` and
+`htdigest-ruby` commands.
 
-Additionally, you can access all the functionality of *htdigest-ruby* and
-*htpasswd-ruby* through an API.
+Additonally, support for the [argon2](https://github.com/technion/ruby-argon2)
+password hashing algorithm is provided for most platforms.
 
 ## SYNOPSIS
+
+### API Usage
+
+    HTAuth::DigestFile.open("some.htdigest") do |df|
+      df.add_or_update('someuser', 'myrealm', 'a password')
+      df.delete('someolduser', 'myotherrealm')
+    end
+
+    HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::CREATE) do |pf|
+      pf.add('someuser', 'a password', 'md5')
+      pf.add('someotheruser', 'a different password', 'sha1')
+    end
+
+    HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::ALTER) do |pf|
+      pf.update('someuser', 'a password', 'bcrypt')
+    end
+
+    HTAuth::PasswdFile.open("some.htpasswd") do |pf|
+      pf.authenticated?('someuser', 'a password')
+    end
+
 
 ### htpasswd-ruby command line application
 
@@ -50,8 +72,6 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
         -v, --version    Show version info.
             --verify     Verify password for the specified user.
 
-    The SHA algorithm does not use a salt and is less secure than the MD5 algorithm.
-
 ### htdigest-ruby command line application
 
     Usage: htdigest-ruby [options] passwordfile realm username
@@ -59,26 +79,6 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
         -D, --delete   Delete the specified user.
         -h, --help     Display this help.
         -v, --version  Show version info.
-
-### API Usage
-
-    HTAuth::DigestFile.open("some.htdigest") do |df|
-      df.add_or_update('someuser', 'myrealm', 'a password')
-      df.delete('someolduser', 'myotherrealm')
-    end
-
-    HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::CREATE) do |pf|
-      pf.add('someuser', 'a password', 'md5')
-      pf.add('someotheruser', 'a different password', 'sha1')
-    end
-
-    HTAuth::PasswdFile.open("some.htpasswd", HTAuth::File::ALTER) do |pf|
-      pf.update('someuser', 'a password', 'bcrypt')
-    end
-
-    HTAuth::PasswdFile.open("some.htpasswd") do |pf|
-      pf.authenticated?('someuser', 'a password')
-    end
 
 ## Supported Hash Algorithms
 
@@ -97,7 +97,9 @@ Out of the box, `htauth` supports the classic algorithms that ship with Apache
 
 - Available with the installation of additional libraries:
     - argon2 - to use, add `gem 'argon2'` to your `Gemfile`. `argon2` will
-      now be a valid algorithm to use in `HTAuth::PasswdFile` API.
+      now be a valid algorithm to use in `HTAuth::PasswdFile` API. Currently
+      argon2 is not supported on windows as the upstream `argon2` gem does not
+      support windows.
 
 ## CREDITS
 
