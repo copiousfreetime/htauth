@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    htauth (2.2.0)
+    htauth (2.3.0)
       base64 (~> 0.2)
       bcrypt (~> 3.1)
 
