@@ -8,6 +8,7 @@ bin/htdigest-ruby
 bin/htpasswd-ruby
 lib/htauth.rb
 lib/htauth/algorithm.rb
+lib/htauth/argon2.rb
 lib/htauth/bcrypt.rb
 lib/htauth/cli.rb
 lib/htauth/cli/digest.rb
@@ -27,6 +28,7 @@ lib/htauth/plaintext.rb
 lib/htauth/sha1.rb
 lib/htauth/version.rb
 spec/algorithm_spec.rb
+spec/argon2_spec.rb
 spec/bcrypt_spec.rb
 spec/cli/digest_spec.rb
 spec/cli/passwd_spec.rb
