@@ -7,20 +7,20 @@
 
 ## DESCRIPTION
 
-HTAuth provides an API, and commandline tools for managing Apache/httpd style
+HTAuth provides an API and commandline tools for managing Apache/httpd style
 htpasswd and htdigest files.
 
 ## FEATURES
 
 HTAuth provides an API allowing direct manipulation of Apache/httpd style
-`htdigest` and `htpasswd` files. Supporting full programtaic manipulation and
+`htdigest` and `htpasswd` files. Supporting full programmatic manipulation and
 authentication of user credentials.
 
 HTAuth also includes drop-in, commandline compatible replacements for the Apache
 utilities `htpasswd` and `htdigest` with the respective `htpasswd-ruby` and
 `htdigest-ruby` commands.
 
-Additonally, support for the [argon2](https://github.com/technion/ruby-argon2)
+Additionally, support for the [argon2](https://github.com/technion/ruby-argon2)
 password hashing algorithm is provided for most platforms.
 
 ## SYNOPSIS
@@ -87,7 +87,7 @@ Out of the box, `htauth` supports the classic algorithms that ship with Apache
 
 - Built in
     - Generally accepted
-        - MD5 (default for compatibilty reasons)
+        - MD5 (default for compatibility reasons)
         - bcrypt (probably the better choice)
 
     - **Not Recommended** - available only for backwards compatibility with `htpasswd`
@@ -104,7 +104,7 @@ Out of the box, `htauth` supports the classic algorithms that ship with Apache
 ## CREDITS
 
 * [The Apache Software Foundation](http://www.apache.org/)
-* all the folks who contributed to htdigest and htpassword
+* all the folks who contributed to htdigest and htpasswd
 
 ## MIT LICENSE
 
