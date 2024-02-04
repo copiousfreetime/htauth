@@ -30,7 +30,7 @@ end
 
 require 'htauth/version'
 require 'htauth/algorithm'
-require 'htauth/console'
+require 'htauth/argon2'
 require 'htauth/bcrypt'
 require 'htauth/crypt'
 require 'htauth/digest_entry'

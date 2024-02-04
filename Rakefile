@@ -8,7 +8,9 @@ This.homepage = "http://github.com/copiousfreetime/#{ This.name }"
 
 This.ruby_gemspec do |spec|
   spec.add_dependency( 'bcrypt', '~> 3.1' )
+  spec.add_dependency( 'base64', '~> 0.2' )
 
+  spec.add_development_dependency( 'argon2'   , '~> 2.3')
   spec.add_development_dependency( 'rake'     , '~> 13.1')
   spec.add_development_dependency( 'minitest' , '~> 5.21' )
   spec.add_development_dependency( 'minitest-junit' , '~> 1.1' )

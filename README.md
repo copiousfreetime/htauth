@@ -7,59 +7,23 @@
 
 ## DESCRIPTION
 
-HTAuth is a pure ruby replacement for the Apache support programs htdigest and
-htpasswd.  Command line and API access are provided for access to htdigest and
-htpasswd files.
+HTAuth provides an API and commandline tools for managing Apache/httpd style
+htpasswd and htdigest files.
 
 ## FEATURES
 
-HTAuth provides to drop in commands *htdigest-ruby* and *htpasswd-ruby* that
-can manipulate the digest and passwd files in the same manner as Apache's
-original commands.
+HTAuth provides an API allowing direct manipulation of Apache/httpd style
+`htdigest` and `htpasswd` files. Supporting full programmatic manipulation and
+authentication of user credentials.
 
-*htdigest-ruby* and *htpasswd-ruby* are command line compatible with *htdigest*
-and *htpasswd*.  They support the same exact same command line options as the
-originals, and have some extras.
+HTAuth also includes drop-in, commandline compatible replacements for the Apache
+utilities `htpasswd` and `htdigest` with the respective `htpasswd-ruby` and
+`htdigest-ruby` commands.
 
-Additionally, you can access all the functionality of *htdigest-ruby* and
-*htpasswd-ruby* through an API.
+Additionally, support for the [argon2](https://github.com/technion/ruby-argon2)
+password hashing algorithm is provided for most platforms.
 
 ## SYNOPSIS
-
-### htpasswd-ruby command line application
-
-    Usage:
-            htpasswd-ruby [-cimBdpsD] [-C cost] passwordfile username
-            htpasswd-ruby -b[cmBdpsD] [-C cost] passwordfile username password
-
-            htpasswd-ruby -n[imBdps] [-C cost] username
-            htpasswd-ruby -nb[mBdps] [-C cost] username password
-
-        -b, --batch      Batch mode, get the password from the command line, rather than prompt
-        -B, --bcrypt     Force bcrypt encryption of the password.
-        -C, --cost COST  Set the computing time used for the bcrypt algorithm
-                         (higher is more secure but slower, default: 5, valid: 4 to 31).
-        -c, --create     Create a new file; this overwrites an existing file.
-        -d, --crypt      Force CRYPT encryption of the password.
-        -D, --delete     Delete the specified user.
-        -h, --help       Display this help.
-        -i, --stdin      Read the passwod from stdin without verivication (for script usage).
-        -m, --md5        Force MD5 encryption of the password (default).
-        -n, --stdout     Do not update the file; Display the results on stdout instead.
-        -p, --plaintext  Do not encrypt the password (plaintext).
-        -s, --sha1       Force SHA encryption of the password.
-        -v, --version    Show version info.
-            --verify     Verify password for the specified user
-
-    The SHA algorithm does not use a salt and is less secure than the MD5 algorithm.
-
-### htdigest-ruby command line application
-
-    Usage: htdigest-ruby [options] passwordfile realm username
-        -c, --create   Create a new digest password file; this overwrites an existing file.
-        -D, --delete   Delete the specified user.
-        -h, --help     Display this help.
-        -v, --version  Show version info.
 
 ### API Usage
 
@@ -81,10 +45,66 @@ Additionally, you can access all the functionality of *htdigest-ruby* and
       pf.authenticated?('someuser', 'a password')
     end
 
+
+### htpasswd-ruby command line application
+
+    Usage:
+            htpasswd-ruby [-cimBdpsD] [-C cost] passwordfile username
+            htpasswd-ruby -b[cmBdpsD] [-C cost] passwordfile username password
+
+            htpasswd-ruby -n[imBdps] [-C cost] username
+            htpasswd-ruby -nb[mBdps] [-C cost] username password
+
+            --argon2     Force argon2 encryption of the password.
+        -b, --batch      Batch mode, get the password from the command line, rather than prompt.
+        -B, --bcrypt     Force bcrypt encryption of the password.
+        -C, --cost COST  Set the computing time used for the bcrypt algorithm
+                         (higher is more secure but slower, default: 5, valid: 4 to 31).
+        -c, --create     Create a new file; this overwrites an existing file.
+        -d, --crypt      Force CRYPT encryption of the password.
+        -D, --delete     Delete the specified user.
+        -h, --help       Display this help.
+        -i, --stdin      Read the passwod from stdin without verivication (for script usage).
+        -m, --md5        Force MD5 encryption of the password (default).
+        -n, --stdout     Do not update the file; Display the results on stdout instead.
+        -p, --plaintext  Do not encrypt the password (plaintext).
+        -s, --sha1       Force SHA encryption of the password.
+        -v, --version    Show version info.
+            --verify     Verify password for the specified user.
+
+### htdigest-ruby command line application
+
+    Usage: htdigest-ruby [options] passwordfile realm username
+        -c, --create   Create a new digest password file; this overwrites an existing file.
+        -D, --delete   Delete the specified user.
+        -h, --help     Display this help.
+        -v, --version  Show version info.
+
+## Supported Hash Algorithms
+
+Out of the box, `htauth` supports the classic algorithms that ship with Apache
+`htpasswd`.
+
+- Built in
+    - Generally accepted
+        - MD5 (default for compatibility reasons)
+        - bcrypt (probably the better choice)
+
+    - **Not Recommended** - available only for backwards compatibility with `htpasswd`
+        - SHA1
+        - crypt
+        - plaintext
+
+- Available with the installation of additional libraries:
+    - argon2 - to use, add `gem 'argon2'` to your `Gemfile`. `argon2` will
+      now be a valid algorithm to use in `HTAuth::PasswdFile` API. Currently
+      argon2 is not supported on windows as the upstream `argon2` gem does not
+      support windows.
+
 ## CREDITS
 
 * [The Apache Software Foundation](http://www.apache.org/)
-* all the folks who contributed to htdigest and htpassword
+* all the folks who contributed to htdigest and htpasswd
 
 ## MIT LICENSE
 

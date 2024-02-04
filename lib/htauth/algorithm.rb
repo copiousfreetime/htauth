@@ -13,6 +13,8 @@ module HTAuth
     SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
     SALT_LENGTH   = 8
 
+    # Public: flag for the argon2 algorithm
+    ARGON2        = "argon2".freeze
     # Public: flag for the bcrypt algorithm
     BCRYPT        = "bcrypt".freeze
     # Public: flag for the md5 algorithm
@@ -84,7 +86,17 @@ module HTAuth
     end
 
     # Internal
-    def encode(password) ; end
+    def encode(password)
+      raise NotImplementedError, "#{self.class.name} must implement #{self.class.name}.encode(password)"
+    end
+
+    # Internal: Does the given password match the digest, the default just
+    # encodes and secure compares the result, different algorithms may overide
+    # this method
+    def verify_password?(password, digest)
+      encoded = encode(password)
+      self.class.secure_compare(encoded, digest)
+    end
 
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)

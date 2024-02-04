@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'htauth/passwd_entry'
 
 describe HTAuth::PasswdEntry do
   before(:each) do
@@ -30,6 +29,14 @@ describe HTAuth::PasswdEntry do
   it "encrypts correctly for plaintext" do
     bob = HTAuth::PasswdEntry.new("bob", "b secret", "plaintext", { :salt => @salt })
     _(bob.digest).must_equal "b secret"
+  end
+
+  it "encypts correctly for argon2" do
+    # Don't do this in real life, do not pass in a salt, let the algorithm generate it internally
+    salt = ";L\xCDMRO\v\x13;\x012\x9B'\xEE\\i"
+    agatha = HTAuth::PasswdEntry.new("agatha","ag secret", "argon2", {salt_do_not_supply: salt} )
+    expected = "$argon2id$v=19$m=65536,t=3,p=4$O0zNTVJPCxM7ATKbJ+5caQ$e7wIsl7AY+uIbN+1StYOKkVCJhOrvX7BxAlQ+sPC+Nc"
+    _(agatha.digest).must_equal expected
   end
 
   it "encrypts with crypt as a default, when parsed from crypt()'d line" do
@@ -97,6 +104,12 @@ describe HTAuth::PasswdEntry do
     _(s2.authenticated?("b secret")).must_equal true
   end
 
+  it "authenticates correctly against argon2" do
+    s = HTAuth::PasswdEntry.new("agatha", "ag secret", "argon2")
+    s2 = HTAuth::PasswdEntry.from_line(s.to_s)
+    _(s2.authenticated?("ag secret")).must_equal true
+  end
+
   it "can update the cost of an entry after initialization before encoding password" do
     s = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
     _(s.algorithm.cost).must_equal(::HTAuth::Bcrypt::DEFAULT_APACHE_COST)
@@ -108,7 +121,7 @@ describe HTAuth::PasswdEntry do
     _(s2.algorithm.cost).must_equal(12)
   end
 
-  it "raises an error if assinging an invalid algorithm" do
+  it "raises an error if assigning an invalid algorithm" do
     b = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
     _ { b.algorithm = 42 }.must_raise(HTAuth::InvalidAlgorithmError)
   end

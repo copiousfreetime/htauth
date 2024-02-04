@@ -1,18 +1,28 @@
 PATH
   remote: .
   specs:
-    htauth (2.2.0)
+    htauth (2.3.0)
+      base64 (~> 0.2)
       bcrypt (~> 3.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
+    argon2 (2.3.0)
+      ffi (~> 1.15)
+      ffi-compiler (~> 1.0)
+    base64 (0.2.0)
     bcrypt (3.1.20)
     bcrypt (3.1.20-java)
     builder (3.2.4)
     docile (1.4.0)
+    ffi (1.16.3)
+    ffi (1.16.3-java)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
     jar-dependencies (0.4.1)
-    minitest (5.21.1)
+    minitest (5.21.2)
     minitest-junit (1.1.0)
       builder (~> 3.2)
       minitest (~> 5.11)
@@ -38,6 +48,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  argon2 (~> 2.3)
   htauth!
   minitest (~> 5.21)
   minitest-junit (~> 1.1)

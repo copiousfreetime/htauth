@@ -1,7 +1,8 @@
 # Changelog
-## Version 2.3.0 - 2024-01-XX
+## Version 2.3.0 - 2024-02-03
 
-* Update ruby version - dropping official support for 2.6 and 2.7
+* Add support for argon2 encryption [#18](https://github.com/copiousfreetime/htauth/pull/18)
+* Update supported ruby version, now supporting ruby 3.x only
 * Semaphore updates
 
 ## Version 2.2.0 - 2023-02-06

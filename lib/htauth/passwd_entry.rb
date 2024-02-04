@@ -62,7 +62,7 @@ module HTAuth
     # Internal: Create a new Entry with the given user, password, and algorithm
     def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {} )
       @user      = user
-      alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING 
+      alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
       @digest    = calc_digest(password)
     end
@@ -106,25 +106,14 @@ module HTAuth
     end
 
     # Public: Check if the given password is the password of this entry
-    # check the password and make sure it works, in the case that the algorithm is unknown it
-    # tries all of the ones that it thinks it could be, and marks the algorithm if it matches
-    # when looking for a matche, we always compare all of them, no short
-    # circuiting
+    #
     def authenticated?(check_password)
-      authed = false
-      if algorithm.kind_of?(Bcrypt) then
-        bc = ::BCrypt::Password.new(digest)
-        authed = bc.is_password?(check_password)
-      else
-        encoded = algorithm.encode(check_password)
-        authed  = Algorithm.secure_compare(encoded, digest)
-      end
-      return authed
+      algorithm.verify_password?(check_password, @digest)
     end
 
     # Internal: Returns the key of this entry
     def key
-      return "#{user}"
+      "#{user}"
     end
 
     # Internal: Returns the file line for this entry

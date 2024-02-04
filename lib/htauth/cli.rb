@@ -1,8 +1,7 @@
 require 'htauth'
+require 'htauth/console'
 module HTAuth
   module CLI
 
   end
 end
-require 'htauth/cli/digest'
-require 'htauth/cli/passwd'
