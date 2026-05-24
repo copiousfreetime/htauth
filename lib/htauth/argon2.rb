@@ -61,6 +61,7 @@ module HTAuth
     end
 
     def initialize(params = { profile: :rfc_9106_low_memory })
+      super()
       self.class.ensure_available!
       @options = if (existing = params["existing"] || params[:existing])
                    self.class.extract_options_from_existing_password_field(existing)

@@ -21,6 +21,7 @@ module HTAuth
   #
   module DescendantTracker
     def inherited(klass)
+      super
       return unless klass.instance_of?(Class)
 
       children << klass

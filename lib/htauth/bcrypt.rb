@@ -22,6 +22,7 @@ module HTAuth
     end
 
     def initialize(params = {})
+      super()
       @cost = if (existing = params["existing"] || params[:existing])
                 self.class.extract_cost_from_existing_password_field(existing)
               else

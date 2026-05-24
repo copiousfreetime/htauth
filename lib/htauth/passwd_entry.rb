@@ -62,6 +62,7 @@ module HTAuth
 
     # Internal: Create a new Entry with the given user, password, and algorithm
     def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {})
+      super()
       @user = user
       alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)

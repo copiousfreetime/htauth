@@ -17,7 +17,9 @@ module HTAuth
     end
 
     # ignore the params
-    def initialize(params = {}); end
+    def initialize(params = {})
+      super()
+    end
 
     def encode(password)
       "#{PREFIX}#{Base64.encode64(::Digest::SHA1.digest(password)).strip}"

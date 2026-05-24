@@ -62,6 +62,7 @@ module HTAuth
 
     # Internal: Create a new Entry with the given user, realm and password
     def initialize(user, realm, password = "")
+      super()
       @user     = user
       @realm    = realm
       @digest   = calc_digest(password)

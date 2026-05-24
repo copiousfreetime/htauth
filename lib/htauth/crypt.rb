@@ -17,6 +17,7 @@ module HTAuth
     end
 
     def initialize(params = {})
+      super()
       @salt = if (existing = params["existing"] || params[:existing])
                 self.class.extract_salt_from_existing_password_field(existing)
               else
