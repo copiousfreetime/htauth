@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 require "digest/sha1"
 require "base64"
@@ -7,7 +9,7 @@ module HTAuth
   # as used in the apache htpasswd -s option
   #
   class Sha1 < Algorithm
-    PREFIX      = "{SHA}".freeze
+    PREFIX      = "{SHA}"
     ENTRY_REGEX = %r[\A#{Regexp.escape(PREFIX)}[A-Za-z0-9+/=]{28}\z]
 
     def self.handles?(password_entry)

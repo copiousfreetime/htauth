@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stringio"
 require "tempfile"
 
@@ -32,7 +34,7 @@ module HTAuth
     # Returns true or false if the username
     def has_entry?(username)
       test_entry = PasswdEntry.new(username)
-      @entries.has_key?(test_entry.key)
+      @entries.key?(test_entry.key)
     end
 
     # Public: remove the given username from the file

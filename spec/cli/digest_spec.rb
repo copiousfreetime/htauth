@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "htauth/cli/digest"
 require "tempfile"
@@ -32,7 +34,7 @@ describe HTAuth::CLI::Digest do
     $stderr = @old_stderr
     $stdout = @old_stdout
     $stdin = @old_stdin
-    File.unlink(@new_file) if File.exist?(@new_file)
+    FileUtils.rm_f(@new_file)
   end
 
   it "displays help appropriately" do

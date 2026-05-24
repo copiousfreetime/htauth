@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 
 module HTAuth
@@ -17,7 +19,7 @@ module HTAuth
     def initialize(params = {}); end
 
     def encode(password)
-      "#{password}"
+      password.to_s
     end
   end
 end

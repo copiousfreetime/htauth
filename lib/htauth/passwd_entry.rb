@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/error"
 require "htauth/entry"
 require "htauth/algorithm"
@@ -39,7 +41,7 @@ module HTAuth
       # Returns the individual parts of the line
       # Raises InvalidPasswdEntry if it is not an valid entry
       def is_entry!(line)
-        raise InvalidPasswdEntry, "line commented out" if /\A#/.match?(line)
+        raise InvalidPasswdEntry, "line commented out" if line.start_with?("#")
 
         parts = line.strip.split(":")
         raise InvalidPasswdEntry, "line must be of the format username:password" if parts.size != 2
@@ -68,7 +70,7 @@ module HTAuth
 
     # Internal: set the algorithm for the entry
     def algorithm=(alg)
-      return @algorithm if Algorithm::EXISTING == alg
+      return @algorithm if alg == Algorithm::EXISTING
 
       case alg
       when String
@@ -112,7 +114,7 @@ module HTAuth
 
     # Internal: Returns the key of this entry
     def key
-      "#{user}"
+      user.to_s
     end
 
     # Internal: Returns the file line for this entry

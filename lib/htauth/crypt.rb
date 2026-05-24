@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 
 module HTAuth
@@ -15,7 +17,7 @@ module HTAuth
     end
 
     def initialize(params = {})
-      @salt = if existing = params["existing"] || params[:existing]
+      @salt = if (existing = params["existing"] || params[:existing])
                 self.class.extract_salt_from_existing_password_field(existing)
               else
                 params[:salt] || params["salt"] || gen_salt

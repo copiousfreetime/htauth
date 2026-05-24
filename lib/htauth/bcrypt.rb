@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 require "bcrypt"
 
@@ -20,7 +22,7 @@ module HTAuth
     end
 
     def initialize(params = {})
-      @cost = if existing = params["existing"] || params[:existing]
+      @cost = if (existing = params["existing"] || params[:existing])
                 self.class.extract_cost_from_existing_password_field(existing)
               else
                 params["cost"] || params[:cost] || DEFAULT_APACHE_COST

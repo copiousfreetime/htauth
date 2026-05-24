@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "htauth/cli/passwd"
 require "tempfile"
@@ -32,7 +34,7 @@ describe HTAuth::CLI::Passwd do
     $stderr = @old_stderr
     $stdout = @old_stdout
     $stdin = @old_stdin
-    File.unlink(@new_file) if File.exist?(@new_file)
+    FileUtils.rm_f(@new_file)
   end
 
   it "displays help appropriately" do
@@ -82,7 +84,7 @@ describe HTAuth::CLI::Passwd do
     @stdin.puts "b secret"
     @stdin.puts "b secret"
     @stdin.rewind
-    @htauth.run(["-C", "#{cost}", "-B", "-c", @new_file, "brenda"])
+    @htauth.run(["-C", cost.to_s, "-B", "-c", @new_file, "brenda"])
   rescue SystemExit => e
     _(e.status).must_equal 0
     l = IO.readlines(@new_file)

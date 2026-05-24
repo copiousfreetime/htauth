@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "htauth/passwd_file"
 require "tempfile"

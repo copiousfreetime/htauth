@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 require "digest/md5"
 
@@ -7,8 +9,8 @@ module HTAuth
   class Md5 < Algorithm
     DIGEST_LENGTH  = 16
     PAD_LENGTH     = 6
-    PREFIX         = "$apr1$".freeze
-    SALT_CHARS_STR = SALT_CHARS.join("")
+    PREFIX         = "$apr1$"
+    SALT_CHARS_STR = SALT_CHARS.join
     ENTRY_REGEX    = /
       \A
       #{Regexp.escape(PREFIX)}
@@ -28,7 +30,7 @@ module HTAuth
     end
 
     def initialize(params = {})
-      @salt = if existing = params["existing"] || params[:existing]
+      @salt = if (existing = params["existing"] || params[:existing])
                 self.class.extract_salt_from_existing_password_field(existing)
               else
                 params[:salt] || params["salt"] || gen_salt
@@ -45,8 +47,8 @@ module HTAuth
       md5_t = ::Digest::MD5.digest("#{password}#{@salt}#{password}")
 
       l = password.length
-      while l > 0
-        slice_size = (l > DIGEST_LENGTH) ? DIGEST_LENGTH : l
+      while l.positive?
+        slice_size = [l, DIGEST_LENGTH].min
         primary << md5_t[0, slice_size]
         l -= DIGEST_LENGTH
       end
@@ -70,10 +72,10 @@ module HTAuth
       # apr_md5_encode has this comment about a 60Mhz Pentium above this loop.
       1000.times do |x|
         ctx = ::Digest::MD5.new
-        ctx << (((x & 1) == 1) ? password : pd[0, DIGEST_LENGTH])
-        (ctx << @salt) unless (x % 3) == 0
-        (ctx << password) unless (x % 7) == 0
-        ctx << (((x & 1) == 0) ? password : pd[0, DIGEST_LENGTH])
+        ctx << (x.allbits?(1) ? password : pd[0, DIGEST_LENGTH])
+        (ctx << @salt) unless (x % 3).zero?
+        (ctx << password) unless (x % 7).zero?
+        ctx << (x.nobits?(1) ? password : pd[0, DIGEST_LENGTH])
         pd = ctx.digest
       end
 

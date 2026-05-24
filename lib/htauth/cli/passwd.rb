@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/cli"
 
 require "ostruct"
@@ -68,7 +70,7 @@ module HTAuth
             end
 
             cost = c.to_i
-            unless (4..31).include?(cost)
+            unless (4..31).cover?(cost)
               raise ::OptionParser::ParseError, "the bcrypt cost must be an integer from 4 to 31, `#{c}` is invalid"
             end
 
@@ -148,16 +150,16 @@ module HTAuth
           raise ::OptionParser::ParseError,
                 "only one of --create, --stdout, --verify, --delete may be specified"
         end
-        if options.send_to_stdout and (options.file_mode == File::CREATE)
+        if options.send_to_stdout && (options.file_mode == File::CREATE)
           raise ::OptionParser::ParseError,
                 "Unable to send to stdout AND create a new file"
         end
-        raise ::OptionParser::ParseError, "a username is needed" if options.send_to_stdout and argv.size < 1
-        if options.send_to_stdout and options.batch_mode and (argv.size < 2)
+        raise ::OptionParser::ParseError, "a username is needed" if options.send_to_stdout && argv.empty?
+        if options.send_to_stdout && options.batch_mode && (argv.size < 2)
           raise ::OptionParser::ParseError,
                 "a username and password are needed"
         end
-        if !options.send_to_stdout and options.batch_mode and (argv.size < 3)
+        if !options.send_to_stdout && options.batch_mode && (argv.size < 3)
           raise ::OptionParser::ParseError,
                 "a passwordfile, username and password are needed "
         end
@@ -236,7 +238,7 @@ module HTAuth
           warn "#{msg}: #{e.message}"
           exit 1
         rescue HTAuth::Error => e
-          warn "#{e.message}"
+          warn e.message
           exit 1
         rescue SignalException => e
           $stderr.puts

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/cli"
 
 require "ostruct"
@@ -66,7 +68,7 @@ module HTAuth
       def parse_options(argv)
         option_parser.parse!(argv)
         show_version if options.show_version
-        show_help if options.show_help or argv.size < 3
+        show_help if options.show_help || (argv.size < 3)
 
         options.passwdfile = argv.shift
         options.realm      = argv.shift
@@ -107,7 +109,7 @@ module HTAuth
           warn e.backtrace.join("\n")
           exit 1
         rescue HTAuth::Error => e
-          warn "#{e.message}"
+          warn e.message
           exit 1
         rescue SignalException => e
           $stderr.puts

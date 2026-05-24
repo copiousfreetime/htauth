@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #--
 # Copyrigth (c) 2008 Jeremy Hinegardner
 # All rights reserved.  See LICENSE and/or COPYING for details

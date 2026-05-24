@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stringio"
 require "htauth/error"
 require "htauth/file"
@@ -31,7 +33,7 @@ module HTAuth
     # Returns true or false if the username/realm combination is found.
     def has_entry?(username, realm)
       test_entry = DigestEntry.new(username, realm)
-      @entries.has_key?(test_entry.key)
+      @entries.key?(test_entry.key)
     end
 
     # Public: remove the given username / realm from the file.

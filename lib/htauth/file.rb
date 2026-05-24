@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "stringio"
 require "htauth/error"
 
@@ -8,13 +10,13 @@ module HTAuth
   # PasswordFile.
   class File
     # Public: The mode to pass to #open for updating a file
-    ALTER  = "alter".freeze
+    ALTER  = "alter"
 
     # Public: The mode to pass to #open for creating a new file
-    CREATE = "create".freeze
+    CREATE = "create"
 
     # Public: A special 'filename' that may be passed to #open for 'saving' to $stdout
-    STDOUT_FLAG = "-".freeze
+    STDOUT_FLAG = "-"
 
     attr_reader :filename, :file
 
@@ -54,7 +56,7 @@ module HTAuth
           begin
             yield f
           ensure
-            f.save! if f and f.dirty?
+            f.save! if f&.dirty?
           end
         end
         f
@@ -87,14 +89,14 @@ module HTAuth
 
       raise FileAccessError, "Invalid mode #{mode}" unless [ALTER, CREATE].include?(mode)
 
-      if (filename != STDOUT_FLAG) and (mode == ALTER) and !::File.exist?(filename)
+      if (filename != STDOUT_FLAG) && (mode == ALTER) && !::File.exist?(filename)
         raise FileAccessError, "Could not open passwd file #{filename} for reading."
       end
 
       begin
         @entries  = {}
         @lines    = []
-        load_entries if (@mode == ALTER) and (filename != STDOUT_FLAG)
+        load_entries if (@mode == ALTER) && (filename != STDOUT_FLAG)
       rescue StandardError => e
         raise FileAccessError, e.message
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "io/console"
 require "htauth/error"
 
@@ -24,7 +26,7 @@ module HTAuth
       raise ConsoleError, "No input given" if answer.nil?
 
       answer.strip!
-      raise ConsoleError, "No input given" if answer.length == 0
+      raise ConsoleError, "No input given" if answer.empty?
 
       answer
     end

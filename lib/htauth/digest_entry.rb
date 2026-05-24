@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/error"
 require "htauth/entry"
 require "htauth/algorithm"
@@ -37,7 +39,7 @@ module HTAuth
       # Returns the individual parts of the line
       # Raises InvalidDigestEntry if it is not a a valid entry
       def is_entry!(line)
-        raise InvalidDigestEntry, "line commented out" if /\A#/.match?(line)
+        raise InvalidDigestEntry, "line commented out" if line.start_with?("#")
 
         parts = line.strip.split(":")
         raise InvalidDigestEntry, "line must be of the format username:realm:md5checksum" if parts.size != 3

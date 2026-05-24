@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HTAuth
   # Internal: base class from which all entries are derived
   class Entry

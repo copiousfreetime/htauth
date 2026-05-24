@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/error"
 require "htauth/descendant_tracker"
 require "securerandom"
@@ -13,23 +15,23 @@ module HTAuth
     SALT_LENGTH   = 8
 
     # Public: flag for the argon2 algorithm
-    ARGON2        = "argon2".freeze
+    ARGON2        = "argon2"
     # Public: flag for the bcrypt algorithm
-    BCRYPT        = "bcrypt".freeze
+    BCRYPT        = "bcrypt"
     # Public: flag for the md5 algorithm
-    MD5           = "md5".freeze
+    MD5           = "md5"
     # Public: flag for the sha1 algorithm
-    SHA1          = "sha1".freeze
+    SHA1          = "sha1"
     # Public: flag for the plaintext algorithm
-    PLAINTEXT     = "plaintext".freeze
+    PLAINTEXT     = "plaintext"
     # Public: flag for the crypt algorithm
-    CRYPT         = "crypt".freeze
+    CRYPT         = "crypt"
 
     # Public: flag for the default algorithm
     DEFAULT       = MD5
 
     # Public: flag to indicate using the existing algorithm of the entry
-    EXISTING      = "existing".freeze
+    EXISTING      = "existing"
 
     class << self
       def algorithm_name
@@ -39,7 +41,7 @@ module HTAuth
       def algorithm_from_name(a_name, params = {})
         found = children.find { |c| c.algorithm_name == a_name }
         unless found
-          names = children.map { |c| c.algorithm_name }
+          names = children.map(&:algorithm_name)
           raise InvalidAlgorithmError, "`#{a_name}' is an unknown encryption algorithm, use one of #{names.join(', ')}"
         end
         found.new(params)
@@ -80,7 +82,7 @@ module HTAuth
         r = 0
         i = -1
         b.each_byte { |v| r |= v ^ l[i += 1] }
-        r == 0
+        r.zero?
       end
     end
 
@@ -99,7 +101,7 @@ module HTAuth
 
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)
-      Array.new(length) { SALT_CHARS.sample }.join("")
+      Array.new(length) { SALT_CHARS.sample }.join
     end
 
     # Internal: this is not the Base64 encoding, this is the to64()

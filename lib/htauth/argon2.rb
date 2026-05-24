@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "htauth/algorithm"
 begin
   require "argon2"
@@ -60,7 +62,7 @@ module HTAuth
 
     def initialize(params = { profile: :rfc_9106_low_memory })
       self.class.ensure_available!
-      @options = if existing = params["existing"] || params[:existing]
+      @options = if (existing = params["existing"] || params[:existing])
                    self.class.extract_options_from_existing_password_field(existing)
                  else
                    params
