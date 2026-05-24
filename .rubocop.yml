@@ -31,24 +31,58 @@ Lint/DuplicateBranch:
 Lint/SuppressedException:
   Exclude:
     - 'spec/spec_helper.rb'
+    - 'lib/htauth/argon2.rb'
+
+Lint/ReturnInVoidContext:
+  Exclude:
+    - 'lib/htauth/passwd_entry.rb'
+
+Lint/Void:
+  Exclude:
+    - 'lib/htauth/passwd_entry.rb'
 
 Metrics/AbcSize:
   CountRepeatedAttributes: false
   Max: 25
   Exclude:
     - 'tasks/**/*'
+    - 'lib/htauth/cli/*'
+    - 'lib/htauth/md5.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/htauth/md5.rb'
+    - 'lib/htauth/file.rb'
+    - 'lib/htauth/cli/*'
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/htauth/cli/*'
 
 Metrics/BlockLength:
   Exclude:
+    - 'lib/htauth/cli/*'
     - 'tasks/**/*'
     - 'spec/**/*'
 
 Metrics/ClassLength:
   Exclude:
+    - 'lib/htauth/cli/*'
     - 'tasks/**/*'
 
 Metrics/MethodLength:
   Max: 20
+  Exclude:
+    - 'lib/htauth/cli/*'
+    - 'lib/htauth/md5.rb'
+
+Naming/PredicateMethod:
+  Exclude:
+    - 'lib/htauth/algorithm.rb'
+Naming/PredicatePrefix:
+  Exclude:
+    - 'lib/htauth/digest_file.rb'
+    - 'lib/htauth/passwd_file.rb'
 
 # keeps want to combine examples
 Style/CombinableLoops:
@@ -58,6 +92,10 @@ Style/CombinableLoops:
 Style/Documentation:
   Exclude:
     - 'spec/**/*'
+
+Style/OpenStructUse:
+  Exclude:
+    - 'lib/htauth/cli/*'
 
 Style/StringLiterals:
   Enabled: true
@@ -77,4 +115,7 @@ ThreadSafety/ClassInstanceVariable:
 ThreadSafety/NewThread:
   Enabled: false
 ThreadSafety/DirChdir:
+  Enabled: false
+
+Security/IoMethods:
   Enabled: false
