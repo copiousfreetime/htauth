@@ -83,20 +83,20 @@ module HTAuth
       pd = pd.bytes.to_a
 
       l = (pd[0] << 16) | (pd[6] << 8) | pd[12]
-      encoded_password << to_64(l, 4)
+      encoded_password << to64(l, 4)
 
       l = (pd[1] << 16) | (pd[7] << 8) | pd[13]
-      encoded_password << to_64(l, 4)
+      encoded_password << to64(l, 4)
 
       l = (pd[2] << 16) | (pd[8] << 8) | pd[14]
-      encoded_password << to_64(l, 4)
+      encoded_password << to64(l, 4)
 
       l = (pd[3] << 16) | (pd[9] << 8) | pd[15]
-      encoded_password << to_64(l, 4)
+      encoded_password << to64(l, 4)
 
       l = (pd[4] << 16) | (pd[10] << 8) | pd[5]
-      encoded_password << to_64(l, 4)
-      encoded_password << to_64(pd[11], 2)
+      encoded_password << to64(l, 4)
+      encoded_password << to64(pd[11], 2)
 
       encoded_password
     end

@@ -94,7 +94,7 @@ describe HTAuth::CLI::Passwd do
     _(BCrypt::Password.valid_hash?(bcrypt_hash)).wont_be_nil
 
     _, _version, count, _rest = bcrypt_hash.split("$")
-    _(count).must_equal("%02d" % cost)
+    _(count).must_equal(format("%02d", cost))
   end
 
   it "raises an error if the bcrypt cost is out of range" do
