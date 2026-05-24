@@ -1,8 +1,8 @@
-require 'simplecov'
-SimpleCov.start if ENV['COVERAGE']
+require "simplecov"
+SimpleCov.start if ENV["COVERAGE"]
 
-require 'minitest/autorun'
-require 'minitest/pride'
+require "minitest/autorun"
+require "minitest/pride"
 
 PASSWD_ORIGINAL_TEST_FILE  = File.join(File.dirname(__FILE__), "test.original.passwd")
 PASSWD_ADD_TEST_FILE       = File.join(File.dirname(__FILE__), "test.add.passwd")
@@ -16,10 +16,10 @@ DIGEST_UPDATE_TEST_FILE    = File.join(File.dirname(__FILE__), "test.update.dige
 DIGEST_DELETE_TEST_FILE    = File.join(File.dirname(__FILE__), "test.delete.digest")
 DIGEST_COMMENTED_TEST_FILE = File.join(File.dirname(__FILE__), "test.comments.digest")
 
-require 'stringio'
+require "stringio"
 class ConsoleIO < StringIO
   def noecho(&block)
     yield self
   end
 end
-require 'htauth'
+require "htauth"

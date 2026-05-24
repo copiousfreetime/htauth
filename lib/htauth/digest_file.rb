@@ -1,7 +1,7 @@
-require 'stringio'
-require 'htauth/error'
-require 'htauth/file'
-require 'htauth/digest_entry'
+require "stringio"
+require "htauth/error"
+require "htauth/file"
+require "htauth/digest_entry"
 
 module HTAuth
   # Public: An API for managing an 'htdigest' file
@@ -15,7 +15,6 @@ module HTAuth
   #   end
   #
   class DigestFile < HTAuth::File
-
     # Private: The class implementing a single entry in the DigestFile
     ENTRY_KLASS = HTAuth::DigestEntry
 
@@ -48,10 +47,10 @@ module HTAuth
     #
     # Returns nothing
     def delete(username, realm)
-      if has_entry?(username, realm) then
+      if has_entry?(username, realm)
         ir = internal_record(username, realm)
-        line_index = ir['line_index']
-        @entries.delete(ir['entry'].key)
+        line_index = ir["line_index"]
+        @entries.delete(ir["entry"].key)
         @lines[line_index] = nil
         dirty!
       end
@@ -76,7 +75,7 @@ module HTAuth
     #
     # Returns nothing.
     def add_or_update(username, realm, password)
-      if has_entry?(username, realm) then
+      if has_entry?(username, realm)
         update(username, realm, password)
       else
         add(username, realm, password)
@@ -97,14 +96,16 @@ module HTAuth
     # Returns nothing.
     # Raises DigestFileError if the give username / realm already exists.
     def add(username, realm, password)
-      raise DigestFileError, "Unable to add already existing user #{username} in realm #{realm}" if has_entry?(username, realm)
+      raise DigestFileError, "Unable to add already existing user #{username} in realm #{realm}" if has_entry?(
+        username, realm
+      )
 
       new_entry = DigestEntry.new(username, realm, password)
       new_index = @lines.size
       @lines << new_entry.to_s
-      @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
+      @entries[new_entry.key] = { "entry" => new_entry, "line_index" => new_index }
       dirty!
-      return nil
+      nil
     end
 
     # Public: Updates an existing username / relam entry with a new password
@@ -121,12 +122,15 @@ module HTAuth
     # Returns nothing
     # Raises DigestfileError if the username / realm is not found in the file
     def update(username, realm, password)
-      raise DigestFileError, "Unable to update non-existent user #{username} in realm #{realm}" unless has_entry?(username, realm)
+      raise DigestFileError, "Unable to update non-existent user #{username} in realm #{realm}" unless has_entry?(
+        username, realm
+      )
+
       ir = internal_record(username, realm)
-      ir['entry'].password = password
-      @lines[ir['line_index']] = ir['entry'].to_s
+      ir["entry"].password = password
+      @lines[ir["line_index"]] = ir["entry"].to_s
       dirty!
-      return nil
+      nil
     end
 
     # Public: Returns the given DigestEntry from the file.
@@ -145,8 +149,9 @@ module HTAuth
     # Returns nil if the entry is not found
     def fetch(username, realm)
       return nil unless has_entry?(username, realm)
+
       ir = internal_record(username, realm)
-      return ir['entry'].dup
+      ir["entry"].dup
     end
 
     # Internal: returns the class used for each entry

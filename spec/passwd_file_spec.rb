@@ -1,18 +1,17 @@
-require 'spec_helper'
-require 'htauth/passwd_file'
-require 'tempfile'
+require "spec_helper"
+require "htauth/passwd_file"
+require "tempfile"
 
 describe HTAuth::PasswdFile do
-
   before(:each) do
-    @tf             = Tempfile.new("rpasswrd-passwd")
+    @tf = Tempfile.new("rpasswrd-passwd")
     @tf.write(IO.read(PASSWD_ORIGINAL_TEST_FILE))
     @tf.close
-    @passwd_file    = HTAuth::PasswdFile.new(@tf.path)
+    @passwd_file = HTAuth::PasswdFile.new(@tf.path)
 
-    @tf2                = Tempfile.new("rpasswrd-passwd-empty")
+    @tf2 = Tempfile.new("rpasswrd-passwd-empty")
     @tf2.close
-    @empty_passwd_file  = HTAuth::PasswdFile.new(@tf2.path)
+    @empty_passwd_file = HTAuth::PasswdFile.new(@tf2.path)
   end
 
   after(:each) do
@@ -38,8 +37,8 @@ describe HTAuth::PasswdFile do
   it "can update an entry in an already existing passwd file, algorithm and arguments can change" do
     @passwd_file.add_or_update("brenda", "b secret", "bcrypt")
     entry = @passwd_file.fetch("brenda")
-    _(entry.algorithm.cost).must_equal(::HTAuth::Bcrypt::DEFAULT_APACHE_COST)
-    @passwd_file.add_or_update("brenda", "b secret", "bcrypt", :cost => 12)
+    _(entry.algorithm.cost).must_equal(HTAuth::Bcrypt::DEFAULT_APACHE_COST)
+    @passwd_file.add_or_update("brenda", "b secret", "bcrypt", cost: 12)
     entry = @passwd_file.fetch("brenda")
     _(entry.algorithm.cost).must_equal(12)
   end
@@ -52,7 +51,7 @@ describe HTAuth::PasswdFile do
     _ { HTAuth::PasswdFile.new("some-file") }.must_raise(HTAuth::FileAccessError)
   end
 
-  # this test will only work on systems that have /etc/ssh_host_rsa_key 
+  # this test will only work on systems that have /etc/ssh_host_rsa_key
   it "raises an error if an attempt is made to open a file where no permissions are granted" do
     _ { HTAuth::PasswdFile.new("/etc/ssh_host_rsa_key") }.must_raise(HTAuth::FileAccessError)
   end
@@ -70,15 +69,14 @@ describe HTAuth::PasswdFile do
     _(@passwd_file.authenticated?("alice", "the wrong secret")).must_equal false
   end
 
-
   it "is usable in a ruby manner and yields itself when opened" do
     HTAuth::PasswdFile.open(@tf.path) do |pf|
       pf.add_or_update("alice", "a new secret", "md5")
-      pf.delete('bob')
+      pf.delete("bob")
     end
     lines = IO.readlines(@tf.path)
     _(lines.size).must_equal 1
-    _(lines.first.split(':').first).must_equal "alice"
-    _(lines.first.split(':').last).must_match( /\$apr1\$/ )
+    _(lines.first.split(":").first).must_equal "alice"
+    _(lines.first.split(":").last).must_match(/\$apr1\$/)
   end
 end

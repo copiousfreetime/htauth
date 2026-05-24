@@ -1,23 +1,22 @@
-require 'htauth/algorithm'
-require 'digest/md5'
+require "htauth/algorithm"
+require "digest/md5"
 
 module HTAuth
   # Internal: an implementation of the MD5 based encoding algorithm
   # as used in the apache htpasswd -m option
   class Md5 < Algorithm
-
     DIGEST_LENGTH  = 16
     PAD_LENGTH     = 6
     PREFIX         = "$apr1$".freeze
-    SALT_CHARS_STR = SALT_CHARS.join('')
-    ENTRY_REGEX    = %r[
+    SALT_CHARS_STR = SALT_CHARS.join("")
+    ENTRY_REGEX    = /
       \A
       #{Regexp.escape(PREFIX)}
       [#{SALT_CHARS_STR}]{#{SALT_LENGTH}}
-      #{Regexp.escape("$")}
+      #{Regexp.escape('$')}
       [#{SALT_CHARS_STR}]{#{DIGEST_LENGTH + PAD_LENGTH}}
       \z
-      ]x
+      /x
 
     def self.handles?(password_entry)
       ENTRY_REGEX.match?(password_entry)
@@ -25,15 +24,15 @@ module HTAuth
 
     def self.extract_salt_from_existing_password_field(existing)
       p = existing.split("$")
-      return p[2]
+      p[2]
     end
 
     def initialize(params = {})
-      if existing = (params['existing'] || params[:existing]) then
-        @salt = self.class.extract_salt_from_existing_password_field(existing)
-      else
-        @salt = params[:salt] || params['salt'] || gen_salt
-      end
+      @salt = if existing = params["existing"] || params[:existing]
+                self.class.extract_salt_from_existing_password_field(existing)
+              else
+                params[:salt] || params["salt"] || gen_salt
+              end
     end
 
     # this algorigthm pulled straight from apr_md5_encode() and converted to ruby syntax
@@ -46,8 +45,8 @@ module HTAuth
       md5_t = ::Digest::MD5.digest("#{password}#{@salt}#{password}")
 
       l = password.length
-      while l > 0 do
-        slice_size = ( l > DIGEST_LENGTH ) ? DIGEST_LENGTH : l
+      while l > 0
+        slice_size = (l > DIGEST_LENGTH) ? DIGEST_LENGTH : l
         primary << md5_t[0, slice_size]
         l -= DIGEST_LENGTH
       end
@@ -59,7 +58,7 @@ module HTAuth
         when 1
           primary << 0.chr
         when 0
-          primary << password[0,1]
+          primary << password[0, 1]
         end
         l >>= 1
       end
@@ -71,33 +70,32 @@ module HTAuth
       # apr_md5_encode has this comment about a 60Mhz Pentium above this loop.
       1000.times do |x|
         ctx = ::Digest::MD5.new
-        ctx << (( ( x & 1 ) == 1 ) ? password : pd[0,DIGEST_LENGTH])
-        (ctx << @salt) unless ( x % 3 ) == 0
-        (ctx << password) unless ( x % 7 ) == 0
-        ctx << (( ( x & 1 ) == 0 ) ? password : pd[0,DIGEST_LENGTH])
+        ctx << (((x & 1) == 1) ? password : pd[0, DIGEST_LENGTH])
+        (ctx << @salt) unless (x % 3) == 0
+        (ctx << password) unless (x % 7) == 0
+        ctx << (((x & 1) == 0) ? password : pd[0, DIGEST_LENGTH])
         pd = ctx.digest
       end
 
-
       pd = pd.bytes.to_a
 
-      l = (pd[ 0]<<16) | (pd[ 6]<<8) | pd[12]
+      l = (pd[0] << 16) | (pd[6] << 8) | pd[12]
       encoded_password << to_64(l, 4)
 
-      l = (pd[ 1]<<16) | (pd[ 7]<<8) | pd[13]
+      l = (pd[1] << 16) | (pd[7] << 8) | pd[13]
       encoded_password << to_64(l, 4)
 
-      l = (pd[ 2]<<16) | (pd[ 8]<<8) | pd[14]
+      l = (pd[2] << 16) | (pd[8] << 8) | pd[14]
       encoded_password << to_64(l, 4)
 
-      l = (pd[ 3]<<16) | (pd[ 9]<<8) | pd[15]
+      l = (pd[3] << 16) | (pd[9] << 8) | pd[15]
       encoded_password << to_64(l, 4)
 
-      l = (pd[ 4]<<16) | (pd[10]<<8) | pd[ 5]
+      l = (pd[4] << 16) | (pd[10] << 8) | pd[5]
       encoded_password << to_64(l, 4)
-      encoded_password << to_64(pd[11],2)
+      encoded_password << to_64(pd[11], 2)
 
-      return encoded_password
+      encoded_password
     end
   end
 end

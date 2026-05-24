@@ -1,17 +1,16 @@
-require 'spec_helper'
-require 'tempfile'
+require "spec_helper"
+require "tempfile"
 
 describe HTAuth::DigestFile do
-
   before(:each) do
-    @tf             = Tempfile.new("rpasswrd-digest")
+    @tf = Tempfile.new("rpasswrd-digest")
     @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
     @tf.close
-    @digest_file    = HTAuth::DigestFile.new(@tf.path)
+    @digest_file = HTAuth::DigestFile.new(@tf.path)
 
-    @tf2                = Tempfile.new("rpasswrd-digest-empty")
+    @tf2 = Tempfile.new("rpasswrd-digest-empty")
     @tf2.close
-    @empty_digest_file  = HTAuth::DigestFile.new(@tf2.path)
+    @empty_digest_file = HTAuth::DigestFile.new(@tf2.path)
   end
 
   after(:each) do
@@ -42,7 +41,7 @@ describe HTAuth::DigestFile do
     _ { HTAuth::DigestFile.new("some-file") }.must_raise(HTAuth::FileAccessError)
   end
 
-  # this test will only work on systems that have /etc/ssh_host_rsa_key 
+  # this test will only work on systems that have /etc/ssh_host_rsa_key
   it "raises an error if an attempt is made to open a file where no permissions are granted" do
     _ { HTAuth::DigestFile.new("/etc/ssh_host_rsa_key") }.must_raise(HTAuth::FileAccessError)
   end
@@ -55,7 +54,7 @@ describe HTAuth::DigestFile do
   it "is usable in a ruby manner and yeilds itself when opened" do
     HTAuth::DigestFile.open(@tf.path) do |pf|
       pf.add_or_update("alice", "htauth", "a secret")
-      pf.delete('bob', 'htauth')
+      pf.delete("bob", "htauth")
     end
     lines = IO.readlines(@tf.path)
     _(lines.size).must_equal 1

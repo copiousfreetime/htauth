@@ -1,12 +1,11 @@
-require 'htauth/error'
-require 'htauth/entry'
-require 'htauth/algorithm'
-require 'digest/md5'
+require "htauth/error"
+require "htauth/entry"
+require "htauth/algorithm"
+require "digest/md5"
 
 module HTAuth
   # Internal: Object version of a single record from an htdigest file
   class DigestEntry
-
     # Internal: The user of this entry
     attr_accessor :user
     # Internal: The realm of this entry
@@ -24,7 +23,7 @@ module HTAuth
         parts = is_entry!(line)
         d = DigestEntry.new(parts[0], parts[1])
         d.digest = parts[2]
-        return d
+        d
       end
 
       # Internal: test if the given line is valid for this Entry class
@@ -38,24 +37,24 @@ module HTAuth
       # Returns the individual parts of the line
       # Raises InvalidDigestEntry if it is not a a valid entry
       def is_entry!(line)
-        raise InvalidDigestEntry, "line commented out" if line =~ /\A#/
+        raise InvalidDigestEntry, "line commented out" if /\A#/.match?(line)
+
         parts = line.strip.split(":")
         raise InvalidDigestEntry, "line must be of the format username:realm:md5checksum" if parts.size != 3
-        raise InvalidDigestEntry, "md5 checksum is not 32 characters long" if parts.last.size  != 32
-        raise InvalidDigestEntry, "md5 checksum has invalid characters" if parts.last !~ /\A[[:xdigit:]]{32}\Z/
-        return parts
+        raise InvalidDigestEntry, "md5 checksum is not 32 characters long" if parts.last.size != 32
+        raise InvalidDigestEntry, "md5 checksum has invalid characters" unless /\A[[:xdigit:]]{32}\Z/.match?(parts.last)
+
+        parts
       end
 
       # Internal: Returns whether or not the line is a valid entry
       #
       # Returns true or false
       def is_entry?(line)
-        begin
-          is_entry!(line)
-          return true
-        rescue InvalidDigestEntry
-          return false
-        end
+        is_entry!(line)
+        true
+      rescue InvalidDigestEntry
+        false
       end
     end
 
@@ -79,7 +78,7 @@ module HTAuth
     # Public: Check if the given password is the password of this entry.
     def authenticated?(check_password)
       check = calc_digest(check_password)
-      return Algorithm.secure_compare(check, digest)
+      Algorithm.secure_compare(check, digest)
     end
 
     # Internal: Returns the key of this entry

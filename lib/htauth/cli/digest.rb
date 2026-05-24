@@ -1,13 +1,12 @@
-require 'htauth/cli'
+require "htauth/cli"
 
-require 'ostruct'
-require 'optparse'
+require "ostruct"
+require "optparse"
 
 module HTAuth
   module CLI
     # Internal: Implemenation of the commandline htdigest-ruby
     class Digest
-
       MAX_PASSWD_LENGTH = 255
 
       attr_accessor :digest_file
@@ -19,7 +18,7 @@ module HTAuth
       end
 
       def options
-        if @options.nil? then
+        if @options.nil?
           @options                = ::OpenStruct.new
           @options.show_version   = false
           @options.show_help      = false
@@ -33,24 +32,22 @@ module HTAuth
       end
 
       def option_parser
-        if not @option_parser then
-          @option_parser = OptionParser.new(nil, 14) do |op|
-            op.banner = "Usage: #{op.program_name} [options] passwordfile realm username"
-            op.on("-c", "--create", "Create a new digest password file; this overwrites an existing file.") do |c|
-              options.file_mode = DigestFile::CREATE
-            end
+        @option_parser ||= OptionParser.new(nil, 14) do |op|
+          op.banner = "Usage: #{op.program_name} [options] passwordfile realm username"
+          op.on("-c", "--create", "Create a new digest password file; this overwrites an existing file.") do |_c|
+            options.file_mode = DigestFile::CREATE
+          end
 
-            op.on("-D", "--delete", "Delete the specified user.") do |d|
-              options.delete_entry = d
-            end
+          op.on("-D", "--delete", "Delete the specified user.") do |d|
+            options.delete_entry = d
+          end
 
-            op.on("-h", "--help", "Display this help.") do |h|
-              options.show_help = h
-            end
+          op.on("-h", "--help", "Display this help.") do |h|
+            options.show_help = h
+          end
 
-            op.on("-v", "--version", "Show version info.") do |v|
-              options.show_version = v
-            end
+          op.on("-v", "--version", "Show version info.") do |v|
+            options.show_version = v
           end
         end
         @option_parser
@@ -67,27 +64,25 @@ module HTAuth
       end
 
       def parse_options(argv)
-        begin
-          option_parser.parse!(argv)
-          show_version if options.show_version
-          show_help if options.show_help or argv.size < 3
+        option_parser.parse!(argv)
+        show_version if options.show_version
+        show_help if options.show_help or argv.size < 3
 
-          options.passwdfile = argv.shift
-          options.realm      = argv.shift
-          options.username   = argv.shift
-        rescue ::OptionParser::ParseError => pe
-          $stderr.puts "ERROR: #{option_parser.program_name} - #{pe}"
-          $stderr.puts "Try `#{option_parser.program_name} --help` for more information"
-          exit 1
-        end
+        options.passwdfile = argv.shift
+        options.realm      = argv.shift
+        options.username   = argv.shift
+      rescue ::OptionParser::ParseError => e
+        warn "ERROR: #{option_parser.program_name} - #{e}"
+        warn "Try `#{option_parser.program_name} --help` for more information"
+        exit 1
       end
 
-      def run(argv, env = ENV)
+      def run(argv, _env = ENV)
         begin
           parse_options(argv)
           digest_file = DigestFile.new(options.passwdfile, options.file_mode)
 
-          if options.delete_entry then
+          if options.delete_entry
             digest_file.delete(options.username, options.realm)
           else
             console = Console.new
@@ -106,18 +101,17 @@ module HTAuth
           end
 
           digest_file.save!
-
-        rescue HTAuth::FileAccessError => fae
+        rescue HTAuth::FileAccessError => e
           msg = "Could not open password file #{options.passwdfile} "
-          $stderr.puts "#{msg}: #{fae.message}"
-          $stderr.puts fae.backtrace.join("\n")
+          warn "#{msg}: #{e.message}"
+          warn e.backtrace.join("\n")
           exit 1
-        rescue HTAuth::Error => pe
-          $stderr.puts "#{pe.message}"
+        rescue HTAuth::Error => e
+          warn "#{e.message}"
           exit 1
-        rescue SignalException => se
+        rescue SignalException => e
           $stderr.puts
-          $stderr.puts "Interrupted #{se}"
+          warn "Interrupted #{e}"
           exit 1
         end
         exit 0

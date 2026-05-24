@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe HTAuth::DigestEntry do
   before(:each) do
@@ -44,8 +44,8 @@ describe HTAuth::DigestEntry do
 
   it "knows if an input line is a possible entry and returns false" do
     _(HTAuth::DigestEntry.is_entry?("#stuff")).must_equal false
-    _(HTAuth::DigestEntry.is_entry?("this:that:other:stuff")).must_equal false 
-    _(HTAuth::DigestEntry.is_entry?("this:that:other")).must_equal false 
+    _(HTAuth::DigestEntry.is_entry?("this:that:other:stuff")).must_equal false
+    _(HTAuth::DigestEntry.is_entry?("this:that:other")).must_equal false
     _(HTAuth::DigestEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
   end
 

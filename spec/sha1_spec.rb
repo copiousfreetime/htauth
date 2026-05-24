@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe HTAuth::Sha1 do
   it "encrypts the same way that apache does" do
@@ -7,4 +7,3 @@ describe HTAuth::Sha1 do
     _(sha1.encode("a secret")).must_equal apache_result
   end
 end
-
