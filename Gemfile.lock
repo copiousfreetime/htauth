@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    htauth (2.3.0)
+    htauth (3.0.0)
       base64 (~> 0.2)
       bcrypt (~> 3.1)
       ostruct (~> 0.6)
@@ -208,7 +208,7 @@ CHECKSUMS
   ffi (1.17.4-x86-linux-gnu) sha256=38e150df5f4ca555e25beca4090823ae09657bceded154e3c52f8631c1ed72cf
   ffi (1.17.4-x86_64-linux-gnu) sha256=9d3db14c2eae074b382fa9c083fe95aec6e0a1451da249eab096c34002bc752d
   ffi-compiler (1.4.2) sha256=a9d69d5d9ced6f64776ddafa535867ad90e5740ad37bed7afb4de6e450da126e
-  htauth (2.3.0)
+  htauth (3.0.0)
   jar-dependencies (0.5.7) sha256=013ce5f4639414ac8cf1169cdbe763da164b81e2d2c983d11042b5ff7bfcce80
   json (2.19.5) sha256=218a18553e4801d579ca7e0f5bc72bafd776d7397238a1fb4e74db5b0a812c59
   json (2.19.5-java) sha256=c3b74d6cee27c06713dbe8a8eb4ae0d3e6d0d090214f5068e55c01e7011c0976

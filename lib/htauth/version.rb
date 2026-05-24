@@ -2,5 +2,5 @@
 
 module HTAuth
   # Public: The version of the htauth library
-  VERSION = "2.3.0"
+  VERSION = "3.0.0"
 end
