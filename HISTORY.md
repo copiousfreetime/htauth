@@ -1,4 +1,18 @@
 # Changelog
+## Version 3.0.0 - 2026-05-23
+
+* Modernize project structure
+* Bump minimum Ruby version from 2.3.0 to 3.0.0
+* Add rubocop for code linting with multiple plugins
+* Rename `is_entry?`/`is_entry_for?` methods to `entry?`/`entry_for?` (Ruby naming conventions)
+* Update CI build matrix: Ruby 3.3, 3.4, 4.0, JRuby 10.1, TruffleRuby 34.0
+* Remove Ruby 3.2 from build matrix
+* Move development dependencies from gemspec to Gemfile
+* Add `ostruct` as a runtime dependency
+* Remove test files from gem package
+* Rename `LICENSE` to `LICENSE.txt`
+* Apply rubocop autocorrections across all source and spec files
+
 ## Version 2.3.0 - 2024-02-03
 
 * Add support for argon2 encryption [#18](https://github.com/copiousfreetime/htauth/pull/18)
