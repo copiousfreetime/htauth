@@ -14,13 +14,6 @@ This.ruby_gemspec do |spec|
   spec.add_dependency( 'base64', '~> 0.2' )
   spec.add_dependency( 'ostruct', '~> 0.6' )
 
-  spec.add_development_dependency( 'argon2'   , '~> 2.3')
-  spec.add_development_dependency( 'rake'     , '~> 13.1')
-  spec.add_development_dependency( 'minitest' , '~> 5.21' )
-  spec.add_development_dependency( 'minitest-junit' , '~> 1.1' )
-  spec.add_development_dependency( 'rdoc'     , '~> 6.6' )
-  spec.add_development_dependency( 'simplecov', '~> 0.21' )
-
   spec.metadata = {
     "bug_tracker_uri" => "https://github.com/copiousfreetime/htauth/issues",
     "changelog_uri"   => "https://github.com/copiousfreetime/htauth/blob/master/HISTORY.md",
