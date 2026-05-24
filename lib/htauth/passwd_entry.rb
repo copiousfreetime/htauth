@@ -23,7 +23,7 @@ module HTAuth
       #
       # Returns an instance of PasswdEntry
       def from_line(line)
-        parts = is_entry!(line)
+        parts = entry!(line)
         d = PasswdEntry.new(parts[0])
         d.digest = parts[1]
         d.algorithm = Algorithm.algorithm_from_field(parts[1])
@@ -40,7 +40,7 @@ module HTAuth
       #
       # Returns the individual parts of the line
       # Raises InvalidPasswdEntry if it is not an valid entry
-      def is_entry!(line)
+      def entry!(line)
         raise InvalidPasswdEntry, "line commented out" if line.start_with?("#")
 
         parts = line.strip.split(":")
@@ -52,8 +52,8 @@ module HTAuth
       # Internal: Returns whether or not the line is a valid entry
       #
       # Returns true or false
-      def is_entry?(line)
-        is_entry!(line)
+      def entry?(line)
+        entry!(line)
         true
       rescue InvalidPasswdEntry
         false

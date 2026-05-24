@@ -38,21 +38,21 @@ describe HTAuth::DigestEntry do
   end
 
   it "knows if an input line is a possible entry and raises an exception" do
-    _ { HTAuth::DigestEntry.is_entry!("#stuff") }.must_raise(HTAuth::InvalidDigestEntry)
-    _ { HTAuth::DigestEntry.is_entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidDigestEntry)
-    _ { HTAuth::DigestEntry.is_entry!("this:that:other") }.must_raise(HTAuth::InvalidDigestEntry)
-    _ { HTAuth::DigestEntry.is_entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidDigestEntry)
+    _ { HTAuth::DigestEntry.entry!("#stuff") }.must_raise(HTAuth::InvalidDigestEntry)
+    _ { HTAuth::DigestEntry.entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidDigestEntry)
+    _ { HTAuth::DigestEntry.entry!("this:that:other") }.must_raise(HTAuth::InvalidDigestEntry)
+    _ { HTAuth::DigestEntry.entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidDigestEntry)
   end
 
   it "knows if an input line is a possible entry and returns false" do
-    _(HTAuth::DigestEntry.is_entry?("#stuff")).must_equal false
-    _(HTAuth::DigestEntry.is_entry?("this:that:other:stuff")).must_equal false
-    _(HTAuth::DigestEntry.is_entry?("this:that:other")).must_equal false
-    _(HTAuth::DigestEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
+    _(HTAuth::DigestEntry.entry?("#stuff")).must_equal false
+    _(HTAuth::DigestEntry.entry?("this:that:other:stuff")).must_equal false
+    _(HTAuth::DigestEntry.entry?("this:that:other")).must_equal false
+    _(HTAuth::DigestEntry.entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
   end
 
   it "knows if an input line is a possible entry and returns true" do
-    _(HTAuth::DigestEntry.is_entry?("bob:htauth:0a90549e8ffb2dd62f98252a95d88697")).must_equal true
+    _(HTAuth::DigestEntry.entry?("bob:htauth:0a90549e8ffb2dd62f98252a95d88697")).must_equal true
   end
 
   it "duplicates itself" do

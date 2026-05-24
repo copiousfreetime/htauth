@@ -147,25 +147,25 @@ describe HTAuth::PasswdEntry do
   end
 
   it "knows if an input line is a possible entry and raises an exception" do
-    _ { HTAuth::PasswdEntry.is_entry!("#stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:other") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("#stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:other") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidPasswdEntry)
   end
 
   it "knows if an input line is a possible entry and returns false" do
-    _(HTAuth::PasswdEntry.is_entry?("#stuff")).must_equal false
-    _(HTAuth::PasswdEntry.is_entry?("this:that:other:stuff")).must_equal false
-    _(HTAuth::PasswdEntry.is_entry?("this:that:other")).must_equal false
-    _(HTAuth::PasswdEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("#stuff")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:other:stuff")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:other")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
   end
 
   it "knows if an input line is a possible entry and returns true" do
-    _(HTAuth::PasswdEntry.is_entry?("bob:irRm0g.SDfCyI")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:b secreat")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:{SHA}b/tjGXbX80MEKVnF200S43ca4hY=")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:$2y$05$ts3k1r.t0Cne6j6DLt0/SepT5X4qthDFEdfqHBBMO5MhqzyMz34j2")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:irRm0g.SDfCyI")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:b secreat")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:{SHA}b/tjGXbX80MEKVnF200S43ca4hY=")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:$2y$05$ts3k1r.t0Cne6j6DLt0/SepT5X4qthDFEdfqHBBMO5MhqzyMz34j2")).must_equal true
   end
 
   it "duplicates itself" do

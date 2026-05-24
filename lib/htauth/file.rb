@@ -158,7 +158,7 @@ module HTAuth
     def load_entries
       @lines = IO.readlines(@filename)
       @lines.each_with_index do |line, idx|
-        next unless entry_klass.is_entry?(line)
+        next unless entry_klass.entry?(line)
 
         entry = entry_klass.from_line(line)
         v     = { "entry" => entry, "line_index" => idx }

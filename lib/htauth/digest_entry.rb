@@ -22,7 +22,7 @@ module HTAuth
       #
       # Returns an instance of DigestEntry
       def from_line(line)
-        parts = is_entry!(line)
+        parts = entry!(line)
         d = DigestEntry.new(parts[0], parts[1])
         d.digest = parts[2]
         d
@@ -38,7 +38,7 @@ module HTAuth
       #
       # Returns the individual parts of the line
       # Raises InvalidDigestEntry if it is not a a valid entry
-      def is_entry!(line)
+      def entry!(line)
         raise InvalidDigestEntry, "line commented out" if line.start_with?("#")
 
         parts = line.strip.split(":")
@@ -52,8 +52,8 @@ module HTAuth
       # Internal: Returns whether or not the line is a valid entry
       #
       # Returns true or false
-      def is_entry?(line)
-        is_entry!(line)
+      def entry?(line)
+        entry!(line)
         true
       rescue InvalidDigestEntry
         false
