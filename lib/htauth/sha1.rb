@@ -17,7 +17,7 @@ module HTAuth
     end
 
     # ignore the params
-    def initialize(params = {})
+    def initialize(_params = {})
       super()
     end
 

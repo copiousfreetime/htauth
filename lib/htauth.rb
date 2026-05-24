@@ -5,6 +5,8 @@
 # All rights reserved.  See LICENSE and/or COPYING for details
 #++
 
+# Public: module wrapper for library
+#
 module HTAuth
   # The root directory of the project is considered to be the parent directory
   # of the 'lib' directory.

@@ -8,14 +8,15 @@ end
 
 module HTAuth
   # Internal:  Support of the argon2id algorithm and password format.
-
   class Argon2 < Algorithm
+    # Internal: Error class when argon2 is specified on windows
     class NotSupportedError < ::HTAuth::InvalidAlgorithmError
       def message
         "Unfortunately Argon2 passwords are not supported on `#{RUBY_PLATFORM} at this time. This because the upstream argon2 gem does not support windows."
       end
     end
 
+    # Internal: Error class when argon2 is not installed
     class NotInstalledError < ::HTAuth::InvalidAlgorithmError
       def message
         "Argon2 passwords are supported if the `argon2' gem is installed. Add `gem 'argon2', '~> 2.3'` to your Gemfile"

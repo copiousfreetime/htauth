@@ -6,7 +6,6 @@ require "bcrypt"
 module HTAuth
   # Internal: an implementation of the Bcrypt based encoding algorithm
   # as used in the apache htpasswd -B option
-
   class Bcrypt < Algorithm
     attr_accessor :cost
 
