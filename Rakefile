@@ -1,5 +1,6 @@
 # vim: syntax=ruby
 load 'tasks/this.rb'
+require 'date'
 
 This.name     = "htauth"
 This.author   = "Jeremy Hinegardner"
@@ -7,8 +8,11 @@ This.email    = "jeremy@copiousfreetime.org"
 This.homepage = "http://github.com/copiousfreetime/#{ This.name }"
 
 This.ruby_gemspec do |spec|
+  spec.date = Date.today.to_s
+
   spec.add_dependency( 'bcrypt', '~> 3.1' )
   spec.add_dependency( 'base64', '~> 0.2' )
+  spec.add_dependency( 'ostruct', '~> 0.6' )
 
   spec.add_development_dependency( 'argon2'   , '~> 2.3')
   spec.add_development_dependency( 'rake'     , '~> 13.1')
