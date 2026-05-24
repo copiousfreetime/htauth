@@ -1,11 +1,12 @@
-require 'htauth/error'
-require 'htauth/entry'
-require 'htauth/algorithm'
+# frozen_string_literal: true
+
+require "htauth/error"
+require "htauth/entry"
+require "htauth/algorithm"
 
 module HTAuth
   # Internal: Object version of a single entry from a htpasswd file
   class PasswdEntry < Entry
-
     # Internal: the user of this entry
     attr_accessor :user
     # Internal: the password digest of this entry
@@ -22,11 +23,11 @@ module HTAuth
       #
       # Returns an instance of PasswdEntry
       def from_line(line)
-        parts = is_entry!(line)
+        parts = entry!(line)
         d = PasswdEntry.new(parts[0])
         d.digest = parts[1]
         d.algorithm = Algorithm.algorithm_from_field(parts[1])
-        return d
+        d
       end
 
       # Internal: test if the given line is valid for this Entry class
@@ -39,29 +40,30 @@ module HTAuth
       #
       # Returns the individual parts of the line
       # Raises InvalidPasswdEntry if it is not an valid entry
-      def is_entry!(line)
-        raise InvalidPasswdEntry, "line commented out" if line =~ /\A#/
+      def entry!(line)
+        raise InvalidPasswdEntry, "line commented out" if line.start_with?("#")
+
         parts = line.strip.split(":")
         raise InvalidPasswdEntry, "line must be of the format username:password" if parts.size != 2
-        return parts
+
+        parts
       end
 
       # Internal: Returns whether or not the line is a valid entry
       #
       # Returns true or false
-      def is_entry?(line)
-        begin
-          is_entry!(line)
-          return true
-        rescue InvalidPasswdEntry
-          return false
-        end
+      def entry?(line)
+        entry!(line)
+        true
+      rescue InvalidPasswdEntry
+        false
       end
     end
 
     # Internal: Create a new Entry with the given user, password, and algorithm
-    def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {} )
-      @user      = user
+    def initialize(user, password = nil, alg = Algorithm::DEFAULT, alg_params = {})
+      super()
+      @user = user
       alg = Algorithm::DEFAULT if alg == Algorithm::EXISTING
       @algorithm = Algorithm.algorithm_from_name(alg, alg_params)
       @digest    = calc_digest(password)
@@ -69,7 +71,8 @@ module HTAuth
 
     # Internal: set the algorithm for the entry
     def algorithm=(alg)
-      return @algorithm if Algorithm::EXISTING == alg
+      return @algorithm if alg == Algorithm::EXISTING
+
       case alg
       when String
         @algorithm = Algorithm.algorithm_from_name(alg)
@@ -78,7 +81,7 @@ module HTAuth
       else
         raise InvalidAlgorithmError, "Unable to assign #{alg} to algorithm"
       end
-      return @algorithm
+      @algorithm
     end
 
     # Internal: set fields on the algorithm
@@ -93,15 +96,14 @@ module HTAuth
     #
     # If we have an array of algorithms, then we set it to CRYPT
     def password=(new_password)
-      if algorithm.kind_of?(HTAuth::Plaintext) then
-        @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT)
-      end
+      @algorithm = Algorithm.algorithm_from_name(Algorithm::CRYPT) if algorithm.is_a?(HTAuth::Plaintext)
       @digest = calc_digest(new_password)
     end
 
     # Internal: calculate the new digest of the given password
     def calc_digest(password)
       return nil unless password
+
       algorithm.encode(password)
     end
 
@@ -113,7 +115,7 @@ module HTAuth
 
     # Internal: Returns the key of this entry
     def key
-      "#{user}"
+      user.to_s
     end
 
     # Internal: Returns the file line for this entry

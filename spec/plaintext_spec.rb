@@ -1,5 +1,7 @@
-require 'spec_helper'
-require 'htauth/plaintext'
+# frozen_string_literal: true
+
+require "spec_helper"
+require "htauth/plaintext"
 
 describe HTAuth::Plaintext do
   it "encrypts the same way that apache does" do
@@ -8,4 +10,3 @@ describe HTAuth::Plaintext do
     _(pt.encode("a secret")).must_equal apache_result
   end
 end
-

@@ -1,50 +1,50 @@
-require 'htauth/error'
-require 'htauth/descendant_tracker'
-require 'securerandom'
+# frozen_string_literal: true
+
+require "htauth/error"
+require "htauth/descendant_tracker"
+require "securerandom"
 module HTAuth
   class InvalidAlgorithmError < Error; end
 
   # Internal: Base class all the password algorithms derive from
   #
   class Algorithm
-
     extend DescendantTracker
 
-    SALT_CHARS    = (%w[ . / ] + ("0".."9").to_a + ('A'..'Z').to_a + ('a'..'z').to_a).freeze
+    SALT_CHARS    = (%w[. /] + ("0".."9").to_a + ("A".."Z").to_a + ("a".."z").to_a).freeze
     SALT_LENGTH   = 8
 
     # Public: flag for the argon2 algorithm
-    ARGON2        = "argon2".freeze
+    ARGON2        = "argon2"
     # Public: flag for the bcrypt algorithm
-    BCRYPT        = "bcrypt".freeze
+    BCRYPT        = "bcrypt"
     # Public: flag for the md5 algorithm
-    MD5           = "md5".freeze
+    MD5           = "md5"
     # Public: flag for the sha1 algorithm
-    SHA1          = "sha1".freeze
+    SHA1          = "sha1"
     # Public: flag for the plaintext algorithm
-    PLAINTEXT     = "plaintext".freeze
+    PLAINTEXT     = "plaintext"
     # Public: flag for the crypt algorithm
-    CRYPT         = "crypt".freeze
+    CRYPT         = "crypt"
 
     # Public: flag for the default algorithm
     DEFAULT       = MD5
 
     # Public: flag to indicate using the existing algorithm of the entry
-    EXISTING      = "existing".freeze
-
+    EXISTING      = "existing"
 
     class << self
       def algorithm_name
-        self.name.split("::").last.downcase
+        name.split("::").last.downcase
       end
 
       def algorithm_from_name(a_name, params = {})
         found = children.find { |c| c.algorithm_name == a_name }
-        if !found then
-          names = children.map { |c| c.algorithm_name }
+        unless found
+          names = children.map(&:algorithm_name)
           raise InvalidAlgorithmError, "`#{a_name}' is an unknown encryption algorithm, use one of #{names.join(', ')}"
         end
-        return found.new(params)
+        found.new(params)
       end
 
       # NOTE: if it is plaintext, and the length is 13 - it may matched crypt
@@ -57,13 +57,13 @@ module HTAuth
 
         raise InvalidAlgorithmError, "unknown encryption algorithm used for `#{password_field}`" if match.nil?
 
-        return match.new(:existing => password_field)
+        match.new(existing: password_field)
       end
 
       # Internal: Does this class handle this type of password entry
       #
       def handles?(password_entry)
-        raise NotImplementedError, "#{self.name} must implement #{self.name}.handles?(password_entry)"
+        raise NotImplementedError, "#{name} must implement #{name}.handles?(password_entry)"
       end
 
       # Internal: Constant time string comparison.
@@ -74,14 +74,15 @@ module HTAuth
       # that have already been processed by HMAC. This should not be used
       # on variable length plaintext strings because it could leak length info
       # via timing attacks.
-      def secure_compare(a, b)
-        return false unless a.bytesize == b.bytesize
+      def secure_compare(lhs, rhs)
+        return false unless lhs.bytesize == rhs.bytesize
 
-        l = a.unpack("C*")
+        l = lhs.unpack("C*")
 
-        r, i = 0, -1
-        b.each_byte { |v| r |= v ^ l[i+=1] }
-        r == 0
+        r = 0
+        i = -1
+        rhs.each_byte { |v| r |= v ^ l[i += 1] }
+        r.zero?
       end
     end
 
@@ -100,19 +101,19 @@ module HTAuth
 
     # Internal: 8 bytes of random items from SALT_CHARS
     def gen_salt(length = SALT_LENGTH)
-      Array.new(length) { SALT_CHARS.sample }.join('')
+      Array.new(length) { SALT_CHARS.sample }.join
     end
 
     # Internal: this is not the Base64 encoding, this is the to64()
     # method from the Apache Portable Runtime (APR) library
     # https://github.com/apache/apr/blob/trunk/crypto/apr_md5.c#L493-L502
-    def to_64(number, rounds)
+    def to64(number, rounds)
       r = StringIO.new
-      rounds.times do |x|
+      rounds.times do |_x|
         r.print(SALT_CHARS[number % 64])
         number >>= 6
       end
-      return r.string
+      r.string
     end
   end
 end

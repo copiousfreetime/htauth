@@ -1,9 +1,11 @@
-require 'stringio'
-require 'tempfile'
+# frozen_string_literal: true
 
-require 'htauth/error'
-require 'htauth/file'
-require 'htauth/passwd_entry'
+require "stringio"
+require "tempfile"
+
+require "htauth/error"
+require "htauth/file"
+require "htauth/passwd_entry"
 
 module HTAuth
   # Public: An API for managing an 'htpasswd' file
@@ -17,7 +19,6 @@ module HTAuth
   #   end
   #
   class PasswdFile < HTAuth::File
-
     # Private: The class implementing a single entry in the PasswdFile
     ENTRY_KLASS = HTAuth::PasswdEntry
 
@@ -33,7 +34,7 @@ module HTAuth
     # Returns true or false if the username
     def has_entry?(username)
       test_entry = PasswdEntry.new(username)
-      @entries.has_key?(test_entry.key)
+      @entries.key?(test_entry.key)
     end
 
     # Public: remove the given username from the file
@@ -48,10 +49,10 @@ module HTAuth
     #
     # Returns nothing
     def delete(username)
-      if has_entry?(username) then 
+      if has_entry?(username)
         ir = internal_record(username)
-        line_index = ir['line_index']
-        @entries.delete(ir['entry'].key)
+        line_index = ir["line_index"]
+        @entries.delete(ir["entry"].key)
         @lines[line_index] = nil
         dirty!
       end
@@ -59,7 +60,7 @@ module HTAuth
     end
 
     # Public: Add or update the username entry with the new password and
-    # algorithm. This will add a new entry if the username does not exist in 
+    # algorithm. This will add a new entry if the username does not exist in
     # the file. If the entry does exist in the file, then the password
     # of the entry is updated to the new password / algorithm
     #
@@ -84,7 +85,7 @@ module HTAuth
     #
     # Returns nothing.
     def add_or_update(username, password, algorithm = Algorithm::DEFAULT, algorithm_args = {})
-      if has_entry?(username) then
+      if has_entry?(username)
         update(username, password, algorithm, algorithm_args)
       else
         add(username, password, algorithm, algorithm_args)
@@ -116,12 +117,13 @@ module HTAuth
     # Raises PasswdFileError if the give username already exists.
     def add(username, password, algorithm = Algorithm::DEFAULT, algorithm_args = {})
       raise PasswdFileError, "Unable to add already existing user #{username}" if has_entry?(username)
+
       new_entry = PasswdEntry.new(username, password, algorithm, algorithm_args)
       new_index = @lines.size
       @lines << new_entry.to_s
-      @entries[new_entry.key] = { 'entry' => new_entry, 'line_index' => new_index }
+      @entries[new_entry.key] = { "entry" => new_entry, "line_index" => new_index }
       dirty!
-      return nil
+      nil
     end
 
     # Public: Update an existing record in the file.
@@ -153,13 +155,14 @@ module HTAuth
     # Raises PasswdFileError if the give username does not exist.
     def update(username, password, algorithm = Algorithm::EXISTING, algorithm_args = {})
       raise PasswdFileError, "Unable to update non-existent user #{username}" unless has_entry?(username)
+
       ir = internal_record(username)
-      ir['entry'].algorithm = algorithm
-      ir['entry'].algorithm_args = algorithm_args.dup
-      ir['entry'].password = password
-      @lines[ir['line_index']] = ir['entry'].to_s
+      ir["entry"].algorithm = algorithm
+      ir["entry"].algorithm_args = algorithm_args.dup
+      ir["entry"].password = password
+      @lines[ir["line_index"]] = ir["entry"].to_s
       dirty!
-      return nil
+      nil
     end
 
     # Public: Returns a copy of then given PasswdEntry from the file.
@@ -177,8 +180,9 @@ module HTAuth
     # Returns nil if the entry is not found
     def fetch(username)
       return nil unless has_entry?(username)
+
       ir = internal_record(username)
-      return ir['entry'].dup
+      ir["entry"].dup
     end
 
     # Public: authenticates the password of a given username
@@ -194,8 +198,9 @@ module HTAuth
     # Raises PasswordFileErrorif the given username does not exist
     def authenticated?(username, password)
       raise PasswdFileError, "Unable to authenticate a non-existent user #{username}" unless has_entry?(username)
+
       ir = internal_record(username)
-      return ir['entry'].authenticated?(password)
+      ir["entry"].authenticated?(password)
     end
 
     # Internal: returns the class used for each entry

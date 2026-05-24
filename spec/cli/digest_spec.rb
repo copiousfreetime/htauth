@@ -1,12 +1,12 @@
-require 'spec_helper'
-require 'htauth/cli/digest'
-require 'tempfile'
+# frozen_string_literal: true
+
+require "spec_helper"
+require "htauth/cli/digest"
+require "tempfile"
 
 describe HTAuth::CLI::Digest do
-
   before(:each) do
-
-    # existing 
+    # existing
     @tf = Tempfile.new("rpasswrd-digest-test")
     @tf.write(IO.read(DIGEST_ORIGINAL_TEST_FILE))
     @tf.close
@@ -34,116 +34,96 @@ describe HTAuth::CLI::Digest do
     $stderr = @old_stderr
     $stdout = @old_stdout
     $stdin = @old_stdin
-    File.unlink(@new_file) if File.exist?(@new_file)
+    FileUtils.rm_f(@new_file)
   end
 
   it "displays help appropriately" do
-    begin
-      @rdigest.run([ "-h" ])
-    rescue SystemExit => se
-      _(se.status).must_equal 1
-      _(@stdout.string).must_match( /passwordfile realm username/m )
-    end
+    @rdigest.run(["-h"])
+  rescue SystemExit => e
+    _(e.status).must_equal 1
+    _(@stdout.string).must_match(/passwordfile realm username/m)
   end
 
   it "displays the version appropriately" do
-    begin
-      @rdigest.run([ "--version" ])
-    rescue SystemExit => se
-      _(se.status).must_equal 1
-      _(@stdout.string).must_match( /version #{HTAuth::VERSION}/ )
-    end
+    @rdigest.run(["--version"])
+  rescue SystemExit => e
+    _(e.status).must_equal 1
+    _(@stdout.string).must_match(/version #{HTAuth::VERSION}/o)
   end
 
   it "creates a new file with one entries" do
-    begin
-      @stdin.puts "b secret"
-      @stdin.puts "b secret"
-      @stdin.rewind
-      @rdigest.run([ "-c", @new_file, "htauth", "bob" ])
-    rescue SystemExit => se
-      _(se.status).must_equal 0
-      _(IO.read(@new_file)).must_equal IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
-    end
+    @stdin.puts "b secret"
+    @stdin.puts "b secret"
+    @stdin.rewind
+    @rdigest.run(["-c", @new_file, "htauth", "bob"])
+  rescue SystemExit => e
+    _(e.status).must_equal 0
+    _(IO.read(@new_file)).must_equal IO.readlines(DIGEST_ORIGINAL_TEST_FILE).first
   end
 
   it "truncates an exiting file if told to create a new file" do
-    begin
-      @stdin.puts "b secret"
-      @stdin.puts "b secret"
-      @stdin.rewind
-      @rdigest.run([ "-c", @tf.path, "htauth", "bob"])
-    rescue SystemExit => se
-      _(se.status).must_equal 0
-      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
-    end
+    @stdin.puts "b secret"
+    @stdin.puts "b secret"
+    @stdin.rewind
+    @rdigest.run(["-c", @tf.path, "htauth", "bob"])
+  rescue SystemExit => e
+    _(e.status).must_equal 0
+    _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
   end
 
   it "adds an entry to an existing file" do
-    begin
-      @stdin.puts "c secret"
-      @stdin.puts "c secret"
-      @stdin.rewind
-      @rdigest.run([ @tf.path, "htauth-new", "charlie" ])
-    rescue SystemExit => se
-      _(se.status).must_equal 0
-      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_ADD_TEST_FILE)
-    end
+    @stdin.puts "c secret"
+    @stdin.puts "c secret"
+    @stdin.rewind
+    @rdigest.run([@tf.path, "htauth-new", "charlie"])
+  rescue SystemExit => e
+    _(e.status).must_equal 0
+    _(IO.read(@tf.path)).must_equal IO.read(DIGEST_ADD_TEST_FILE)
   end
 
   it "updates an entry in an existing file" do
-    begin
-      @stdin.puts "a new secret"
-      @stdin.puts "a new secret"
-      @stdin.rewind
-      @rdigest.run([ @tf.path, "htauth", "alice" ])
-    rescue SystemExit => se
-      _(@stderr.string).must_equal ""
-      _(se.status).must_equal 0
-      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_UPDATE_TEST_FILE)
-    end
+    @stdin.puts "a new secret"
+    @stdin.puts "a new secret"
+    @stdin.rewind
+    @rdigest.run([@tf.path, "htauth", "alice"])
+  rescue SystemExit => e
+    _(@stderr.string).must_equal ""
+    _(e.status).must_equal 0
+    _(IO.read(@tf.path)).must_equal IO.read(DIGEST_UPDATE_TEST_FILE)
   end
 
   it "deletes an entry in an existing file" do
-    begin
-      @rdigest.run([ "-d", @tf.path, "htauth", "alice" ])
-    rescue SystemExit => se
-      _(@stderr.string).must_equal ""
-      _(se.status).must_equal 0
-      _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
-    end
+    @rdigest.run(["-d", @tf.path, "htauth", "alice"])
+  rescue SystemExit => e
+    _(@stderr.string).must_equal ""
+    _(e.status).must_equal 0
+    _(IO.read(@tf.path)).must_equal IO.read(DIGEST_DELETE_TEST_FILE)
   end
 
   it "has an error if it does not have permissions on the file" do
-    begin
-      @stdin.puts "a secret"
-      @stdin.puts "a secret"
-      @stdin.rewind
-      @rdigest.run([ "-c", "/etc/you-cannot-create-me", "htauth", "alice"])
-    rescue SystemExit => se
-      _(@stderr.string).must_match( %r{Could not open password file /etc/you-cannot-create-me}m )
-      _(se.status).must_equal 1
-    end
+    @stdin.puts "a secret"
+    @stdin.puts "a secret"
+    @stdin.rewind
+    @rdigest.run(["-c", "/etc/you-cannot-create-me", "htauth", "alice"])
+  rescue SystemExit => e
+    _(@stderr.string).must_match(%r{Could not open password file /etc/you-cannot-create-me}m)
+    _(e.status).must_equal 1
   end
 
   it "has an error if the input passwords do not match" do
-    begin
-      @stdin.puts "a secret"
-      @stdin.puts "a bad secret"
-      @stdin.rewind
-      @rdigest.run([ @tf.path, "htauth", "alice"])
-    rescue SystemExit => se
-      _(@stderr.string).must_match( /They don't match, sorry./m )
-      _(se.status).must_equal 1
-    end
+    @stdin.puts "a secret"
+    @stdin.puts "a bad secret"
+    @stdin.rewind
+    @rdigest.run([@tf.path, "htauth", "alice"])
+  rescue SystemExit => e
+    _(@stderr.string).must_match(/They don't match, sorry./m)
+    _(e.status).must_equal 1
   end
 
   it "has an error if the options are incorrect" do
-    begin
-      @rdigest.run(["--blah"])
-    rescue SystemExit => se
-      _(@stderr.string).must_match( /ERROR:/m )
-      _(se.status).must_equal 1
-    end
+    @rdigest.run(["--blah"])
+  rescue SystemExit => e
+    _(@stderr.string).must_match(/ERROR:/m)
+    _(e.status).must_equal 1
   end
 end

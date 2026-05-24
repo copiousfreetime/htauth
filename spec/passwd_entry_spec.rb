@@ -1,9 +1,11 @@
-require 'spec_helper'
+# frozen_string_literal: true
+
+require "spec_helper"
 
 describe HTAuth::PasswdEntry do
   before(:each) do
-    @alice = HTAuth::PasswdEntry.new("alice", "a secret", "crypt", { :salt => "mD" })
-    @bob   = HTAuth::PasswdEntry.new("bob", "b secret", "crypt", { :salt => "b8"})
+    @alice = HTAuth::PasswdEntry.new("alice", "a secret", "crypt", { salt: "mD" })
+    @bob   = HTAuth::PasswdEntry.new("bob", "b secret", "crypt", { salt: "b8" })
     @salt  = "lo1tk/.."
   end
 
@@ -17,24 +19,24 @@ describe HTAuth::PasswdEntry do
   end
 
   it "encrypts correctly for md5" do
-    bob = HTAuth::PasswdEntry.new("bob", "b secret", "md5", { :salt => @salt })
+    bob = HTAuth::PasswdEntry.new("bob", "b secret", "md5", { salt: @salt })
     _(bob.digest).must_equal "$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1"
   end
 
   it "encrypts correctly for sha1" do
-    bob = HTAuth::PasswdEntry.new("bob", "b secret", "sha1", { :salt => @salt })
+    bob = HTAuth::PasswdEntry.new("bob", "b secret", "sha1", { salt: @salt })
     _(bob.digest).must_equal "{SHA}b/tjGXbX80MEKVnF200S43ca4hY="
   end
 
   it "encrypts correctly for plaintext" do
-    bob = HTAuth::PasswdEntry.new("bob", "b secret", "plaintext", { :salt => @salt })
+    bob = HTAuth::PasswdEntry.new("bob", "b secret", "plaintext", { salt: @salt })
     _(bob.digest).must_equal "b secret"
   end
 
   it "encypts correctly for argon2" do
     # Don't do this in real life, do not pass in a salt, let the algorithm generate it internally
     salt = ";L\xCDMRO\v\x13;\x012\x9B'\xEE\\i"
-    agatha = HTAuth::PasswdEntry.new("agatha","ag secret", "argon2", {salt_do_not_supply: salt} )
+    agatha = HTAuth::PasswdEntry.new("agatha", "ag secret", "argon2", { salt_do_not_supply: salt })
     expected = "$argon2id$v=19$m=65536,t=3,p=4$O0zNTVJPCxM7ATKbJ+5caQ$e7wIsl7AY+uIbN+1StYOKkVCJhOrvX7BxAlQ+sPC+Nc"
     _(agatha.digest).must_equal expected
   end
@@ -47,7 +49,7 @@ describe HTAuth::PasswdEntry do
   end
 
   it "encrypts with crypt as a default, when parsed from plaintext line" do
-    p = HTAuth::PasswdEntry.new('paul', 'p secret', 'plaintext')
+    p = HTAuth::PasswdEntry.new("paul", "p secret", "plaintext")
     p2 = HTAuth::PasswdEntry.from_line(p.to_s)
     _(p2.algorithm).must_be_instance_of(HTAuth::Plaintext)
     p2.password = "another secret"
@@ -55,13 +57,13 @@ describe HTAuth::PasswdEntry do
   end
 
   it "encrypts with md5 as default, when parsed from an md5 line" do
-    m = HTAuth::PasswdEntry.new("mary", "m secret", "md5") 
+    m = HTAuth::PasswdEntry.new("mary", "m secret", "md5")
     m2 = HTAuth::PasswdEntry.from_line(m.to_s)
     _(m2.algorithm).must_be_instance_of(HTAuth::Md5)
   end
 
   it "encrypts with sha1 as default, when parsed from an sha1 line" do
-    s = HTAuth::PasswdEntry.new("steve", "s secret", "sha1") 
+    s = HTAuth::PasswdEntry.new("steve", "s secret", "sha1")
     s2 = HTAuth::PasswdEntry.from_line(s.to_s)
     _(s2.algorithm).must_be_instance_of(HTAuth::Sha1)
   end
@@ -87,13 +89,13 @@ describe HTAuth::PasswdEntry do
   end
 
   it "authenticates correctly against md5" do
-    m = HTAuth::PasswdEntry.new("mary", "m secret", "md5") 
+    m = HTAuth::PasswdEntry.new("mary", "m secret", "md5")
     m2 = HTAuth::PasswdEntry.from_line(m.to_s)
     _(m2.authenticated?("m secret")).must_equal true
   end
 
   it "authenticates correctly against sha1" do
-    s = HTAuth::PasswdEntry.new("steve", "s secret", "sha1") 
+    s = HTAuth::PasswdEntry.new("steve", "s secret", "sha1")
     s2 = HTAuth::PasswdEntry.from_line(s.to_s)
     _(s2.authenticated?("s secret")).must_equal true
   end
@@ -112,10 +114,10 @@ describe HTAuth::PasswdEntry do
 
   it "can update the cost of an entry after initialization before encoding password" do
     s = HTAuth::PasswdEntry.new("brenda", "b secret", "bcrypt")
-    _(s.algorithm.cost).must_equal(::HTAuth::Bcrypt::DEFAULT_APACHE_COST)
+    _(s.algorithm.cost).must_equal(HTAuth::Bcrypt::DEFAULT_APACHE_COST)
 
     s2 = HTAuth::PasswdEntry.from_line(s.to_s)
-    s2.algorithm_args = { :cost => 12 }
+    s2.algorithm_args = { cost: 12 }
     s2.password = "b secret" # forces recalculation
 
     _(s2.algorithm.cost).must_equal(12)
@@ -145,25 +147,25 @@ describe HTAuth::PasswdEntry do
   end
 
   it "knows if an input line is a possible entry and raises an exception" do
-    _ { HTAuth::PasswdEntry.is_entry!("#stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:other") }.must_raise(HTAuth::InvalidPasswdEntry)
-    _ { HTAuth::PasswdEntry.is_entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("#stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:other:stuff") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:other") }.must_raise(HTAuth::InvalidPasswdEntry)
+    _ { HTAuth::PasswdEntry.entry!("this:that:0a90549e8ffb2dd62f98252a95d88xyz") }.must_raise(HTAuth::InvalidPasswdEntry)
   end
 
   it "knows if an input line is a possible entry and returns false" do
-    _(HTAuth::PasswdEntry.is_entry?("#stuff")).must_equal false
-    _(HTAuth::PasswdEntry.is_entry?("this:that:other:stuff")).must_equal false 
-    _(HTAuth::PasswdEntry.is_entry?("this:that:other")).must_equal false 
-    _(HTAuth::PasswdEntry.is_entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("#stuff")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:other:stuff")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:other")).must_equal false
+    _(HTAuth::PasswdEntry.entry?("this:that:0a90549e8ffb2dd62f98252a95d88xyz")).must_equal false
   end
 
   it "knows if an input line is a possible entry and returns true" do
-    _(HTAuth::PasswdEntry.is_entry?("bob:irRm0g.SDfCyI")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:b secreat")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:{SHA}b/tjGXbX80MEKVnF200S43ca4hY=")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1")).must_equal true
-    _(HTAuth::PasswdEntry.is_entry?("bob:$2y$05$ts3k1r.t0Cne6j6DLt0/SepT5X4qthDFEdfqHBBMO5MhqzyMz34j2")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:irRm0g.SDfCyI")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:b secreat")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:{SHA}b/tjGXbX80MEKVnF200S43ca4hY=")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:$apr1$lo1tk/..$CarApvZPee0F6Wj1U0GxZ1")).must_equal true
+    _(HTAuth::PasswdEntry.entry?("bob:$2y$05$ts3k1r.t0Cne6j6DLt0/SepT5X4qthDFEdfqHBBMO5MhqzyMz34j2")).must_equal true
   end
 
   it "duplicates itself" do
